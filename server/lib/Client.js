@@ -2,7 +2,7 @@
 
 const path = require('path');
 const Session = require('./Session.js');
-const { token, sliceLastSymbol } = require('../helpers');
+const { token, sliceLastSymbol, log } = require('../helpers');
 const { MIME_TYPES } = require('../const.js');
 
 const UNIX_EPOCH = 'Thu, 01 Jan 1970 00:00:00 GMT';
@@ -36,6 +36,8 @@ class Client {
         this.url = url;
         this.fileExt = fileExt;
         this.mimeType = mimeType;
+
+        log({ mimeType })
 
         // log({ 'url = ': url });
 

@@ -7,6 +7,7 @@ const MIME_TYPES = {
     jpg:   'image/jpeg',
     ico:   'image/x-icon',
     svg:   'image/svg+xml',
+    webp:  'image/webp',
     woff:  'application/x-font-woff',
     woff2: 'application/x-font-woff2',
     ttf:   'application/x-font-ttf',
@@ -14,5 +15,7 @@ const MIME_TYPES = {
     mp3:   'audio/mpeg',
     mp4:   'video/mp4'
 };
+
+
 
 module.exports = { MIME_TYPES };

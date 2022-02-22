@@ -118,10 +118,6 @@ class Server {
     constructor() {
     }
 
-    message(client, req) {
-        return req.headers.host + ' | ' + client.url + ' | ' + req.method + ' | ' + client.mimeType;
-    }
-
     response(mimeType, html, res, status = 200) {
         res.setHeader('Content-Type', mimeType);
         res.statusCode = status;
@@ -176,7 +172,7 @@ class Server {
                                 const { stream } = await route.resolve(client);
                                 client.data = stream[0];
                                 response(client);
-                                mailAdmin.sendMessage(client.data, 'POST ' + client.url);
+                                mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
                             } catch (er) {
                                 // bad json
                                 res.statusCode = 400;
@@ -189,7 +185,7 @@ class Server {
                                 const { stream } = await route.resolve(client);
                                 client.data = stream[0];
                                 response(client);
-                                mailAdmin.sendMessage(client.data, 'POST ' + client.url);
+                                mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
                             } catch (er) {
                                 // bad json
                                 res.statusCode = 400;

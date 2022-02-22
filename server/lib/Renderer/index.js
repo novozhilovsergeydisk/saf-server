@@ -1,6 +1,7 @@
 'use strict';
 
 const { VIEWS_PATH } = require('../../const.js');
+console.log({ VIEWS_PATH })
 const nunjucks = require('nunjucks');
 nunjucks.configure(VIEWS_PATH, { autoescape: true });
 

@@ -28,11 +28,11 @@ const routing = {
         '/sup/cab/list':     reportsControllers.supCabList
     },
     'POST': {
-        '/user/add': reportsControllers.addUser,
-        '/register': auth.register,
-        '/activate/link/*': auth.register,
-        '/login': auth.login,
-        '/logout': auth.logout
+        '/user/add':         reportsControllers.addUser,
+        '/register':         auth.register,
+        '/activate/link/*':  auth.register,
+        '/login':            auth.login,
+        '/logout':           auth.logout
     }
 };
 
