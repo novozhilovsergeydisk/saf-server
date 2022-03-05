@@ -3,9 +3,9 @@
 // const nunjucks = require('nunjucks');
 // const userService = require('../service/user-service.js');
 const adminService = require('../../services/admin-service.js');
-const { promise, __VIEWS, log } = require('../../helpers.js');
+const { log } = require('../../helpers.js');
 const dto = require('../../lib/DTO/index.js');
-const { con, mkd, tmpl } = require('../../lib/Renderer/index.js');
+const { tmpl } = require('../../lib/Renderer/index.js');
 
 const cached = new Map();
 const cachedHTML = new Map();
@@ -14,26 +14,17 @@ const cachedHTML = new Map();
 
 // Handlers
 class reportsControllers {
+    async index() {
+        // const clinics = await adminService.clinics();
+        // const render = nunjucks.render('reports/index.html', {foo: 'bar'}) // tmpl.process({foo: 'bar'}, '/reports/index.html')
+        const render = tmpl.process({ report: 'index' }, 'reports/index.html');
+        return dto.stream(render);
+    }
+
     async clinics() {
-        const data = adminService.clinics();
-
-        // log({ data });
-        //
-        // log(typeof data);
-
-        const stream = data
-            .then(clinics => {
-                // log({ clinics });
-                const render = nunjucks.render('reports/index.html', { clinics: clinics });
-                return render;
-
-            })
-            .catch(error => {
-                log({ error });
-                return '<h1>500</h1>';
-            });
-
-        return DTOFactory({ stream: stream });
+        const clinics = await adminService.clinics();
+        const render = tmpl.process({ clinics: clinics }, 'reports/index.html');
+        return dto.stream(render);
     }
 
     async clinicById(client) {
@@ -44,6 +35,7 @@ class reportsControllers {
         // log(cached.size);
 
         if (cached.has(`clinicById(${id})`)) {
+
             console.time('cached-clinicHTML');
             const clinics = cached.get(`clinicById(${id})`);
             if (cachedHTML.has(`clinicById(${id})`)) {
@@ -71,33 +63,7 @@ class reportsControllers {
 
             render = nunjucks.render('reports/index.html', { clinics: clinics });
 
-            // log({ render })
-
-            // return render;
-
-            // log({ clinics })
-
-            // stream = data
-            //     .then(clinics => {
-            //         if (!cached.has(`clinicById(${id})`)) {
-            //             cached.set(`clinicById(${id})`, clinics);
-            //         }
-            //         // const patients = [{ title: "Иванов", id: 1 }, { title: "Новожилов", id: 2}, { title: "Гришин", id: 3}];
-            //         const render = nunjucks.render('reports/index.html', { clinics: clinics });
-            //
-            //         // log(typeof render);
-            //
-            //         return render;
-            //
-            //     })
-            //     .catch(error => {
-            //         log({ error });
-            //         return '<h1>500</h1>' + `<strong>${error}</strong>`;
-            //     });
-
             console.timeEnd('clinicById');
-
-            // log({ 'cachedHTML.size':cachedHTML.size })
         }
 
         return dto.stream(render);

@@ -1,11 +1,12 @@
 'use strict'
 
 const path = require('path');
+const fs = require('fs');
 const crypto = require('crypto');
 const {Client} = require('pg');
 const {mail} = require('./services/mail-service.js');
 const conf = require('./conf.js');
-const {STATIC_PATH, VIEWS_PATH} = require('../constants.js');
+const {STATIC_PATH, VIEWS_PATH, APP_PATH, SERVER_PATH} = require('../constants.js');
 const TOKEN_LENGTH = 32;
 const ALPHA_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const ALPHA_LOWER = 'abcdefghijklmnopqrstuvwxyz';
@@ -13,12 +14,24 @@ const ALPHA = ALPHA_UPPER + ALPHA_LOWER;
 const DIGIT = '0123456789';
 const ALPHA_DIGIT = ALPHA + DIGIT;
 
-const __STATIC = url => {
-    return path.join(STATIC_PATH, url);
+const __STATIC = (url) => {
+    return (url) ? path.join(STATIC_PATH, url) : STATIC_PATH;
 };
 
-const __VIEWS = () => {
-    return VIEWS_PATH;
+const __VIEWS = (url) => {
+    return (url) ? path.join(VIEWS_PATH, url) : VIEWS_PATH;
+    // return VIEWS_PATH;
+};
+
+const __APP = (url) => {
+    // log({ APP_PATH })
+    return (url) ? path.join(APP_PATH, url) : APP_PATH;
+    // return APP_PATH;
+};
+
+const __SERVER = (url) => {
+    return (url) ? path.join(SERVER_PATH, url) : SERVER_PATH;
+    // return SERVER_PATH;
 };
 
 const throwErr = err => {
@@ -33,6 +46,13 @@ const __ERROR = errorLog;
 const __error = errorLog;
 const bytesToMb = bytes => Math.round(bytes / 1000, 2) / 1000;
 
+const statPath = (path => {
+    try {
+        return fs.statSync(path);
+    } catch (ex) {}
+    return false;
+});
+
 const sliceLastSymbol = ((mod, url) => {
     let urlMod = url;
     if (mod === url) return url;
@@ -43,7 +63,7 @@ const sliceLastSymbol = ((mod, url) => {
         }
     }
     return urlMod;
-})
+});
 
 const memory = (() => {
     // console.clear();
@@ -59,7 +79,7 @@ const memory = (() => {
     memory.push(row);
     // console.table(memory);
     return memory;
-})
+});
 
 const notify = ((error, sub = 'Ошибка сервиса', text = 'Error:') => {
     const mailOptions = {
@@ -71,7 +91,7 @@ const notify = ((error, sub = 'Ошибка сервиса', text = 'Error:') =>
     mail.options(mailOptions);
     mail.send();
     __ERROR(error)
-})
+});
 
 const replace = ((oldS, newS, fullS) => {
     for (var i = 0; i < fullS.length; ++i) {
@@ -333,6 +353,9 @@ module.exports = {
     memory,
     sliceLastSymbol,
     db,
+    statPath,
     __STATIC,
-    __VIEWS
+    __VIEWS,
+    __APP,
+    __SERVER
 };

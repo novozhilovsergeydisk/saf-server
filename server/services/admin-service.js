@@ -11,9 +11,18 @@ const { mail } = require('./mail-service.js');
 class AdminService {
     constructor() {}
 
-    clinics() {
+    async testClinics() {
+        // return {foo: 'bar'}
+
         const sql = 'SELECT * FROM cabinet';
-        return select(sql);
+        return select(sql).catch(err => this.notify(err));
+    }
+
+    async clinics() {
+        // return await {foo: 'bar'}
+
+        const sql = 'SELECT * FROM cabinet';
+        return await select(sql).catch(err => this.notify(err));
     }
 
     async inactiveAccountDays() {

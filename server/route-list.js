@@ -20,6 +20,7 @@ const routing = {
         '/css/*':            staticController.staticContent,
         '/js/*':             staticController.staticContent,
         '/img/*':            staticController.staticContent,
+        '/img/doctors/*':    staticController.staticContent,
         '/api/register':     patientController.register,
         '/favicon.ico':      staticController.staticContent,
         '/reports/clinics':  reportsControllers.clinics,

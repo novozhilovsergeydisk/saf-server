@@ -1,9 +1,14 @@
 'use strict';
 
-const { VIEWS_PATH } = require('../../const.js');
-console.log({ VIEWS_PATH })
+const { VIEWS_PATH } = require('../../../constants.js');
 const nunjucks = require('nunjucks');
-nunjucks.configure(VIEWS_PATH, { autoescape: true });
+nunjucks.configure('/Users/sergionov/Projects/transplant.net/node-server/html', { autoescape: true });
+
+const { log } = require('../../helpers.js')
+
+// log({ nunjucks })
+
+// console.log({ VIEWS_PATH })
 
 class Renderer {
     render() {
@@ -58,7 +63,8 @@ class HTMLRenderer extends Renderer {
 class NunjuksRenderer extends Renderer {
     // ex: data = { patients: patients }
     render(data, path) {
-
+        // console.log({ VIEWS_PATH })
+        // console.log({ path })
         // console.log({ data })
         return nunjucks.render(path, data)
     }

@@ -1,14 +1,16 @@
 'use strict'
 
 const http = require('http');
+// const router = require('find-my-way')();
 // const path = require('path');
+
 const Route = require('./routes.js');
 const ClientApp = require('./lib/Client.js');
-const {bufferConcat, replace, memory, notify} = require('./helpers.js');
+const {bufferConcat, replace, memory, notify, __APP, log} = require('./helpers.js');
 const conf = require('./conf.js');
 const { mkd } = require('./lib/Renderer/index.js');
 const mailAdmin = require('./lib/MailerAdmin.js');
-
+// const zzz = require('../test.mjs')
 
 // const cache = new Map();
 // const routeList = require('./route-list.js');
@@ -16,6 +18,11 @@ const mailAdmin = require('./lib/MailerAdmin.js');
 
 // log({ cache })
 
+// if (existsSync('/etc/passwd')) {
+//     log('The path exists.');
+// } else {
+//     log('The path NOT exists.');
+// }
 
 // const { MIME_TYPES } = require('./const.js');
 // const {mail} = require('./services/mail-service.js');
@@ -24,9 +31,10 @@ const mailAdmin = require('./lib/MailerAdmin.js');
 //  SAF - server platform for building applications
 
 // const fs = require("fs"); // Or 'import fs from "fs";' with ESM
-// if (fs.existsSync(path)) {
+// if (fs.existsSync('./const.js')) {
 //     // Do something
 // }
+
 
 // const { sys } = require('util');
 //
@@ -99,7 +107,13 @@ const patients = [
 
 mkd.process(patients);
 
-const __404 = (client, res, info = null) => {
+const __404 = (res, info = null) => {
+    res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+    res.statusCode = 404;
+    res.end(info);
+};
+
+const notFound = (res, info = null) => {
     res.setHeader('Content-Type', 'text/html; charset=UTF-8');
     res.statusCode = 404;
     res.end(info);
@@ -136,6 +150,8 @@ class Server {
             const route = new Route(client);
             const hasRoute = route.has();
 
+            // log({ hasRoute })
+
             // log({ client })
             // log(client.host)
             // log(client.url)
@@ -144,7 +160,7 @@ class Server {
             // log('----------')
 
             if (!hasRoute) {
-                __404(client, res, '404 - ' + client.url);
+                __404(res, '404 - ' + client.url);
                 notify('404 - ' + req.url, 'Страница не найдена');
             } else {
                 if (req.method === 'GET') {
@@ -153,7 +169,18 @@ class Server {
                         this.response(client.mimeType, resolve.stream, res);
                     } else {
                         const stream = await resolve.stream;
-                        this.pipe(client.mimeType, stream, res);
+
+                        if (stream) {
+                            try {
+                                this.pipe(client.mimeType, stream, res);
+                            } catch(e) {
+                                log('error pipe')
+                            }
+                        } else {
+                            __404(res, '404 - ' + client.url);
+                            notify('404 - ' + req.url, 'Файл не найден');
+                            // log({ stream })
+                        }
                     }
                 }
                 if (req.method === 'POST') {

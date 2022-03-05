@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const { log } = require('../../helpers.js');
 
-log('auth/index.js');
+// log('auth/index.js');
 
 // Handlers
 class authControllers {
