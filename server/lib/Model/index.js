@@ -1,6 +1,4 @@
-const db = require('./DB.js');
-
-// const { generateToken } = require('../helpers.js');
+const db = require('../Database/index.js');
 
 const pg = db.open({
     user: 'postgres',

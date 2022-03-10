@@ -1,7 +1,7 @@
 'use strict';
 
 const { Pool } = require('pg');
-const { log, start, end } = require('../helpers');
+const { log, start, end } = require('../../helpers');
 
 const where = (conditions) => {
     let clause = '';

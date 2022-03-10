@@ -1,10 +1,11 @@
-'use strict';
+'use strict'
 
-const {patientController} = require('./controllers/patients.js');
-const cabinetControllers  = require('./controllers/cabinet.js');
-const reportsControllers  = require('./controllers/reports/index.js');
-const auth                = require('./controllers/auth/index.js');
-const {staticController}  = require('./controllers/main/index.js');
+const {patientController} = require('./controllers/patients.js')
+const cabinetControllers  = require('./controllers/cabinet.js')
+const reportsControllers  = require('./controllers/reports/index.js')
+const auth                = require('./controllers/auth/index.js')
+const {staticController}  = require('./controllers/main/index.js')
+const getContent          = require('./lib/File/index.js')
 
 const routing = {
     'GET': {
@@ -19,14 +20,15 @@ const routing = {
         '/api/cabinet/id/*': cabinetControllers.cabinet,
         '/css/*':            staticController.staticContent,
         '/js/*':             staticController.staticContent,
-        '/img/*':            staticController.staticContent,
+        '/img/*':            getContent,
         '/img/doctors/*':    staticController.staticContent,
         '/api/register':     patientController.register,
         '/favicon.ico':      staticController.staticContent,
         '/reports/clinics':  reportsControllers.clinics,
         '/reports/clinic/*': reportsControllers.clinicById,
         '/user/add':         reportsControllers.addUser,
-        '/sup/cab/list':     reportsControllers.supCabList
+        '/sup/cab/list':     reportsControllers.supCabList,
+        '/stat':             reportsControllers.stat
     },
     'POST': {
         '/user/add':         reportsControllers.addUser,

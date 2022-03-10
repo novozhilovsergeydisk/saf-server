@@ -1,20 +1,13 @@
 'use strict';
 
 const crypto = require('crypto');
-// const { log } = require('../helpers.js');
 
 class Cache {
     argKey = (x => {
-        // log({ x });
-
         return x;
-
-        //x.toString() + ':' + typeof x;
     })
 
     generateKey = (args => {
-        // log({ args });
-        // log({ 'this.argKey': this.argKey });
         const key = args.map(this.argKey).join('|');
         // log({ key });
 

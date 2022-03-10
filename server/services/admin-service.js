@@ -18,6 +18,12 @@ class AdminService {
         return select(sql).catch(err => this.notify(err));
     }
 
+    async stat(date1, date2) {
+        const sql = `SELECT * FROM sitelog s WHERE 1=1 AND datetime > '${date1}' AND datetime < '2022-03-09 23:59:59'`;
+        log({ sql })
+        return await select(sql).catch(err => this.notify(err));
+    }
+
     async clinics() {
         // return await {foo: 'bar'}
 

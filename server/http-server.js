@@ -1,16 +1,20 @@
 'use strict'
 
+const os = require('os')
 const http = require('http');
+// const util = require('util');
 // const router = require('find-my-way')();
 // const path = require('path');
 
 const Route = require('./routes.js');
-const ClientApp = require('./lib/Client.js');
-const {bufferConcat, replace, memory, notify, __APP, log} = require('./helpers.js');
+const ClientApp = require('./lib/Client/index.js');
+const {bufferConcat, replace, memory, notify, log, generateToken, hash} = require('./helpers.js');
 const conf = require('./conf.js');
-const { mkd } = require('./lib/Renderer/index.js');
-const mailAdmin = require('./lib/MailerAdmin.js');
+const {mkd} = require('./lib/Renderer/index.js');
+const {mailAdmin} = require('./lib/Mailer/index.js');
 // const zzz = require('../test.mjs')
+
+// log({ os })
 
 // const cache = new Map();
 // const routeList = require('./route-list.js');
@@ -75,11 +79,8 @@ console.table(memory())
 // const valid = validate(data)
 // if (!valid) console.log(validate.errors)
 
-// log(generateToken());
-// log(hash());
-
-// const cachedPromise = new Map();
-// const { Auth } = require('./lib/auth.js');
+log(generateToken());
+log(hash());
 
 // http://espressocode.top/http-headers-content-type/
 // https://nodejsdev.ru/doc/email/
@@ -108,12 +109,6 @@ const patients = [
 mkd.process(patients);
 
 const __404 = (res, info = null) => {
-    res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-    res.statusCode = 404;
-    res.end(info);
-};
-
-const notFound = (res, info = null) => {
     res.setHeader('Content-Type', 'text/html; charset=UTF-8');
     res.statusCode = 404;
     res.end(info);
@@ -241,5 +236,8 @@ class Server {
         this.createServer(port, host);
     }
 }
+
+// log(util.inspect())
+// log('END inspect -------------------------')
 
 module.exports = new Server();

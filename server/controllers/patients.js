@@ -8,7 +8,7 @@ const dto = require('../lib/DTO/index.js');
 // const { VIEWS_PATH } = require('../const.js');
 // const nunjucks = require('nunjucks');
 const { tmpl } = require('../lib/Renderer/index.js');
-const cache = require(path.resolve(__dirname, '../lib/Cache.js'));
+// const cache = require(path.resolve(__dirname, '../lib/Cache/index.js'));
 // log({ __dirname });
 const userService = require('../services/user-service.js');
 // const { parse } = require('querystring');
@@ -19,8 +19,8 @@ const userService = require('../services/user-service.js');
 
 const cached = new Map();
 
-const fsCreateReadStream = fs.createReadStream;
-const memoize = cache.memoize(fsCreateReadStream);
+// const fsCreateReadStream = fs.createReadStream;
+// const memoize = cache.memoize(fsCreateReadStream);
 
 // const fs = require('fs');
 

@@ -1,9 +1,9 @@
 // const UserModel = require('../models/user-model');
-const model = require('../lib/Model.js');
+const model = require('../lib/Model/index.js');
 //const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const mailService = require('./mail-service.js');
-const db = require('../lib/DB.js');
+const db = require('../lib/Database/index.js');
 const { DTOFactory } = require('../helpers');
 const tokenService = require('./token-service.js');
 const crypto = require('crypto');

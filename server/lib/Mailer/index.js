@@ -1,9 +1,17 @@
-'use strict';
+'use strict'
 
 const nodemailer = require('nodemailer');
-const conf = require('../conf.js');
+const conf = require('../../conf.js');
 
-// console.log(conf.mailer.auth.admin_user)
+const transporter = nodemailer.createTransport({
+    host: conf.mailer.host,
+    port: conf.mailer.port,
+    secure: conf.mailer.secure,
+    auth: {
+        user: conf.mailer.auth.user,
+        pass: conf.mailer.auth.pass
+    }
+});
 
 class MailerAdmin{
     async send(text, sub) {
@@ -20,9 +28,9 @@ class MailerAdmin{
         });
 
         const info = await transporter.sendMail({
-            from: `Admin 👻 <${admin_user}>`, // sender address
+            from: `Admin <${admin_user}>`, // sender address
             to: admin_user, // list of receivers
-            subject: sub +  ' ✔', // Subject line
+            subject: sub, // +  ' ✔', // Subject line
             text: text, // plain text body
             html: text, // html body
         });
@@ -41,4 +49,7 @@ class MailerAdmin{
 
 const mailAdmin = new MailerAdmin();
 
-module.exports = mailAdmin;
+// module.exports = mailAdmin;
+
+module.exports = { transporter, nodemailer, mailAdmin }
+

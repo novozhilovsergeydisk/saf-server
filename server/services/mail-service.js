@@ -27,14 +27,18 @@ class MailService {
     }
 
     options(obj) {
-        this.mailOptions = obj;
+        this.options = obj;
+    }
+
+    setOptions(values) {
+        this.options = values;
     }
 
     send(obj = null) {
         if (obj) this.options(obj);
 
-        if (this.mailOptions) {
-            this.transporter.sendMail(this.mailOptions, function (error, info) {
+        if (this.options) {
+            this.transporter.sendMail(this.options, function (error, info) {
                 if (error) {
                     console.log(error);
                 } else {

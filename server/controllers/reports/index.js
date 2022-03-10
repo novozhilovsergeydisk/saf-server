@@ -35,7 +35,6 @@ class reportsControllers {
         // log(cached.size);
 
         if (cached.has(`clinicById(${id})`)) {
-
             console.time('cached-clinicHTML');
             const clinics = cached.get(`clinicById(${id})`);
             if (cachedHTML.has(`clinicById(${id})`)) {
@@ -87,41 +86,13 @@ class reportsControllers {
         return clinicList;
     }
 
-    async supCabList() {
-        // const { Pool } = require('pg')
-        // const pool = new Pool()
-        // log('1');
-        // const res_ = await (async () => {
-        //     // note: we don't try/catch this because if connecting throws an exception
-        //     // we don't need to dispose of the client (it will be undefined)
-        //     const client = await pool.connect()
-        //     try {
-        //         await client.query('BEGIN')
-        //         const queryText = 'INSERT INTO users(email, password) VALUES($1, $2) RETURNING id'
-        //         const res = await client.query(queryText, ['pat@transplant.3558aa3be4969', '3558aa3b-72d6-4244-a984-b280db2e4969'])
-        //         log({ res })
-        //         // await client.query(queryText)
-        //         await client.query('COMMIT')
-        //         const dto = DTOFactory({ stream: 'supCabList()' });
-        //         log({ dto })
-        //         return dto;
-        //     } catch (e) {
-        //         await client.query('ROLLBACK')
-        //         throw e
-        //     } finally {
-        //         client.release()
-        //     }
-        // })().catch(e => {
-        //     console.error(e.stack)
-        //     return DTOFactory({ stream: null, error: e.stack });
-        // })
-        // log(2)
-        // log({ res_ })
-        //
-        // log(typeof res_)
-        //
-        // return res_;
+    async stat(client) {
+        const list = await adminService.stat('2022-02-09 00:00:00', '2022-02-09 00:00:00');
+        log(list)
+        return dto.stream(JSON.stringify(list))
+    }
 
+    async supCabList() {
         const inactiveAccountDays__ = await adminService.inactiveAccountDays();
         // log({ inactiveAccountDays__ })
         const inactive_account_days = inactiveAccountDays__[0].inactive_account_days;
@@ -149,9 +120,6 @@ class reportsControllers {
         // });
 
         ;const y = (async () => {
-            // note: we don't try/catch this because if connecting throws an exception
-            // we don't need to dispose of the client (it will be undefined)
-            // const client = await pool.connect()
             try {
                 let result__ = [];
 
@@ -162,37 +130,15 @@ class reportsControllers {
                     const docList = await adminService.docList(inactive_account_days, cab_id);
                     const patSnt = await adminService.patSnt(cab_id);
                     result__.push({clinic: {id: cab_id, name: name, pat_cnt: patSnt}, admins: admList, docs: docList})
-                    // log({ result__ })
-
-                    // log({ admList })
-                    // log({ docList })
-                    // log({ patSnt })
-                    // log({ item })
-
-                    // return result__;
                 });
 
                 return result__;
-
-                // return await 1+1;
-                // await client.query('BEGIN')
-                // const queryText = 'INSERT INTO users(name) VALUES($1) RETURNING id'
-                // const res = await client.query(queryText, ['brianc'])
-                // const insertPhotoText = 'INSERT INTO photos(user_id, photo_url) VALUES ($1, $2)'
-                // const insertPhotoValues = [res.rows[0].id, 's3.bucket.foo']
-                // await client.query(insertPhotoText, insertPhotoValues)
-                // await client.query('COMMIT')
             } catch (e) {
-                // await client.query('ROLLBACK')
                 throw e
             } finally {
                 // log('finally')
             }
         })();
-
-        // log({ y })
-        //
-        // y.then(data => log({ data }))
 
         const inactiveAccountDays = adminService.inactiveAccountDays();
         const result = inactiveAccountDays.then(data => {

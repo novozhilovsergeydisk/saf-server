@@ -1,9 +1,9 @@
 'use strict';
 
 const path = require('path');
-const Session = require('./Session.js');
-const { token, sliceLastSymbol, log } = require('../helpers');
-const { MIME_TYPES } = require('../../constants.js');
+const Session = require('../../lib/Session/index.js');
+const { token, sliceLastSymbol, log } = require('../../helpers');
+const { MIME_TYPES } = require('../../../constants.js');
 
 const UNIX_EPOCH = 'Thu, 01 Jan 1970 00:00:00 GMT';
 const COOKIE_EXPIRE = 'Fri, 01 Jan 2100 00:00:00 GMT';
@@ -19,7 +19,7 @@ const parseHost = (host) => {
 class Client {
     // param req.headers.host
     constructor(req, res) {
-        this.routeList = require('../route-list.js');
+        this.routeList = require('../../route-list.js');
         let {url, method} = req;
         url  = sliceLastSymbol('/', url);
         const {host} = req.headers;

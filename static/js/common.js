@@ -46,6 +46,10 @@ const ready = (() => {
     document.addEventListener('click', (event) => {
         event.preventDefault();
         if (event.target.dataset['click']) toggleType(document.getElementById('pass'));
+        if (event.target.dataset['click']) {
+            event.stopPropagation()
+            log('upload')
+        };
 
         // if (event.target.dataset['click_glyphicon']) {
         //     const parentEl = event.target.parentElement;

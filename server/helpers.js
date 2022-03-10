@@ -82,13 +82,13 @@ const memory = (() => {
 });
 
 const notify = ((error, sub = 'Ошибка сервиса', text = 'Error:') => {
-    const mailOptions = {
+    const par = {
         from: conf.mailer.options.from,
         to: conf.mailer.options.to,
         subject: sub,
         text: text + ' ' + error
     };
-    mail.options(mailOptions);
+    mail.setOptions(par);
     mail.send();
     __ERROR(error)
 });
@@ -278,6 +278,10 @@ const connect = (sql => {
                 const client_pg = new Client();
                 await client_pg.connect();
                 const res = await client_pg.query(sql);
+
+                // log({ 'res.rows': res.rows })
+                // log('----------------------------')
+
                 resolve(res.rows);
                 await client_pg.end();
             } catch (e) {

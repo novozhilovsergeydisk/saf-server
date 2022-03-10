@@ -1,6 +1,6 @@
 'use strict';
 
-const storage = require('./Storage.js');
+const storage = require('../../lib/Storage/index.js');
 // const { log } = require('../helpers.js');
 
 const TOKEN_LENGTH = 32;

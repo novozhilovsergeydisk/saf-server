@@ -1,3 +1,5 @@
+'use strict'
+
 class ApplicationError extends Error {
     constructor(message) {
         super(message);
@@ -5,6 +7,7 @@ class ApplicationError extends Error {
         this.name = this.constructor.name;
     }
 }
+
 class ValidationError extends ApplicationError {
     constructor(message, cause) {
         super(message);

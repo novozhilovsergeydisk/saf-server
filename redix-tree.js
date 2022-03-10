@@ -10,7 +10,7 @@ const conf = require('./server/conf.js')
 
 
 const {staticController}  = require('./server/controllers/main/index.js')
-const app = require('./server/lib/Client.js')
+const app = require('./server/lib/Client/index.js')
 const { tmpl } = require('./server/lib/Renderer/index.js')
 
 // const nunjucks = require('nunjucks');

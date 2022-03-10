@@ -1,14 +1,23 @@
 'use strict'
 
-const fs = require('fs');
-const path = require('path');
-const { STATIC_PATH } = require('../../constants.js');
-// const db = require(APP_PATH + '/server/classes/DB');
-// const { DTOFactory } = require('../helpers');
-// const mime = require('mime');
+const fs = require('fs')
+const dto = require('../../lib/DTO/index.js')
+const {statPath, __STATIC} = require('../../helpers.js')
 
+class File {
+    async getContent(client) {
+        const url = client.url
+        let data = null
+        const stats = statPath(__STATIC(url))
+        // if (stats && !stats.isDirectory()) {
+        //     return fs.realpathSync(requestPath, Module._realpathCache);
+        // }
+        if(stats && stats.isFile()) {
+            data = fs.createReadStream(__STATIC(url))
+        }
+        return dto.stream(data) //DTOFactory({ stream: stream });
+    }
 
-class Files {
     serve(client) {
         const { name } = client;
         const filePath = path.join(STATIC_PATH, name);
@@ -88,4 +97,5 @@ class Files {
     }
 }
 
-module.exports = Files;
+const file = new File()
+module.exports = file.getContent

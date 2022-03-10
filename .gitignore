@@ -1,7 +1,5 @@
 .clinic/
 node_modules/
-formidable.js
-email.js
 script.sql
 .idea/
 server/conf.js
@@ -11,4 +9,7 @@ static/favicon.ico
 static/img/logo.png
 package-lock.json
 html/
+controllers/
+services/
+
 
