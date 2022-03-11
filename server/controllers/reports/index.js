@@ -86,6 +86,11 @@ class reportsControllers {
         return clinicList;
     }
 
+    async upload(client) {
+        // log({ client })
+        return 'upload POST'
+    }
+
     async stat(client) {
         const list = await adminService.stat('2022-02-09 00:00:00', '2022-02-09 00:00:00');
         log(list)

@@ -1,7 +1,8 @@
 'use strict'
 
-const os = require('os')
+const fs = require('fs')
 const http = require('http');
+const formidable = require('formidable');
 // const util = require('util');
 // const router = require('find-my-way')();
 // const path = require('path');
@@ -56,28 +57,54 @@ console.table(memory())
 
 // export const IDENTIFIER = /^[a-z$_][a-z$_0-9]*$/i
 
-// const Ajv = require("ajv")
-// const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
+const Ajv = require('ajv')
+const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
+
+// const validate = ((schema, data) => {
+//     const validate__ = ajv.compile(schema)
+//     const valid = validate__(data)
 //
-// const schema = {
-//     type: "object",
-//     properties: {
-//         foo: {type: "integer"},
-//         bar: {type: "string"}
-//     },
-//     required: ["foo", "bar"],
-//     additionalProperties: false
-// }
-//
-// const validate = ajv.compile(schema)
-//
-// const data = {
-//     foo: 1,
-//     bar: "mem"
-// }
-//
-// const valid = validate(data)
-// if (!valid) console.log(validate.errors)
+//     if (!valid) {
+//         log({ valid })
+//         return valid.errors
+//         log(valid.errors)
+//     } else {
+//         log({ valid })
+//         return 'data is valid'
+//         // log('data is valid')
+//     }
+// })
+
+const schema = {
+    type: 'object',
+    properties: {
+        foo: {type: 'integer'},
+        bar: {type: 'string'}
+    },
+    required: ['foo', 'bar'],
+    additionalProperties: false
+}
+
+const data = {
+    foo: 1,
+    bar: 2
+}
+
+// const res = validate(schema, data)
+
+// log({ res })
+
+const validate = ajv.compile(schema)
+const valid = validate(data)
+
+if (!valid) {
+    log({ valid })
+    // return valid.errors
+} else {
+    log({ valid })
+    // return 'data is valid'
+    // log('data is valid')
+}
 
 log(generateToken());
 log(hash());
@@ -86,15 +113,16 @@ log(hash());
 // https://nodejsdev.ru/doc/email/
 
 const CONTENT_TYPES = {
+    IMAGE_JPEG: 'image/jpeg',
     MILTIPART_FORMDATA: 'multipart/form-data',
     FORM_URLENCODED: 'application/x-www-form-urlencoded',
-    APPLICATION_JSON: 'application/json'
+    APPLICATION_JSON: 'application/json;charset=utf-8'
 }
 
 // log(MIME_TYPES.html);
 
 const docPats = [
-    {doctor: 'Новожилов С.Ю.'},
+    {doctor:  'Новожилов С.Ю.'},
     {patient: 'Тихонова Галина Федотовна', sys: 143, dia: 89, pulse: 54, glukose: 5.9},
     {patient: 'Багдасарян Анна Рафаэловна', sys: 133, dia: 79, pulse: 64},
     {patient: 'Каргальская Ирина Геннадьевна', sys: 123, dia: 69, pulse: 74}
@@ -144,16 +172,6 @@ class Server {
             const client = new ClientApp(req, res);
             const route = new Route(client);
             const hasRoute = route.has();
-
-            // log({ hasRoute })
-
-            // log({ client })
-            // log(client.host)
-            // log(client.url)
-            // log(client.http_method)
-            // log({ hasRoute })
-            // log('----------')
-
             if (!hasRoute) {
                 __404(res, '404 - ' + client.url);
                 notify('404 - ' + req.url, 'Страница не найдена');
@@ -164,7 +182,6 @@ class Server {
                         this.response(client.mimeType, resolve.stream, res);
                     } else {
                         const stream = await resolve.stream;
-
                         if (stream) {
                             try {
                                 this.pipe(client.mimeType, stream, res);
@@ -179,10 +196,19 @@ class Server {
                     }
                 }
                 if (req.method === 'POST') {
+
+
+                    // Access-Control-Allow-Origin
+
                     const contentType = req.headers['content-type'];
+                    log({ contentType })
                     let body = null;
                     let bodyArr = [];
                     req.on('data', chunk => {
+                        if (contentType === CONTENT_TYPES.IMAGE_JPEG) {
+                            body += chunk;
+                            // bodyArr.push(chunk);
+                        }
                         if (contentType === CONTENT_TYPES.FORM_URLENCODED) bodyArr.push(chunk);
                         if (contentType === CONTENT_TYPES.APPLICATION_JSON) body += chunk;
                     });
@@ -204,6 +230,8 @@ class Server {
                         if (contentType === CONTENT_TYPES.APPLICATION_JSON) {
                             try {
                                 body = replace('null', '', body);
+                                // log({ body })
+                                client.body = body;
                                 const { stream } = await route.resolve(client);
                                 client.data = stream[0];
                                 response(client);
@@ -213,6 +241,47 @@ class Server {
                                 res.statusCode = 400;
                                 res.end(`error: ${er.message}`);
                             }
+                        }
+                        if (contentType === CONTENT_TYPES.IMAGE_JPEG) {
+                            // if (req.url == '/upload') {
+                            //     const form = new formidable.IncomingForm();
+                            //
+                            //     form.parse(req, function (err, fields, files) {
+                            //         const oldpath = files.filetoupload.filepath;
+                            //         const newpath = './storage/upload/' + files.filetoupload.originalFilename;
+                            //
+                            //         console.log({ oldpath })
+                            //
+                            //         console.log({ newpath })
+                            //
+                            //         fs.rename(oldpath, newpath, function (err) {
+                            //             if (err) throw err;
+                            //             res.write('File uploaded and moved!');
+                            //             res.end();
+                            //         });
+                            //     });
+                            // }
+
+                            // body = bufferConcat(bodyArr); // bufferConcat
+
+                            // log({ body })
+
+                            log(typeof body)
+
+                            fs.writeFile('/Users/sergionov/Projects/transplant.net/node-server/server/new.jpeg', body, function (err) {
+                                log('save')
+
+                                if(err)
+                                    console.log('NNOOOOOOOOOOOO');
+                            });
+
+
+
+                            client.body = body;
+                            const { stream } = await route.resolve(client);
+                            log({ stream })
+                            log({ bodyArr })
+                            // log({ body })
                         }
                     });
                     req.on('information', (info) => {

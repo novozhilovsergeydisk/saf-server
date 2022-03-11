@@ -35,7 +35,8 @@ const routing = {
         '/register':         auth.register,
         '/activate/link/*':  auth.register,
         '/login':            auth.login,
-        '/logout':           auth.logout
+        '/logout':           auth.logout,
+        '/upload':           reportsControllers.upload
     }
 };
 
