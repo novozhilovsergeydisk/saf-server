@@ -5,6 +5,6 @@ script.sql
 server/conf.js
 test/
 package-lock.json
-services/*
+server/services/
 
 
