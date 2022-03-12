@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+const crypto = require('test/crypto');
 // const { XXHash3, XXHash64 } = require('xxhash-addon');
 // const hasher3 = new XXHash3(0xDEADBEAF);
 // const hasher64 = new XXHash64(0xDEADBEAF);

@@ -2,9 +2,7 @@
 
 const path = require('path');
 const Session = require('../../lib/Session/index.js');
-const { token, sliceLastSymbol, log } = require('../../helpers');
-const { MIME_TYPES } = require('../../../constants.js');
-
+const { token, sliceLastSymbol, __MIME } = require('../../helpers');
 const UNIX_EPOCH = 'Thu, 01 Jan 1970 00:00:00 GMT';
 const COOKIE_EXPIRE = 'Fri, 01 Jan 2100 00:00:00 GMT';
 const COOKIE_DELETE = `=deleted; Expires=${UNIX_EPOCH}; Path=/; Domain=`;
@@ -24,7 +22,7 @@ class Client {
         url  = sliceLastSymbol('/', url);
         const {host} = req.headers;
         const fileExt = path.extname(url).substring(1);
-        const mimeType = MIME_TYPES[fileExt] || MIME_TYPES.html;
+        const mimeType = __MIME[fileExt] || __MIME.html;
         this.req = req;
         this.res = res;
         this.host = parseHost(host);

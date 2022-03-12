@@ -3,13 +3,8 @@ node_modules/
 script.sql
 .idea/
 server/conf.js
-server/route.js
-server/routes.js
-static/favicon.ico
-static/img/logo.png
+test/*
 package-lock.json
-html/
-controllers/
-services/
+services/*
 
 

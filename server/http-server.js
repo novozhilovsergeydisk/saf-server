@@ -1,51 +1,16 @@
 'use strict'
 
+// SAF - A simple and flexible server platform for building web applications and services
 const fs = require('fs')
 const http = require('http');
-const formidable = require('formidable');
-// const util = require('util');
+// const formidable = require('formidable');
 // const router = require('find-my-way')();
-// const path = require('path');
-
-const Route = require('./routes.js');
+const Route = require('../test/routes.js');
 const ClientApp = require('./lib/Client/index.js');
 const {bufferConcat, replace, memory, notify, log, generateToken, hash} = require('./helpers.js');
 const conf = require('./conf.js');
-const {mkd} = require('./lib/Renderer/index.js');
+// const {mkd} = require('./lib/Renderer/index.js');
 const {mailAdmin} = require('./lib/Mailer/index.js');
-// const zzz = require('../test.mjs')
-
-// log({ os })
-
-// const cache = new Map();
-// const routeList = require('./route-list.js');
-// cache.set('routeList', routeList);
-
-// log({ cache })
-
-// if (existsSync('/etc/passwd')) {
-//     log('The path exists.');
-// } else {
-//     log('The path NOT exists.');
-// }
-
-// const { MIME_TYPES } = require('./const.js');
-// const {mail} = require('./services/mail-service.js');
-
-// simplicity and flexibility | SAF platform | flexify
-//  SAF - server platform for building applications
-
-// const fs = require("fs"); // Or 'import fs from "fs";' with ESM
-// if (fs.existsSync('./const.js')) {
-//     // Do something
-// }
-
-
-// const { sys } = require('util');
-//
-// log({ sys });
-
-// sys.puts(sys.inspect(someVariable));
 
 process.env.PGHOST = conf.db.host;
 process.env.PGUSER = conf.db.user;
@@ -53,64 +18,9 @@ process.env.PGDATABASE = conf.db.name;
 process.env.PGPASSWORD = conf.db.password;
 process.env.PGPORT = conf.db.port;
 
-console.table(memory())
-
-// export const IDENTIFIER = /^[a-z$_][a-z$_0-9]*$/i
-
-const Ajv = require('ajv')
-const ajv = new Ajv() // options can be passed, e.g. {allErrors: true}
-
-// const validate = ((schema, data) => {
-//     const validate__ = ajv.compile(schema)
-//     const valid = validate__(data)
-//
-//     if (!valid) {
-//         log({ valid })
-//         return valid.errors
-//         log(valid.errors)
-//     } else {
-//         log({ valid })
-//         return 'data is valid'
-//         // log('data is valid')
-//     }
-// })
-
-const schema = {
-    type: 'object',
-    properties: {
-        foo: {type: 'integer'},
-        bar: {type: 'string'}
-    },
-    required: ['foo', 'bar'],
-    additionalProperties: false
-}
-
-const data = {
-    foo: 1,
-    bar: 2
-}
-
-// const res = validate(schema, data)
-
-// log({ res })
-
-const validate = ajv.compile(schema)
-const valid = validate(data)
-
-if (!valid) {
-    log({ valid })
-    // return valid.errors
-} else {
-    log({ valid })
-    // return 'data is valid'
-    // log('data is valid')
-}
-
-log(generateToken());
-log(hash());
-
-// http://espressocode.top/http-headers-content-type/
-// https://nodejsdev.ru/doc/email/
+// console.table(memory())
+// log(generateToken());
+// log(hash());
 
 const CONTENT_TYPES = {
     IMAGE_JPEG: 'image/jpeg',
@@ -118,23 +28,6 @@ const CONTENT_TYPES = {
     FORM_URLENCODED: 'application/x-www-form-urlencoded',
     APPLICATION_JSON: 'application/json;charset=utf-8'
 }
-
-// log(MIME_TYPES.html);
-
-const docPats = [
-    {doctor:  'Новожилов С.Ю.'},
-    {patient: 'Тихонова Галина Федотовна', sys: 143, dia: 89, pulse: 54, glukose: 5.9},
-    {patient: 'Багдасарян Анна Рафаэловна', sys: 133, dia: 79, pulse: 64},
-    {patient: 'Каргальская Ирина Геннадьевна', sys: 123, dia: 69, pulse: 74}
-];
-
-const patients = [
-    {patient: 'Тихонова Галина Федотовна', sys: 143, dia: 89, pulse: 54, glukose: 5.9},
-    {patient: 'Багдасарян Анна Рафаэловна', sys: 133, dia: 79, pulse: 64, glukose: 5.8},
-    {patient: 'Каргальская Ирина Геннадьевна', sys: 123, dia: 69, pulse: 74, glukose: 5.7}
-];
-
-mkd.process(patients);
 
 const __404 = (res, info = null) => {
     res.setHeader('Content-Type', 'text/html; charset=UTF-8');
@@ -171,12 +64,21 @@ class Server {
         const server = http.createServer(async (req, res) => {
             const client = new ClientApp(req, res);
             const route = new Route(client);
+
+            // log({ route })
+
             const hasRoute = route.has();
+
+            // log({ hasRoute })
+
             if (!hasRoute) {
                 __404(res, '404 - ' + client.url);
                 notify('404 - ' + req.url, 'Страница не найдена');
             } else {
                 if (req.method === 'GET') {
+
+                    // log({ client })
+
                     const resolve = await route.resolve(client);
                     if ((typeof resolve.stream) === 'string') {
                         this.response(client.mimeType, resolve.stream, res);

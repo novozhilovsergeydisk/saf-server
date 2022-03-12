@@ -1,14 +1,9 @@
 'use strict';
 
-const { VIEWS_PATH } = require('../../../constants.js');
+const { __VIEWS } = require('../../helpers.js');
+
 const nunjucks = require('nunjucks');
-nunjucks.configure('/Users/sergionov/Projects/transplant.net/node-server/html', { autoescape: true });
-
-const { log } = require('../../helpers.js')
-
-// log({ nunjucks })
-
-// console.log({ VIEWS_PATH })
+nunjucks.configure(__VIEWS(), { autoescape: true });
 
 class Renderer {
     render() {
@@ -61,16 +56,13 @@ class HTMLRenderer extends Renderer {
 }
 
 class NunjuksRenderer extends Renderer {
-    // ex: data = { patients: patients }
     render(data, path) {
-        // console.log({ VIEWS_PATH })
+        // console.log(__VIEWS())
         // console.log({ path })
         // console.log({ data })
         return nunjucks.render(path, data)
     }
 }
-
-// nunjucks.render('test/index.html', { patients: patients })
 
 class Context {
     constructor(renderer) {
@@ -82,8 +74,6 @@ class Context {
     }
 }
 
-// Usage
-
 // const non = new Context(new Renderer());
 const con = new Context(new ConsoleRenderer());
 const web = new Context(new WebRenderer());
@@ -92,27 +82,3 @@ const htm = new Context(new HTMLRenderer());
 const tmpl = new Context(new NunjuksRenderer());
 
 module.exports = { con, web, mkd, htm, tmpl };
-
-// const persons = [
-//     { name: 'Marcus Aurelius', city: 'Rome', born: 121 },
-//     { name: 'Victor Glushkov', city: 'Rostov on Don', born: 1923 },
-//     { name: 'Ibn Arabi', city: 'Murcia', born: 1165 },
-//     { name: 'Mao Zedong', city: 'Shaoshan', born: 1893 },
-//     { name: 'Rene Descartes', city: 'La Haye en Touraine', born: 1596 },
-// ];
-//
-// console.group('Abstract Strategy:');
-// non.process(persons);
-// console.groupEnd();
-//
-// console.group('\nConsoleRenderer:');
-// con.process(persons);
-// console.groupEnd();
-//
-// console.group('\nWebRenderer:');
-// web.process(persons);
-// console.groupEnd();
-//
-// console.group('\nMarkdownRenderer:');
-// mkd.process(persons);
-// console.groupEnd();

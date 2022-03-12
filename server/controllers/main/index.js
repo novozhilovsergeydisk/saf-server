@@ -1,126 +1,52 @@
-const path = require('path');
 const fs = require('fs');
-const dto = require('../../lib/DTO/index.js')
-const { log, statPath, __STATIC, __VIEWS, __APP } = require('../../helpers.js');
+const { log, statPath, __STATIC, __VIEWS } = require('../../helpers.js');
 const nunjucks = require('nunjucks');
-// const conf = require('../../conf.js');
-// const { existsSync } = require('fs');
-
-const { access, constants } = require('fs');
-// const file = path.join(__APP(), '/test.mjs'); // __dirname + '/../test.mjs';
-const file = __APP('/test.mjs');
-
-// Check if the file exists in the current directory.
-access(file, constants.F_OK, (err) => {
-    console.log(`${file} ${err ? 'does not exist' : 'exists'}`);
-});
+const dto = require('../../lib/DTO/index.js');
+const { tmpl } = require('../../lib/Renderer/index.js');
 
 nunjucks.configure(__VIEWS(), { autoescape: true });
 
-// Demo data
-let patients = [
-    {
-        id: 1,
-        fio: 'Иванов Иван'
-    },
-    {
-        id: 2,
-        fio: 'Петров Петр'
-    },
-    {
-        id: 3,
-        fio: 'Сидоров Андрей'
-    }
-];
+const cached = new Map();
+const cachedHTML = new Map();
 
 // Handlers
 class MainControllers {
     async index() {
-        return DTOFactory({ stream: nunjucks.render('main/index.html', { main: [] }) });
+        // if (cached.has(`clinicById(${id})`)) {
+        //     console.time('cached-clinicHTML');
+        //     const clinics = cached.get(`clinicById(${id})`);
+        //     if (cachedHTML.has(`clinicById(${id})`)) {
+        //         render = cachedHTML.get(`clinicById(${id})`)
+        //         // stream = promise(render);
+        //     } else {
+        //         render = nunjucks.render('reports/index.html', { clinics: clinics });
+        //         cachedHTML.set(`clinicById(${id})`, render);
+        //         // stream = promise(render);
+        //     }
+        //     console.timeEnd('cached-clinicHTML');
+        //     // log({ 'cachedHTML.size':cachedHTML.size })
+        //
+        //     // cached.set(`clinicById(${id})`, clinics);
+        // } else {
+        //     console.time('clinicById');
+        //     // log('-')
+        //     // return DTOFactory({ stream: 'clinic 2' });
+        //
+        //     const clinics = await adminService.clinicById(id);
+        //
+        //     if (!cached.has(`clinicById(${id})`)) {
+        //         cached.set(`clinicById(${id})`, clinics);
+        //     }
+        //
+        //     render = nunjucks.render('reports/index.html', { clinics: clinics });
+        //
+        //     console.timeEnd('clinicById');
+        // }
+        
+        const render = tmpl.process({ title: 'Node.js® is a JavaScript runtime built on Chrome\'s V8 JavaScript engine.' }, 'main/index.html');
+        return dto.stream(render);
+
     }
-
-    async refresh() {
-        return DTOFactory({ stream: 'refresh' });
-    }
-
-    async activate() {
-        return DTOFactory({ stream: 'activate' });
-    }
-
-    async register(client) {
-        try {
-            // log({ client });
-            // log(typeof client.body);
-
-            const json = JSON.parse(client.body);
-
-            // log(json.email);
-
-            // const { req, res } = client;
-
-
-            // userService.register();
-
-            return DTOFactory({ stream: nunjucks.render('register/index.html', patients) });
-        } catch (e) {
-
-        }
-    }
-
-    async getAllPatients() {
-        const dto = DTOFactory({ stream: nunjucks.render('index.html', patients) });
-        // const dto = DTOFactory({ stream: { 'VIEWS_PATH': VIEWS_PATH } });
-        // log({ dto });
-        return dto;
-    }
-
-    async getPatient(client) {
-        // log({ 'client': client.par.name });
-        let patient = {};
-        if (client.par.value) {
-            const id = Number(client.par.value); //Number(req.params.id); // blog ID
-            patient = patients.find(patient => patient.id === id);
-        }
-        // log({ patient });
-        const dto = DTOFactory({ stream: JSON.stringify(patient) });
-        return dto;
-    }
-
-    async addPatient() {
-        const id = patients.length + 1; // generate new ID
-        // return { foo: 'bar' };
-        console.log({ id });
-        const newPatient = {
-            id,
-            fio: req.body.fio
-        };
-        // console.log({ newPatient });
-        patients.push(newPatient);
-        return newPatient;
-    }
-
-    async updatePatient(req, reply) {
-        const id = Number(req.params.id)
-        patients = patients.map(patient => {
-            if (patient.id === id) {
-                return {
-                    id,
-                    fio: req.body.fio
-                }
-            }
-        });
-        return {
-            id,
-            fio: req.body.fio
-        };
-    }
-
-    async deletePatient(req, reply) {
-        const id = Number(req.params.id);
-        patients = patients.filter(patient => patient.id !== id);
-        return { msg: `Patient with ID ${id} is deleted` };
-    }
-
 }
 
 class StaticControllers {

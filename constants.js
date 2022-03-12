@@ -1,8 +1,6 @@
 const path = require('path');
 const { views_name } = require('./server/conf.js');
 
-// console.log({ views_path });
-
 const MIME_TYPES = {
     html:    'text/html',
     js:      'application/javascript',
@@ -27,7 +25,8 @@ const MIME_TYPES = {
 
 const appPath = path.resolve(__dirname);
 
-// console.log(appPath);
+// console.log({ appPath });
+// console.log(appPath + views_name);
 
 const CONSTANTS = {
     MIME_TYPES: MIME_TYPES,

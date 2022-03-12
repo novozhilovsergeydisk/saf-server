@@ -1,17 +1,17 @@
 'use strict'
 
-const { log } = require('./server/helpers.js')
+const { log } = require('../server/helpers.js')
 const http = require('http')
 // const router = require('find-my-way')()
-const router = require('./server/lib/Route/index.js')()
-const reportController = require('./server/controllers/reports/index.js')
-const { MIME_TYPES } = require('./constants.js');
-const conf = require('./server/conf.js')
+const router = require('../server/lib/Route')()
+const reportController = require('../server/controllers/reports')
+const { MIME_TYPES } = require('../constants.js');
+const conf = require('../server/conf.js')
 
 
-const {staticController}  = require('./server/controllers/main/index.js')
-const app = require('./server/lib/Client/index.js')
-const { tmpl } = require('./server/lib/Renderer/index.js')
+const {staticController}  = require('../server/controllers/main')
+const app = require('../server/lib/Client')
+const { tmpl } = require('../server/lib/Renderer')
 
 // const nunjucks = require('nunjucks');
 // nunjucks.configure('/Users/sergionov/Projects/transplant.net/node-server/html', { autoescape: true });

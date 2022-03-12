@@ -6,7 +6,7 @@ const mailService = require('./mail-service.js');
 const db = require('../lib/Database/index.js');
 const { DTOFactory } = require('../helpers');
 const tokenService = require('./token-service.js');
-const crypto = require('crypto');
+const crypto = require('test/crypto');
 
 const pg = db.open({
     user: 'postgres',

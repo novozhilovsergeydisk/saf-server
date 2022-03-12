@@ -22,10 +22,7 @@ a {
 .container  {
     margin: 15px;
     display: flex;
-    /*align-items: center;*/
     justify-content: center;
-
-    /*border: 1px solid red;*/
 }
 .color-common{
     color: var(--common);
@@ -64,19 +61,11 @@ a {
     color: #FFFFFF;
     background: #1c7a8A;
     border-color: #1c7a8A;
-
-    /*background: #1594b7;*/
-    /*border-color: #1594b7;*/
 }
 .btn-common:hover {
     color: #FFFFFF;
     background: #166b87;
     border-color: #166b87;
-    /*background: #265a88;*/
-    /*border-color: #265a88;*/
-
-    /*background: #1381a0;*/
-    /*border-color: #1381a0;*/
 }
 .btn-common:active {
     background-color: #106f89;
@@ -120,50 +109,7 @@ input {outline: none;}
 .form-group {
     margin-top: 10px;
 }
-#password-control {
-    cursor: pointer;
-}
 
-.container .col-25 {
-    width: 25%;
-}
-
-.patient-library {
-    margin-top: 2px;
-}
-
-.patient-library .text, .icon {
-    color: var(--common);
-    font-size: 20px;
-}
-
-.patient-library .text {
-    margin-top: 5px !important;
-}
-
-.patient-library .icon {
-    margin-top: 10px;
-}
-
-.password-control {
-    color: var(--color-grey);
-    padding: 3px;
-    margin-top: 3px;
-}
-
-.password-control:hover {
-    color: #666666;
-}
-
-.password-control:active {
-    color: #245269;
-}
-
-#block-content {
-    padding-top: 5px;
-}
-
-#block-content > p {
-    font-size: smaller;
-    padding-top: 3px;
+h1 {
+    padding: 5px;
 }
