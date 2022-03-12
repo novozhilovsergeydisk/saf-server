@@ -3,7 +3,7 @@ node_modules/
 script.sql
 .idea/
 server/conf.js
-test/*
+test/
 package-lock.json
 services/*
 
