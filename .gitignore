@@ -6,5 +6,6 @@ server/conf.js
 test/
 package-lock.json
 server/services/
+server/storage/
 
 

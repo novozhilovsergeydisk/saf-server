@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const {Client} = require('pg');
-const {mail} = require('./services/mail-service.js');
+const {mail} = require('./lib/Mailer/index.js');
 const conf = require('./conf.js');
 const {STATIC_PATH, VIEWS_PATH, APP_PATH, SERVER_PATH, MIME_TYPES} = require('../constants.js');
 const TOKEN_LENGTH = 32;
@@ -83,15 +83,7 @@ const memory = (() => {
 });
 
 const notify = ((error, sub = 'Ошибка сервиса', text = 'Error:') => {
-    console.log(conf.mailer.options)
-    const par = {
-        from: conf.mailer.options.from,
-        to: conf.mailer.options.to,
-        subject: sub,
-        text: text + ' ' + error
-    };
-    mail.setOptions(par);
-    mail.send();
+    mail.send(text, sub);
     __ERROR(error)
 });
 
