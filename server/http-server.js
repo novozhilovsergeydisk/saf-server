@@ -62,10 +62,9 @@ class Server {
 
     createServer(port, host) {
         const server = http.createServer(async (req, res) => {
+            const { method, url, headers } = req;
             const client = new ClientApp(req, res);
             const route = new Route(client);
-
-            // log({ route })
 
             const hasRoute = route.has();
 
@@ -80,6 +79,9 @@ class Server {
                     // log({ client })
 
                     const resolve = await route.resolve(client);
+
+                    client.sendCookie()
+
                     if ((typeof resolve.stream) === 'string') {
                         this.response(client.mimeType, resolve.stream, res);
                     } else {
@@ -96,7 +98,19 @@ class Server {
                             // log({ stream })
                         }
                     }
+
+                    res.on('finish', () => {
+                        if (client.session) {
+                            client.session.save()
+                            log(`${method} ${url} ${headers.cookie}`)
+                            log('')
+                            log(client.session)
+                        }
+                        log('finish')
+                        log('---------------------')
+                    })
                 }
+
                 if (req.method === 'POST') {
 
 

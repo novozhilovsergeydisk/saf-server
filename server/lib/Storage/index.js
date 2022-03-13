@@ -6,25 +6,38 @@ const v8 = require('v8');
 
 const PATH = `${__dirname}/sessions`;
 
+const { log } = require('../../helpers.js')
+
 //console.log({ __dirname });
 
 const safePath = (fn) => (token, ...args) => {
+
+
+
     const callback = args[args.length - 1];
     if (typeof token !== 'string') {
         callback(new Error('Invalid session token'));
         return;
     }
     const fileName = path.join(PATH, token);
+
+    log({ fileName })
+
     if (!fileName.startsWith(PATH)) {
         callback(new Error('Invalid session token'));
         return;
     }
-    fn(fileName, ...args);
+
+    log({ fn })
+
+    fs.writeFile(fileName, ...args);
 };
 
 const readSession = safePath(fs.readFile);
 const writeSession = safePath(fs.writeFile);
 const deleteSession = safePath(fs.unlink);
+
+log({ readSession })
 
 class Storage extends Map {
     get(key, callback) {
@@ -46,10 +59,16 @@ class Storage extends Map {
     }
 
     save(key) {
+        log({ key })
+
         const value = super.get(key);
-        if (value) {
-            const data = v8.serialize(value);
+
+        log({ value })
+
+        if (!value) {
+            const data = v8.serialize('Joker');
             writeSession(key, data, () => {
+                log({ data })
                 console.log(`Session saved: ${key}`);
             });
         }
