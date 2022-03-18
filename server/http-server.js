@@ -36,16 +36,17 @@ const __404 = (res, info = null) => {
 };
 
 const send = (client => {
-    const strinfifyData = JSON.stringify(client.data);
+    const data = JSON.stringify(client.data);
     client.res.setHeader('Content-Type', client.mimeType);
     client.res.statusCode = client.statusCode ? statusCode : 200;
-    client.res.end(strinfifyData);
+    client.res.end(data);
 });
 
 const response = send;
 
 class Server {
     constructor() {
+        this.route = {};
     }
 
     response(mimeType, html, res, status = 200) {
@@ -65,23 +66,16 @@ class Server {
             const { method, url, headers } = req;
             const client = new ClientApp(req, res);
             const route = new Route(client);
-
             const hasRoute = route.has();
-
             // log({ hasRoute })
-
             if (!hasRoute) {
                 __404(res, '404 - ' + client.url);
                 notify('404 - ' + req.url, 'Страница не найдена');
             } else {
                 if (req.method === 'GET') {
-
                     // log({ client })
-
                     const resolve = await route.resolve(client);
-
                     client.sendCookie()
-
                     if ((typeof resolve.stream) === 'string') {
                         this.response(client.mimeType, resolve.stream, res);
                     } else {
@@ -98,7 +92,6 @@ class Server {
                             // log({ stream })
                         }
                     }
-
                     res.on('finish', () => {
                         if (client.session) {
                             client.session.save()
@@ -110,31 +103,39 @@ class Server {
                         log('---------------------')
                     })
                 }
-
                 if (req.method === 'POST') {
-
-
-                    // Access-Control-Allow-Origin
-
-                    const contentType = req.headers['content-type'];
-                    log({ contentType })
                     let body = null;
                     let bodyArr = [];
-                    req.on('data', chunk => {
-                        if (contentType === CONTENT_TYPES.IMAGE_JPEG) {
-                            body += chunk;
-                            // bodyArr.push(chunk);
-                        }
-                        if (contentType === CONTENT_TYPES.FORM_URLENCODED) bodyArr.push(chunk);
-                        if (contentType === CONTENT_TYPES.APPLICATION_JSON) body += chunk;
-                    });
+                    // Access-Control-Allow-Origin
+                    const contentLength = Number(req.headers['content-length']);
+                    const contentType = req.headers['content-type'];
+                    log({ contentLength })
+                    log({ contentType })
+
+                    if (contentLength === 0) {
+                        res.statusCode = 411;
+                        res.end(`Content-Length header must be specified.`);
+                    } else {
+                        req.on('data', chunk => {
+                            if (contentType === CONTENT_TYPES.IMAGE_JPEG) {
+                                body += chunk;
+                                // bodyArr.push(chunk);
+                            }
+                            if (contentType === CONTENT_TYPES.FORM_URLENCODED) bodyArr.push(chunk);
+                            if (contentType === CONTENT_TYPES.APPLICATION_JSON) body += chunk;
+                        });
+                    }
                     req.on('end', async function () {
                         if (contentType === CONTENT_TYPES.FORM_URLENCODED) {
                             try {
                                 body = bufferConcat(bodyArr); // bufferConcat
+                                log({ body })
                                 client.body = body;
-                                const { stream } = await route.resolve(client);
-                                client.data = stream[0];
+                                const data = await route.resolve(client);
+                                client.data = data.stream;
+
+                                log({ 'data': data })
+
                                 response(client);
                                 mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
                             } catch (er) {
@@ -177,22 +178,15 @@ class Server {
                             //         });
                             //     });
                             // }
-
                             // body = bufferConcat(bodyArr); // bufferConcat
-
                             // log({ body })
-
                             log(typeof body)
-
                             fs.writeFile('/Users/sergionov/Projects/transplant.net/node-server/server/new.jpeg', body, function (err) {
                                 log('save')
 
                                 if(err)
                                     console.log('NNOOOOOOOOOOOO');
                             });
-
-
-
                             client.body = body;
                             const { stream } = await route.resolve(client);
                             log({ stream })
@@ -217,8 +211,20 @@ class Server {
         });
     }
 
+    get(route, handler) {
+        this.route['GET'][route] = handler;
+    }
+
     start(port, host) {
         this.createServer(port, host);
+    }
+
+    on(fn, par) {
+        return fn(...par);
+    }
+
+    listen(port, host) {
+        return this.createServer(port, host);
     }
 }
 

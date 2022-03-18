@@ -25,9 +25,27 @@
     '~': 126 - ~
 */
 
-const server = require('./server/http-server');
+const { log } = require('./server/helpers.js');
+const saf = require('./server/http-server');
 
 const HOST_NAME = '127.0.0.1';
-const PORT = 3000;
+const PORT = 3001;
 
-server.start(PORT, HOST_NAME);
+saf.listen(PORT, HOST_NAME);
+
+// CommonJs
+// const saf = require('saf')({
+//     logger: true
+// })
+
+// const Route = require('./routes.js');
+
+// saf.register(require('./our-first-route'))
+
+// saf.listen(3001, function (err, address) {
+//     if (err) {
+//         console.log({ error })
+//         process.exit(1)
+//     }
+//     console.log(`Server is now listening on ${address}`)
+// })

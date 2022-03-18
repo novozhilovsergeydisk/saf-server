@@ -57,7 +57,7 @@ class HTMLRenderer extends Renderer {
 
 class NunjuksRenderer extends Renderer {
     render(data, path) {
-        // console.log(__VIEWS())
+        // console.log({ '__VIEWS()': __VIEWS() })
         // console.log({ path })
         // console.log({ data })
         return nunjucks.render(path, data)

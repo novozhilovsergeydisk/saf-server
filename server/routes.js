@@ -58,9 +58,7 @@ class Route {
     }
 
     async resolve() {
-
         // log('resolve')
-
         let par;
         const http_method = this.client.http_method;
         let route = this.routing[http_method][this.client.url];
@@ -70,9 +68,6 @@ class Route {
                 par = null;
                 const rx = this.matching[i];
                 const url = this.client.url;
-
-
-
                 par = url.match(rx[0]);
                 if (par) {
                     const parArr = url.split('/');
