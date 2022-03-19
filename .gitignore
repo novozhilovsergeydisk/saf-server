@@ -7,5 +7,6 @@ test/
 package-lock.json
 server/services/
 server/storage/
+server/lib/Storage/sessions/
 
 
