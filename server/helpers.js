@@ -6,13 +6,23 @@ const crypto = require('crypto');
 const {Client} = require('pg');
 const {mail} = require('./services/mail-service.js');
 const conf = require('./conf.js');
-const {STATIC_PATH, VIEWS_PATH, APP_PATH, SERVER_PATH} = require('../constants.js');
+const {STATIC_PATH, VIEWS_PATH, APP_PATH, SERVER_PATH, ALLOWED_METHODS} = require('../constants.js');
 const TOKEN_LENGTH = 32;
 const ALPHA_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const ALPHA_LOWER = 'abcdefghijklmnopqrstuvwxyz';
 const ALPHA = ALPHA_UPPER + ALPHA_LOWER;
 const DIGIT = '0123456789';
 const ALPHA_DIGIT = ALPHA + DIGIT;
+
+// console.log({ 'ALLOWED_METHODS': ALLOWED_METHODS['GET'] })
+
+const httpMethods = () => {
+    return ALLOWED_METHODS;
+};
+
+const isAllowed = (method) => {
+    return ALLOWED_METHODS.indexOf(method);
+};
 
 const __STATIC = (url) => {
     return (url) ? path.join(STATIC_PATH, url) : STATIC_PATH;
@@ -358,6 +368,8 @@ module.exports = {
     sliceLastSymbol,
     db,
     statPath,
+    isAllowed,
+    httpMethods,
     __STATIC,
     __VIEWS,
     __APP,

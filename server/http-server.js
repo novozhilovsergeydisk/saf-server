@@ -2,6 +2,7 @@
 
 const fs = require('fs')
 const http = require('http');
+
 const formidable = require('formidable');
 // const util = require('util');
 // const router = require('find-my-way')();
@@ -9,11 +10,19 @@ const formidable = require('formidable');
 
 const Route = require('./routes.js');
 const ClientApp = require('./lib/Client/index.js');
-const {bufferConcat, replace, memory, notify, log, generateToken, hash} = require('./helpers.js');
+const {bufferConcat, replace, memory, notify, log, generateToken, hash, httpMethods} = require('./helpers.js');
 const conf = require('./conf.js');
 const {mkd} = require('./lib/Renderer/index.js');
 const {mailAdmin} = require('./lib/Mailer/index.js');
-// const zzz = require('../test.mjs')
+const { logger } = require('./lib/Logger/index.js');
+
+const { randomFillSync } = require('crypto');
+// const os = require('os');
+const path = require('path');
+const busboy = require('busboy');
+const { copyFile } = require('fs/promises');
+
+log({ logger })
 
 // log({ os })
 
@@ -91,7 +100,6 @@ const data = {
 }
 
 // const res = validate(schema, data)
-
 // log({ res })
 
 const validate = ajv.compile(schema)
@@ -114,7 +122,8 @@ log(hash());
 
 const CONTENT_TYPES = {
     IMAGE_JPEG: 'image/jpeg',
-    MILTIPART_FORMDATA: 'multipart/form-data',
+    IMAGE_PNG: 'image/png',
+    MULTIPART_FORMDATA: 'multipart/form-data',
     FORM_URLENCODED: 'application/x-www-form-urlencoded',
     APPLICATION_JSON: 'application/json;charset=utf-8'
 }
@@ -164,6 +173,7 @@ class Server {
     pipe(mimeType, stream, res, status = 200) {
         res.setHeader('Content-Type', mimeType);
         res.statusCode = status;
+
         stream.pipe(res);
     }
 
@@ -171,122 +181,155 @@ class Server {
         const server = http.createServer(async (req, res) => {
             const client = new ClientApp(req, res);
             const route = new Route(client);
-            const hasRoute = route.has();
-            if (!hasRoute) {
-                __404(res, '404 - ' + client.url);
-                notify('404 - ' + req.url, 'Страница не найдена');
+
+            const validIndex = httpMethods().indexOf(req.method);
+
+            // log({ validIndex })
+            // log(typeof validIndex)
+
+            if (validIndex < 0) {
+                res.writeHead(405);
+                res.end('Method not allowed');
             } else {
-                if (req.method === 'GET') {
-                    const resolve = await route.resolve(client);
-                    if ((typeof resolve.stream) === 'string') {
-                        this.response(client.mimeType, resolve.stream, res);
-                    } else {
-                        const stream = await resolve.stream;
-                        if (stream) {
-                            try {
-                                this.pipe(client.mimeType, stream, res);
-                            } catch(e) {
-                                log('error pipe')
-                            }
+                const hasRoute = route.has();
+                if (!hasRoute) {
+                    __404(res, '404 - ' + client.url);
+                    notify('404 - ' + req.url, 'Страница не найдена');
+                } else {
+                    if (req.method === 'GET') {
+                        const resolve = await route.resolve(client);
+                        if ((typeof resolve.stream) === 'string') {
+                            this.response(client.mimeType, resolve.stream, res);
                         } else {
-                            __404(res, '404 - ' + client.url);
-                            notify('404 - ' + req.url, 'Файл не найден');
-                            // log({ stream })
-                        }
-                    }
-                }
-                if (req.method === 'POST') {
-
-
-                    // Access-Control-Allow-Origin
-
-                    const contentType = req.headers['content-type'];
-                    log({ contentType })
-                    let body = null;
-                    let bodyArr = [];
-                    req.on('data', chunk => {
-                        if (contentType === CONTENT_TYPES.IMAGE_JPEG) {
-                            body += chunk;
-                            // bodyArr.push(chunk);
-                        }
-                        if (contentType === CONTENT_TYPES.FORM_URLENCODED) bodyArr.push(chunk);
-                        if (contentType === CONTENT_TYPES.APPLICATION_JSON) body += chunk;
-                    });
-                    req.on('end', async function () {
-                        if (contentType === CONTENT_TYPES.FORM_URLENCODED) {
-                            try {
-                                body = bufferConcat(bodyArr); // bufferConcat
-                                client.body = body;
-                                const { stream } = await route.resolve(client);
-                                client.data = stream[0];
-                                response(client);
-                                mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
-                            } catch (er) {
-                                // bad json
-                                res.statusCode = 400;
-                                res.end(`error: ${er.message}`);
+                            const stream = await resolve.stream;
+                            if (stream) {
+                                try {
+                                    this.pipe(client.mimeType, stream, res);
+                                } catch(e) {
+                                    log('error pipe')
+                                }
+                            } else {
+                                __404(res, '404 - ' + client.url);
+                                notify('404 - ' + req.url, 'Файл не найден');
                             }
                         }
-                        if (contentType === CONTENT_TYPES.APPLICATION_JSON) {
-                            try {
-                                body = replace('null', '', body);
-                                // log({ body })
-                                client.body = body;
-                                const { stream } = await route.resolve(client);
-                                client.data = stream[0];
-                                response(client);
-                                mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
-                            } catch (er) {
-                                // bad json
-                                res.statusCode = 400;
-                                res.end(`error: ${er.message}`);
-                            }
-                        }
-                        if (contentType === CONTENT_TYPES.IMAGE_JPEG) {
-                            // if (req.url == '/upload') {
-                            //     const form = new formidable.IncomingForm();
-                            //
-                            //     form.parse(req, function (err, fields, files) {
-                            //         const oldpath = files.filetoupload.filepath;
-                            //         const newpath = './storage/upload/' + files.filetoupload.originalFilename;
-                            //
-                            //         console.log({ oldpath })
-                            //
-                            //         console.log({ newpath })
-                            //
-                            //         fs.rename(oldpath, newpath, function (err) {
-                            //             if (err) throw err;
-                            //             res.write('File uploaded and moved!');
-                            //             res.end();
-                            //         });
-                            //     });
-                            // }
-
-                            // body = bufferConcat(bodyArr); // bufferConcat
-
-                            // log({ body })
-
-                            log(typeof body)
-
-                            fs.writeFile('/Users/sergionov/Projects/transplant.net/node-server/server/new.jpeg', body, function (err) {
-                                log('save')
-
-                                if(err)
-                                    console.log('NNOOOOOOOOOOOO');
+                        logger.run(req)
+                    } else if (req.method === 'PUT') {
+                        try {
+                            const bb = busboy({ headers: req.headers });
+                            bb.on('file', (name, file, info) => {
+                                // console.log({ info })
+                                const filename = info.filename;
+                                console.log({ filename })
+                                res.setHeader('File-Upload', filename);
+                                try {
+                                    const saveTo = path.join(__dirname, `upload/${filename}`);
+                                    // const saveTo = path.join(os.tmpdir(), `saf-server/${random()}`);
+                                    // console.log({ file })
+                                    // file.pipe(process.stdout)
+                                    // console.log({ saveTo })
+                                    // console.log(os.tmpdir())
+                                    // file.pipe(fs.createWriteStream(saveTo));
+                                } catch(err) {
+                                    console.log({ err })
+                                }
                             });
-
-
-
-                            client.body = body;
-                            const { stream } = await route.resolve(client);
-                            log({ stream })
-                            log({ bodyArr })
-                            // log({ body })
+                            bb.on('field', (name, val, info) => {
+                                // console.log({ info })
+                                // console.log(`Field [${name}]: value: %j`, val);
+                                // params.set(name, val);
+                                res.setHeader(`Field-${name}`, `${val}`);
+                            });
+                            bb.on('close', () => {
+                                res.setHeader('Info-Status', true);
+                                res.writeHead(200, { 'Connection': 'close' });
+                                res.end(`Файл успешно загружен на сервер` );
+                                // return `That's all folks!!!`;
+                                // res.writeHead(200, { 'Connection': 'close' });
+                                // res.end(`That's all folks!!!`);
+                            });
+                            req.pipe(bb);
+                            return;
+                        } catch(err) {
+                            console.log({ err })
+                            res.writeHead(500, { 'Connection': 'close' });
+                            res.end(`${err}`);
+                            // return {foo:'bar'}
                         }
-                    });
-                    req.on('information', (info) => {
-                        console.log(`Got information prior to main response: ${info.statusCode}`);
-                    });
+                    } else if (req.method === 'POST') {
+                        const contentType = req.headers['content-type'];
+                        // log({ contentType })
+                        let body = null;
+                        let bodyArr = [];
+                        req.on('data', chunk => {
+                            // log({ chunk })
+                            bodyArr.push(chunk)
+                        });
+                        req.on('end', async function () {
+                            if (contentType === CONTENT_TYPES.FORM_URLENCODED) {
+                                try {
+                                    body = bufferConcat(bodyArr); // bufferConcat
+                                    client.body = body;
+                                    const { stream } = await route.resolve(client);
+                                    client.data = stream[0];
+                                    response(client);
+                                    mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
+                                } catch (er) {
+                                    // bad json
+                                    res.statusCode = 400;
+                                    res.end(`error: ${er.message}`);
+                                }
+                            }
+                            if (contentType === CONTENT_TYPES.MULTIPART_FORMDATA) {
+                                try {
+                                    // log('vbnbnbnfghrt456gfgfgf')
+
+                                    body = bufferConcat(bodyArr); // bufferConcat
+                                    log({ body })
+                                    client.body = body;
+                                    const { stream } = await route.resolve(client);
+                                    client.data = stream[0];
+
+                                    body.forEach(item => {
+                                        log({ item })
+                                    })
+
+                                    log(typeof body)
+
+                                    // fs.writeFile('/Users/sergionov/Projects/transplant.net/node-server/server/xxx.png', body, function (err) {
+                                    //     log('save png')
+                                    //
+                                    //     if(err)
+                                    //         console.log('NNOOOOOOOOOOOO');
+                                    // });
+                                    // response(client);
+                                    // mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
+                                } catch (er) {
+                                    // bad json
+                                    res.statusCode = 400;
+                                    res.end(`error: ${er.message}`);
+                                }
+                            }
+                            if (contentType === CONTENT_TYPES.APPLICATION_JSON) {
+                                try {
+                                    body = replace('null', '', body);
+                                    // log({ body })
+                                    client.body = body;
+                                    const { stream } = await route.resolve(client);
+                                    client.data = stream[0];
+                                    response(client);
+                                    mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
+                                } catch (er) {
+                                    // bad json
+                                    res.statusCode = 400;
+                                    res.end(`error: ${er.message}`);
+                                }
+                            }
+                        });
+                        req.on('information', (info) => {
+                            console.log(`Got information prior to main response: ${info.statusCode}`);
+                        });
+                    }
                 }
             }
         });

@@ -11,5 +11,6 @@ package-lock.json
 html/
 controllers/
 services/
+server/storage/upload/
 
 

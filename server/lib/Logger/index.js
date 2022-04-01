@@ -42,14 +42,17 @@ class Logger {
 
         // logInfo += '' + http_method + ' ' + '' + url + ' - ' + msg + ' at ' + new Date().toISOString() + ' - ' + timestamp.toString() + endLine;
 
-        console.log( logInfo );
+        // console.log( logInfo );
 
-        console.log({ 'logInfo': logInfo });
+        console.log(logInfo);
+
+        // console.log({ 'logInfo': logInfo });
     }
 
     run(req) {
         asyncLocalStorage.run(this.idSeq++, () => {
-            this.#logWithId('start', req);
+            this.#logWithId(' start', req);
+            // cb()
             // console.log(typeof res);
             // Imagine any chain of async operations here
             setImmediate(() => {

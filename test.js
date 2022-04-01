@@ -1,5 +1,14 @@
 const http = require('http');
 
+const request = require('request');
+request.post({
+  headers: {'content-type' : 'multipart/form-data'},
+  url:     'http://localhost:3000',
+  body:    "mes=heyjude"
+}, function(error, response, body){
+  console.log({ body });
+});
+
 const server = http.createServer((req, res) => {
   // `req` is an http.IncomingMessage, which is a readable stream.
   // `res` is an http.ServerResponse, which is a writable stream.

@@ -25,6 +25,52 @@ const MIME_TYPES = {
     mp4:     'video/mp4'
 };
 
+// var idx = array.indexOf(element);
+
+const ALLOWED_METHODS = ['GET', 'POST', 'PUT'];
+
+// let test = ALLOWED_METHODS.indexOf('PUT');
+// console.log({test })
+// test = ALLOWED_METHODS.indexOf('PATCH');
+// console.log({test })
+
+// const HTTPMethod = {
+//     'ACL': false,
+//     'BIND': false,
+//     'CHECKOUT': false,
+//     'CONNECT': false,
+//     'COPY': false,
+//     'DELETE': false,
+//     'GET': false,
+//     'HEAD': false,
+//     'LINK': false,
+//     'LOCK': false,
+//     'M-SEARCH': false,
+//     'MERGE': false,
+//     'MKACTIVITY': false,
+//     'MKCALENDAR': false,
+//     'MKCOL': false,
+//     'MOVE': false,
+//     'NOTIFY': false,
+//     'OPTIONS': false,
+//     'PATCH': false,
+//     'POST': false,
+//     'PROPFIND': false,
+//     'PROPPATCH': false,
+//     'PURGE': false,
+//     'PUT': false,
+//     'REBIND': false,
+//     'REPORT': false,
+//     'SEARCH': false,
+//     'SOURCE': false,
+//     'SUBSCRIBE': false,
+//     'TRACE': false,
+//     'UNBIND': false,
+//     'UNLINK': false,
+//     'UNLOCK': false,
+//     'UNSUBSCRIBE' : false
+// };
+
 const appPath = path.resolve(__dirname);
 
 // console.log(appPath);
@@ -36,7 +82,8 @@ const CONSTANTS = {
     RESOURCES_PATH: appPath + '/src',
     VIEWS_PATH: appPath + views_name,
     CONTROLLERS_PATH: appPath + '/controllers/',
-    STATIC_PATH: path.join(appPath, './static')
+    STATIC_PATH: path.join(appPath, './static'),
+    ALLOWED_METHODS: ALLOWED_METHODS
 };
 
 module.exports = CONSTANTS;

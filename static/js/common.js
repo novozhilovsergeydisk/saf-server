@@ -32,6 +32,28 @@ const log = (data => {
     console.log(data)
 })
 
+async function sendFile(file) {
+    const formdata = new FormData();
+    formdata.append('image', file, 'image.png');
+
+    const resp = await fetch('/upload', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                Accept: 'image/png',
+                'Content-type': 'multipart/form-data'
+            },
+            body: formdata
+        }),
+        respData = await resp.json();
+
+    if (resp.status !== 200) {
+        throw new Error(respData.message);
+    }
+
+    return respData;
+}
+
 function upload(file) {
 
     log({ file })
@@ -59,41 +81,41 @@ function upload(file) {
 const ready = (() => {
     log('ready');
 
-    // const btnUpload = document.getElementById('btn_upload')
-    //
-    // btnUpload.addEventListener('click', (event) => {
-    //     const data = new FormData()
-    //     const uploadInput = document.getElementById('upload')
-    //
-    //     log(uploadInput.files)
-    //
-    //     data.append('file', uploadInput.files[0])
-    //
-    //     let upload = fetch('/upload', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json;charset=utf-8'
-    //         },
-    //         body: JSON.stringify(uploadInput)
-    //     }).then(
-    //         response => response.json() // if the response is a JSON object
-    //     ).then(
-    //         success => console.log(success) // Handle the success response object
-    //     ).catch(
-    //         error => console.log(error) // Handle the error response object
-    //     );
-    //
-    //     // response.then(data => {
-    //     //     log('xxxxxxxxxxxxxxxxxxxx')
-    //     //     log({ data })
-    //     // }).catch(err => {
-    //     //     log({ err })
-    //     // })
-    //
-    //     log({ upload })
-    //
-    //     // log({ btnUpload })
-    // })
+    const btnUpload = document.getElementById('btn_uploadfile')
+
+    btnUpload.addEventListener('click', (event) => {
+        // const data = new FormData()
+        // const uploadInput = document.getElementById('upload')
+        //
+        // log(uploadInput.files)
+        //
+        // data.append('file', uploadInput.files[0])
+        //
+        // let upload = fetch('/upload', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json;charset=utf-8'
+        //     },
+        //     body: JSON.stringify(uploadInput)
+        // }).then(
+        //     response => response.json() // if the response is a JSON object
+        // ).then(
+        //     success => console.log(success) // Handle the success response object
+        // ).catch(
+        //     error => console.log(error) // Handle the error response object
+        // );
+
+        // response.then(data => {
+        //     log('xxxxxxxxxxxxxxxxxxxx')
+        //     log({ data })
+        // }).catch(err => {
+        //     log({ err })
+        // })
+
+        log({ upload })
+
+        // log({ btnUpload })
+    })
 
     const toggleType =(el => {
         if (el.getAttribute('type') === 'password') {

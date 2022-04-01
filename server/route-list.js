@@ -3,6 +3,7 @@
 const {patientController} = require('./controllers/patients.js')
 const cabinetControllers  = require('./controllers/cabinet.js')
 const reportsControllers  = require('./controllers/reports/index.js')
+const {uploadController}  = require('./controllers/upload/index.js')
 const auth                = require('./controllers/auth/index.js')
 const {staticController}  = require('./controllers/main/index.js')
 const getContent          = require('./lib/File/index.js')
@@ -28,7 +29,9 @@ const routing = {
         '/reports/clinic/*': reportsControllers.clinicById,
         '/user/add':         reportsControllers.addUser,
         '/sup/cab/list':     reportsControllers.supCabList,
-        '/stat':             reportsControllers.stat
+        '/stat':             reportsControllers.stat,
+        '/upload':           uploadController.index,
+        '/robots/*':         staticController.staticContent
     },
     'POST': {
         '/user/add':         reportsControllers.addUser,
@@ -36,7 +39,10 @@ const routing = {
         '/activate/link/*':  auth.register,
         '/login':            auth.login,
         '/logout':           auth.logout,
-        '/upload':           reportsControllers.upload
+        '/upload':           uploadController.upload
+    },
+    'PUT': {
+        '/upload': uploadController.upload,
     }
 };
 
