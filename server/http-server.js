@@ -1,19 +1,18 @@
 'use strict'
 
+// SAF - A simple and flexible server platform for building web applications and services
 const fs = require('fs')
 const http = require('http');
 
-const formidable = require('formidable');
-// const util = require('util');
+// const formidable = require('formidable');
 // const router = require('find-my-way')();
-// const path = require('path');
-
 const Route = require('./routes.js');
 const ClientApp = require('./lib/Client/index.js');
 const {bufferConcat, replace, memory, notify, log, generateToken, hash, httpMethods} = require('./helpers.js');
 const conf = require('./conf.js');
-const {mkd} = require('./lib/Renderer/index.js');
+// const {mkd} = require('./lib/Renderer/index.js');
 const {mailAdmin} = require('./lib/Mailer/index.js');
+
 const { logger } = require('./lib/Logger/index.js');
 
 const { randomFillSync } = require('crypto');
@@ -128,23 +127,6 @@ const CONTENT_TYPES = {
     APPLICATION_JSON: 'application/json;charset=utf-8'
 }
 
-// log(MIME_TYPES.html);
-
-const docPats = [
-    {doctor:  'Новожилов С.Ю.'},
-    {patient: 'Тихонова Галина Федотовна', sys: 143, dia: 89, pulse: 54, glukose: 5.9},
-    {patient: 'Багдасарян Анна Рафаэловна', sys: 133, dia: 79, pulse: 64},
-    {patient: 'Каргальская Ирина Геннадьевна', sys: 123, dia: 69, pulse: 74}
-];
-
-const patients = [
-    {patient: 'Тихонова Галина Федотовна', sys: 143, dia: 89, pulse: 54, glukose: 5.9},
-    {patient: 'Багдасарян Анна Рафаэловна', sys: 133, dia: 79, pulse: 64, glukose: 5.8},
-    {patient: 'Каргальская Ирина Геннадьевна', sys: 123, dia: 69, pulse: 74, glukose: 5.7}
-];
-
-mkd.process(patients);
-
 const __404 = (res, info = null) => {
     res.setHeader('Content-Type', 'text/html; charset=UTF-8');
     res.statusCode = 404;
@@ -152,16 +134,17 @@ const __404 = (res, info = null) => {
 };
 
 const send = (client => {
-    const strinfifyData = JSON.stringify(client.data);
+    const data = JSON.stringify(client.data);
     client.res.setHeader('Content-Type', client.mimeType);
     client.res.statusCode = client.statusCode ? statusCode : 200;
-    client.res.end(strinfifyData);
+    client.res.end(data);
 });
 
 const response = send;
 
 class Server {
     constructor() {
+        this.route = {};
     }
 
     response(mimeType, html, res, status = 200) {
@@ -179,9 +162,9 @@ class Server {
 
     createServer(port, host) {
         const server = http.createServer(async (req, res) => {
+            const { method, url, headers } = req;
             const client = new ClientApp(req, res);
             const route = new Route(client);
-
             const validIndex = httpMethods().indexOf(req.method);
 
             // log({ validIndex })
@@ -344,8 +327,20 @@ class Server {
         });
     }
 
+    get(route, handler) {
+        this.route['GET'][route] = handler;
+    }
+
     start(port, host) {
         this.createServer(port, host);
+    }
+
+    on(fn, par) {
+        return fn(...par);
+    }
+
+    listen(port, host) {
+        return this.createServer(port, host);
     }
 }
 

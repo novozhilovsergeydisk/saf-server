@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
-const {patientController} = require('./controllers/patients.js')
-const cabinetControllers  = require('./controllers/cabinet.js')
-const reportsControllers  = require('./controllers/reports/index.js')
+// const {patientController} = require('./controllers/patients.js')
+// const cabinetControllers  = require('./controllers/cabinet.js')
+// const reportsControllers  = require('./controllers/reports/index.js')
 const {uploadController}  = require('./controllers/upload/index.js')
 const auth                = require('./controllers/auth/index.js')
 const {staticController}  = require('./controllers/main/index.js')
@@ -10,15 +10,8 @@ const getContent          = require('./lib/File/index.js')
 
 const routing = {
     'GET': {
-        '/':                 patientController.main,
-        '/index':            patientController.getAllPatients,
-        '/index/*':          patientController.getAllPatients,
-        '/test':             patientController.test,
-        '/patient/id/*':     patientController.getPatient,
-        '/patient/test':     patientController.test,
         '/api/activate/*':   auth.activate,
         '/api/refresh':      auth.refresh,
-        '/api/cabinet/id/*': cabinetControllers.cabinet,
         '/css/*':            staticController.staticContent,
         '/js/*':             staticController.staticContent,
         '/img/*':            getContent,
@@ -47,3 +40,4 @@ const routing = {
 };
 
 module.exports = routing;
+

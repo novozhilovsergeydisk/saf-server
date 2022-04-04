@@ -15,7 +15,7 @@ class File {
         if(stats && stats.isFile()) {
             data = fs.createReadStream(__STATIC(url))
         }
-        return dto.stream(data) //DTOFactory({ stream: stream });
+        return dto.stream(data)
     }
 
     serve(client) {
@@ -34,7 +34,6 @@ class File {
                     result.stream = null;
                     return result;
                 }
-                // log({ 'serve()': result });
                 return result;
             })
             .catch(err => {
@@ -43,8 +42,6 @@ class File {
     }
 
     stream(client) {
-        const { file } = client;
-        // log({ ' stream(file)': file });
 
         const promiseStream = new Promise((resolve, reject) => {
             fs.stat(file, (error) => {
@@ -54,13 +51,10 @@ class File {
                 }
                 else {
                     const stream = fs.createReadStream(file);
-                    // log(`Served resource file and resolve promise: ${name}`);
-                    // log(`\n-------------------------------\n`);
                     resolve(stream);
                 }
             });
         });
-
         return promiseStream;
     }
 
@@ -74,19 +68,9 @@ class File {
                 }
             });
         });
-
         return prom.then(stats => {
             return new Promise(resolve => {
                 stats._file = file;
-
-                // const dto = DTOFactory({
-                //     status: 'success',
-                //     data: { 'file': file },
-                // });
-
-                // log({ dto });
-                // resolve(dto);
-
                 resolve({ state: 'read file', info: 'file ' + file, status: 'success', error: '' });
             });
         }).catch(err => {
@@ -98,4 +82,5 @@ class File {
 }
 
 const file = new File()
-module.exports = file.getContent
+const getContent = file.getContent
+module.exports = { getContent }
