@@ -1,0 +1,176 @@
+{% extends "templates/base.html" %}
+{% set title = "Отчеты transplant.net" %}
+{% set h1 = "transplant.net" %}
+
+{% block css %}
+{{ super() }}
+<style>
+    .flex {
+        display: flex;
+    }
+
+    .box-item {
+        padding: 7px;
+
+        /*display: inline-block;*/
+        /*flex: 1 1 100px;*/
+
+        /*background: tomato;*/
+        /*max-width: 200px;*/
+        /*height: 150px;*/
+
+        /*margin: 10px;*/
+        /*line-height: 150px;*/
+        /*font-weight: bold;*/
+        /*font-size: 3rem;*/
+        /*text-align: center;*/
+    }
+
+    .content {
+
+    }
+
+    .block {
+        padding: 17px;
+        /*background: #e9e9e9;*/
+    }
+
+
+    .block p {
+        font-size: 14px;
+        padding: 3px;
+        color: #212529;
+    }
+
+    .box {
+        display: flex;
+        flex-wrap: wrap;
+        /*justify-content: space-around;*/
+        padding: 0;
+        margin: 0;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .border-top {
+        border-top: 1px solid #c2c2c2;
+    }
+
+    .smaller {
+        font-size: smaller;
+    }
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+<div id="content" class="content">
+    <h2></h2>
+    <div class="block box">
+        <div class="box-item w20 bold">Медорганизация</div>
+        <div class="box-item w10 bold">ID</div>
+        <div class="box-item w30 bold">Администраторы</div>
+        <div class="box-item w30 bold">Врачи</div>
+        <div class="box-item w10 bold">Действия</div>
+    </div>
+    <div class="block box border-top">
+        {% for clinic in clinics %}
+        <div class="box-item w20"> {{ clinic.name }} <br> <span class="smaller">врачей - {{ clinic.doc_cnt }}, пациентов - {{ clinic.pat_cnt }}</span></div>
+
+        <div class="box-item w10">
+            {{ clinic.id }}</p>
+        </div>
+
+        <div class="box-item w30">
+            {% if clinic.admins %}
+            {% for admin in clinic.admins %}
+            <p>{{ admin.name }} <br> {{ admin.email }}</p>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="box-item w30">
+            {% if clinic.docs %}
+            {% for doc in clinic.docs %}
+            <p>({{ doc.pat_cnt }}) {{ doc.name }} <br> {{ doc.email }}</p>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="box-item w10">
+            <a href="#">удалить</a>
+        </div>
+
+        {% else %}
+        <p>Список клиник пуст!</p>
+        {% endfor %}
+
+    </div>
+
+    <h3>Пациенты</h3>
+    <div class="block">
+        {% for patient in patients %}
+        <p>{{ patient.title }}</p>
+        {% else %}
+        <p>Список пациентов пуст!</p>
+        {% endfor %}
+    </div>
+
+    <div class="block">
+        <form class="">
+            <input id="csrf_token" type="hidden" name="csrf_token" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+
+            <p id="error" class="error display-none"></p>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control display-block" id="email" placeholder="ваш email" name="email">
+            </div>
+
+            <div class="form-group">
+                <!--<label for="fileupload"></label>-->
+                <!--<form action="/upload" method="post" enctype="multipart/form-data" id="fileupload">-->
+                    <!--<input id="upload" type="file" data-upload="upload" name="filetoupload">-->
+                    <!--<input id="btn_upload" type="button" value="Загрузить">-->
+                <!--</form>-->
+
+                <input type="file" onchange="upload(this.files[0])">
+            </div>
+
+            <div class="form-group">
+                <label for="pass">Пароль:</label>
+                <div class="flex direction-row">
+                    <input type="password" class="form-control" id="pass" placeholder="ваш пароль" name="password" data-toggle="password">
+
+                    <div class="password-control">
+                        <span id="password-control" data-over="password_control" data-click="password_control" class="material-icons">visibility</span>
+                    </div>
+
+                    <!--<div id="password-show" class="password-control mt-5 display-block">-->
+                    <!--<a class="color-common" href="#">Показать пароль</a>-->
+                    <!--</div>-->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" name="save" id="save" checked="checked" class="display-inline checkbox"> <span>Запомнить меня</span>
+            </div>
+
+            <!--<button type="submit" class="btn btn-primary" style="width:160px" onclick="login();return false">вход</button>-->
+
+            <div class="form-group">
+                <a href="#" id="sign" data-href="/doc/quest/156" class="btn btn-common display-block">Войти</a>
+
+                <p class="mt-6">
+                    <a class="color-common decoration-block-hover" href="/usr/pass/form">Не помню пароль</a>
+                </p>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+{% endblock %}

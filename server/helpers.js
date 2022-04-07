@@ -112,7 +112,6 @@ const reject = err => {
         reject(err);
     });
 };
-
 const _promise = (data, error = null) => {
     return new Promise((resolve) => {
         resolve(data);

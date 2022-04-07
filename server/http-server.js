@@ -8,7 +8,7 @@ const http = require('http');
 // const router = require('find-my-way')();
 const Route = require('./routes.js');
 const ClientApp = require('./lib/Client/index.js');
-const {bufferConcat, replace, memory, notify, log, generateToken, hash, httpMethods} = require('./helpers.js');
+const {bufferConcat, replace, memory, notify, log, generateToken, hash, httpMethods, __APP} = require('./helpers.js');
 const conf = require('./conf.js');
 // const {mkd} = require('./lib/Renderer/index.js');
 const {mailAdmin} = require('./lib/Mailer/index.js');
@@ -162,7 +162,7 @@ class Server {
 
     createServer(port, host) {
         const server = http.createServer(async (req, res) => {
-            const { method, url, headers } = req;
+            // const { method, url, headers } = req;
             const client = new ClientApp(req, res);
             const route = new Route(client);
             const validIndex = httpMethods().indexOf(req.method);
@@ -175,14 +175,21 @@ class Server {
                 res.end('Method not allowed');
             } else {
                 const hasRoute = route.has();
+
+                log(client.url)
+                log({ hasRoute })
+
                 if (!hasRoute) {
                     __404(res, '404 - ' + client.url);
                     notify('404 - ' + req.url, 'Страница не найдена');
                 } else {
                     if (req.method === 'GET') {
                         const resolve = await route.resolve(client);
+                        // log({ resolve })
                         if ((typeof resolve.stream) === 'string') {
                             this.response(client.mimeType, resolve.stream, res);
+                        } else if ((typeof resolve) === 'string') {
+                            this.response(client.mimeType, resolve, res);
                         } else {
                             const stream = await resolve.stream;
                             if (stream) {
@@ -196,49 +203,52 @@ class Server {
                                 notify('404 - ' + req.url, 'Файл не найден');
                             }
                         }
-                        logger.run(req)
+                        // logger.run(req)
                     } else if (req.method === 'PUT') {
-                        try {
-                            const bb = busboy({ headers: req.headers });
-                            bb.on('file', (name, file, info) => {
-                                // console.log({ info })
-                                const filename = info.filename;
-                                console.log({ filename })
-                                res.setHeader('File-Upload', filename);
-                                try {
-                                    const saveTo = path.join(__dirname, `upload/${filename}`);
-                                    // const saveTo = path.join(os.tmpdir(), `saf-server/${random()}`);
-                                    // console.log({ file })
-                                    // file.pipe(process.stdout)
-                                    // console.log({ saveTo })
-                                    // console.log(os.tmpdir())
-                                    // file.pipe(fs.createWriteStream(saveTo));
-                                } catch(err) {
-                                    console.log({ err })
-                                }
-                            });
-                            bb.on('field', (name, val, info) => {
-                                // console.log({ info })
-                                // console.log(`Field [${name}]: value: %j`, val);
-                                // params.set(name, val);
-                                res.setHeader(`Field-${name}`, `${val}`);
-                            });
-                            bb.on('close', () => {
-                                res.setHeader('Info-Status', true);
-                                res.writeHead(200, { 'Connection': 'close' });
-                                res.end(`Файл успешно загружен на сервер` );
-                                // return `That's all folks!!!`;
-                                // res.writeHead(200, { 'Connection': 'close' });
-                                // res.end(`That's all folks!!!`);
-                            });
-                            req.pipe(bb);
-                            return;
-                        } catch(err) {
-                            console.log({ err })
-                            res.writeHead(500, { 'Connection': 'close' });
-                            res.end(`${err}`);
-                            // return {foo:'bar'}
-                        }
+                        const resolve = await route.resolve(client);
+                        // log({ resolve })
+
+                        // try {
+                        //     const bb = busboy({ headers: req.headers });
+                        //     bb.on('file', (name, file, info) => {
+                        //         // console.log({ info })
+                        //         const filename = info.filename;
+                        //         console.log({ filename })
+                        //         res.setHeader('File-Upload', filename);
+                        //         try {
+                        //             const saveTo = path.join(__APP(), `upload/${filename}`);
+                        //             // const saveTo = path.join(os.tmpdir(), `saf-server/${random()}`);
+                        //             // console.log({ file })
+                        //             // file.pipe(process.stdout)
+                        //             console.log({ saveTo })
+                        //             // console.log(os.tmpdir())
+                        //             file.pipe(fs.createWriteStream(saveTo));
+                        //         } catch(err) {
+                        //             console.log({ err })
+                        //         }
+                        //     });
+                        //     bb.on('field', (name, val, info) => {
+                        //         // console.log({ info })
+                        //         // console.log(`Field [${name}]: value: %j`, val);
+                        //         // params.set(name, val);
+                        //         res.setHeader(`Field-${name}`, `${val}`);
+                        //     });
+                        //     bb.on('close', () => {
+                        //         res.setHeader('Info-Status', true);
+                        //         res.writeHead(200, { 'Connection': 'close' });
+                        //         res.end(`Файл успешно загружен на сервер` );
+                        //         // return `That's all folks!!!`;
+                        //         // res.writeHead(200, { 'Connection': 'close' });
+                        //         // res.end(`That's all folks!!!`);
+                        //     });
+                        //     req.pipe(bb);
+                        //     return;
+                        // } catch(err) {
+                        //     console.log({ err })
+                        //     res.writeHead(500, { 'Connection': 'close' });
+                        //     res.end(`${err}`);
+                        //     // return {foo:'bar'}
+                        // }
                     } else if (req.method === 'POST') {
                         const contentType = req.headers['content-type'];
                         // log({ contentType })
@@ -315,6 +325,8 @@ class Server {
                     }
                 }
             }
+
+            log('------------------------------------')
         });
 
         // server.on('request', function (req, res) {

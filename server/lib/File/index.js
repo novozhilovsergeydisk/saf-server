@@ -18,6 +18,19 @@ class File {
         return dto.stream(data)
     }
 
+    async staticContent(client) {
+        const url = client.url;
+        let data = null;
+        const stats = statPath(__STATIC(url));
+        // if (stats && !stats.isDirectory()) {
+        //     return fs.realpathSync(requestPath, Module._realpathCache);
+        // }
+        if(stats && stats.isFile()) {
+            data = fs.createReadStream(__STATIC(url));
+        }
+        return dto.stream(data); //DTOFactory({ stream: stream });
+    }
+
     serve(client) {
         const { name } = client;
         const filePath = path.join(STATIC_PATH, name);
@@ -83,4 +96,4 @@ class File {
 
 const file = new File()
 const getContent = file.getContent
-module.exports = { getContent }
+module.exports = { file, getContent }

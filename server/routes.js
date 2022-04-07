@@ -94,15 +94,17 @@ class Route {
             this.par = this.client.body
         }
 
-        // log(this)
+        // log({ 'this.client.url': this.client.url })
+        // log({ 'this.renderer': this.renderer })
+        // log({ 'this.route': this.route })
 
         const ret = await this.renderer(this.route, this.par, this.client);
 
-        // log('ret 2')
-        //
-        // log({ 'ret.data': ret.data })
+        // log({ 'ret': ret })
 
         return ret;
+
+        // return this;
     }
 }
 

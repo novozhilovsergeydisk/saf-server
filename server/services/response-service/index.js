@@ -1,27 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const busboy = require('busboy');
-const {log, __VIEWS, __SERVER, __APP} = require('../../helpers.js');
-const nunjucks = require('nunjucks');
-
-log(__SERVER())
-
-const dto = require(__SERVER() + '/lib/DTO/index.js');
-const { tmpl } = require(__SERVER() + '/lib/Renderer/index.js');
-
-nunjucks.configure(__VIEWS(), { autoescape: true });
-
-// const cached = new Map();
-// const cachedHTML = new Map();
+const {__APP} = require('../../helpers.js');
 
 // Handlers
-class UploadControllers {
-    async index() {
-        const render = tmpl.process({ title: 'upload', description: 'upload' }, 'upload/index.html');
-        return dto.stream(render);
-
-    }
-
+class ResponseController {
     async upload(client) {
         // log({ client })
 
@@ -34,11 +17,8 @@ class UploadControllers {
                 client.res.setHeader('File-Upload', filename);
                 try {
                     const saveTo = path.join(__APP(), `upload/${filename}`);
-                    // const saveTo = path.join(os.tmpdir(), `saf-server/${random()}`);
-                    // console.log({ file })
                     // file.pipe(process.stdout)
-                    console.log({ saveTo })
-                    // console.log(os.tmpdir())
+                    // console.log({ saveTo })
                     file.pipe(fs.createWriteStream(saveTo));
                 } catch(err) {
                     console.log({ err })
@@ -59,12 +39,12 @@ class UploadControllers {
                 // res.end(`That's all folks!!!`);
             });
             client.req.pipe(bb);
-            return;
+            return { foo: 'bar' }
         } catch(err) {
             console.log({ err })
             client.res.writeHead(500, { 'Connection': 'close' });
             client.res.end(`${err}`);
-            // return {foo:'bar'}
+            return { major: 'error' }
         }
 
         // const render = tmpl.process({ title: 'upload', description: 'upload' }, 'upload/index.html');
@@ -73,6 +53,6 @@ class UploadControllers {
     }
 }
 
-const uploadController = new UploadControllers();
+const responseController = new ResponseController();
 
-module.exports = { uploadController };
+module.exports = { responseController };

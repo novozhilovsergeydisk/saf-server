@@ -1,16 +1,21 @@
 const fs = require('fs');
-const { log, statPath, __STATIC, __VIEWS } = require('../../helpers.js');
-const nunjucks = require('nunjucks');
+const {log, statPath, __STATIC, __VIEWS} = require('../../helpers.js');
+// const nunjucks = require('nunjucks');
 const dto = require('../../lib/DTO/index.js');
-const { tmpl } = require('../../lib/Renderer/index.js');
+const {tmpl} = require('../../lib/Renderer/index.js');
 
-nunjucks.configure(__VIEWS(), { autoescape: true });
+// nunjucks.configure(__VIEWS(), { autoescape: true });
 
 const cached = new Map();
 const cachedHTML = new Map();
 
 // Handlers
 class MainControllers {
+    async test() {
+        const render = tmpl.process({ title: 'test', description: 'test' }, 'test/index.html');
+        return dto.stream(render);
+    }
+
     async index() {
         // if (cached.has(`clinicById(${id})`)) {
         //     console.time('cached-clinicHTML');

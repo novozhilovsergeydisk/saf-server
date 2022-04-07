@@ -44,6 +44,7 @@ class DTO {
         this.set({status: 'success', stream: data, error: undefined});
         return this.data;
     }
+
 }
 
 module.exports = new DTO();
