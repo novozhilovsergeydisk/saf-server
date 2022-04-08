@@ -8,18 +8,18 @@ const http = require('http');
 // const router = require('find-my-way')();
 const Route = require('./routes.js');
 const ClientApp = require('./lib/Client/index.js');
-const {bufferConcat, replace, memory, notify, log, generateToken, hash, httpMethods, __APP} = require('./helpers.js');
+const {bufferConcat, replace, memory, notify, log, generateToken, hash, httpMethods} = require('./helpers.js');
 const conf = require('./conf.js');
 // const {mkd} = require('./lib/Renderer/index.js');
 const {mailAdmin} = require('./lib/Mailer/index.js');
 
 const { logger } = require('./lib/Logger/index.js');
 
-const { randomFillSync } = require('crypto');
-// const os = require('os');
-const path = require('path');
-const busboy = require('busboy');
-const { copyFile } = require('fs/promises');
+// const { randomFillSync } = require('crypto');
+// // const os = require('os');
+// const path = require('path');
+// const busboy = require('busboy');
+// const { copyFile } = require('fs/promises');
 
 log({ logger })
 
@@ -185,28 +185,32 @@ class Server {
                 } else {
                     if (req.method === 'GET') {
                         const resolve = await route.resolve(client);
+
                         // log({ resolve })
-                        if ((typeof resolve.stream) === 'string') {
-                            this.response(client.mimeType, resolve.stream, res);
-                        } else if ((typeof resolve) === 'string') {
-                            this.response(client.mimeType, resolve, res);
-                        } else {
-                            const stream = await resolve.stream;
-                            if (stream) {
-                                try {
-                                    this.pipe(client.mimeType, stream, res);
-                                } catch(e) {
-                                    log('error pipe')
-                                }
+
+                        if (resolve !== 'headers_sent') {
+                            if ((typeof resolve.stream) === 'string') {
+                                this.response(client.mimeType, resolve.stream, res);
+                            } else if ((typeof resolve) === 'string') {
+                                this.response(client.mimeType, resolve, res);
                             } else {
-                                __404(res, '404 - ' + client.url);
-                                notify('404 - ' + req.url, 'Файл не найден');
+                                const stream = await resolve.stream;
+                                if (stream) {
+                                    try {
+                                        this.pipe(client.mimeType, stream, res);
+                                    } catch(e) {
+                                        log('error pipe')
+                                    }
+                                } else {
+                                    __404(res, '404 - ' + client.url);
+                                    notify('404 - ' + req.url, 'Файл не найден');
+                                }
                             }
                         }
+
                         // logger.run(req)
                     } else if (req.method === 'PUT') {
-                        const resolve = await route.resolve(client);
-                        // log({ resolve })
+                        await route.resolve(client);
 
                         // try {
                         //     const bb = busboy({ headers: req.headers });
@@ -250,78 +254,84 @@ class Server {
                         //     // return {foo:'bar'}
                         // }
                     } else if (req.method === 'POST') {
-                        const contentType = req.headers['content-type'];
-                        // log({ contentType })
-                        let body = null;
-                        let bodyArr = [];
-                        req.on('data', chunk => {
-                            // log({ chunk })
-                            bodyArr.push(chunk)
-                        });
-                        req.on('end', async function () {
-                            if (contentType === CONTENT_TYPES.FORM_URLENCODED) {
-                                try {
-                                    body = bufferConcat(bodyArr); // bufferConcat
-                                    client.body = body;
-                                    const { stream } = await route.resolve(client);
-                                    client.data = stream[0];
-                                    response(client);
-                                    mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
-                                } catch (er) {
-                                    // bad json
-                                    res.statusCode = 400;
-                                    res.end(`error: ${er.message}`);
+                        const resolve = await route.resolve(client);
+
+                        log({ resolve })
+
+                        if (resolve !== 'headers_sent') {
+                            const contentType = req.headers['content-type'];
+                            // log({ contentType })
+                            let body = null;
+                            let bodyArr = [];
+                            req.on('data', chunk => {
+                                // log({ chunk })
+                                bodyArr.push(chunk)
+                            });
+                            req.on('end', async function () {
+                                if (contentType === CONTENT_TYPES.FORM_URLENCODED) {
+                                    try {
+                                        body = bufferConcat(bodyArr); // bufferConcat
+                                        client.body = body;
+                                        const { stream } = await route.resolve(client);
+                                        client.data = stream[0];
+                                        response(client);
+                                        mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
+                                    } catch (er) {
+                                        // bad json
+                                        res.statusCode = 400;
+                                        res.end(`error: ${er.message}`);
+                                    }
                                 }
-                            }
-                            if (contentType === CONTENT_TYPES.MULTIPART_FORMDATA) {
-                                try {
-                                    // log('vbnbnbnfghrt456gfgfgf')
+                                if (contentType === CONTENT_TYPES.MULTIPART_FORMDATA) {
+                                    try {
+                                        // log('vbnbnbnfghrt456gfgfgf')
 
-                                    body = bufferConcat(bodyArr); // bufferConcat
-                                    log({ body })
-                                    client.body = body;
-                                    const { stream } = await route.resolve(client);
-                                    client.data = stream[0];
+                                        body = bufferConcat(bodyArr); // bufferConcat
+                                        log({ body })
+                                        client.body = body;
+                                        const { stream } = await route.resolve(client);
+                                        client.data = stream[0];
 
-                                    body.forEach(item => {
-                                        log({ item })
-                                    })
+                                        body.forEach(item => {
+                                            log({ item })
+                                        })
 
-                                    log(typeof body)
+                                        log(typeof body)
 
-                                    // fs.writeFile('/Users/sergionov/Projects/transplant.net/node-server/server/xxx.png', body, function (err) {
-                                    //     log('save png')
-                                    //
-                                    //     if(err)
-                                    //         console.log('NNOOOOOOOOOOOO');
-                                    // });
-                                    // response(client);
-                                    // mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
-                                } catch (er) {
-                                    // bad json
-                                    res.statusCode = 400;
-                                    res.end(`error: ${er.message}`);
+                                        // fs.writeFile('/Users/sergionov/Projects/transplant.net/node-server/server/xxx.png', body, function (err) {
+                                        //     log('save png')
+                                        //
+                                        //     if(err)
+                                        //         console.log('NNOOOOOOOOOOOO');
+                                        // });
+                                        // response(client);
+                                        // mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
+                                    } catch (er) {
+                                        // bad json
+                                        res.statusCode = 400;
+                                        res.end(`error: ${er.message}`);
+                                    }
                                 }
-                            }
-                            if (contentType === CONTENT_TYPES.APPLICATION_JSON) {
-                                try {
-                                    body = replace('null', '', body);
-                                    // log({ body })
-                                    client.body = body;
-                                    const { stream } = await route.resolve(client);
-                                    client.data = stream[0];
-                                    response(client);
-                                    mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
-                                } catch (er) {
-                                    // bad json
-                                    res.statusCode = 400;
-                                    res.end(`error: ${er.message}`);
+                                if (contentType === CONTENT_TYPES.APPLICATION_JSON) {
+                                    try {
+                                        body = replace('null', '', body);
+                                        // log({ body })
+                                        client.body = body;
+                                        const { stream } = await route.resolve(client);
+                                        client.data = stream[0];
+                                        response(client);
+                                        mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
+                                    } catch (er) {
+                                        // bad json
+                                        res.statusCode = 400;
+                                        res.end(`error: ${er.message}`);
+                                    }
                                 }
-                            }
-                        });
-                        req.on('information', (info) => {
-                            console.log(`Got information prior to main response: ${info.statusCode}`);
-                        });
+                            });
+                            req.on('information', (info) => {
+                                console.log(`Got information prior to main response: ${info.statusCode}`);
+                            });
+                        }
                     }
                 }
             }

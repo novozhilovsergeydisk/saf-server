@@ -1,19 +1,299 @@
 {% extends "templates/base.html" %}
+{% set title = "Отчеты transplant.net" %}
+{% set h1 = "transplant.net" %}
+
+{% block css %}
+{{ super() }}
+<style>
+    .flex {
+        display: flex;
+    }
+
+    .box-item {
+        padding: 7px;
+
+        /*display: inline-block;*/
+        /*flex: 1 1 100px;*/
+
+        /*background: tomato;*/
+        /*max-width: 200px;*/
+        /*height: 150px;*/
+
+        /*margin: 10px;*/
+        /*line-height: 150px;*/
+        /*font-weight: bold;*/
+        /*font-size: 3rem;*/
+        /*text-align: center;*/
+    }
+
+    .content {
+
+    }
+
+    .block {
+        padding: 17px;
+        /*background: #e9e9e9;*/
+    }
+
+
+    .block p {
+        font-size: 14px;
+        padding: 3px;
+        color: #212529;
+    }
+
+    .box {
+        display: flex;
+        flex-wrap: wrap;
+        /*justify-content: space-around;*/
+        padding: 0;
+        margin: 0;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .border-top {
+        border-top: 1px solid #c2c2c2;
+    }
+
+    .smaller {
+        font-size: smaller;
+    }
+</style>
+{% endblock %}
 
 {% block header %}
-<div class="container">
-    <img src="/img/logo.png" alt="">
-</div>
+
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>A simple and flexible server platform for building web applications and services</h1>
+<div id="content" class="content">
+    <div class="box">
+        <img src="/img/logo.png" alt="logo" class="block w30">
+    </div>
+    <div class="box">
+        <div class="block box-item bold">Медорганизация</div>
+        <div class="block box-item bold">ID</div>
+        <div class="block box-item bold">Администраторы</div>
+        <div class="block box-item bold">Врачи</div>
+        <div class="block box-item bold">Действия</div>
+    </div>
+    <div class="box border-top">
+        {% for clinic in clinics %}
+        <div class="block box-item w20"> {{ clinic.name }} <br> <span class="smaller">врачей - {{ clinic.doc_cnt }}, пациентов - {{ clinic.pat_cnt }}</span></div>
+
+        <div class="block box-item w10">
+            {{ clinic.id }}</p>
+        </div>
+
+        <div class="block box-item w30">
+            {% if clinic.admins %}
+            {% for admin in clinic.admins %}
+            <p>{{ admin.name }} <br> {{ admin.email }}</p>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="block box-item w30">
+            {% if clinic.docs %}
+            {% for doc in clinic.docs %}
+            <p>({{ doc.pat_cnt }}) {{ doc.name }} <br> {{ doc.email }}</p>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="block box-item w10">
+            <a href="#">удалить</a>
+        </div>
+
+        {% else %}
+        <div class="block">Список клиник пуст!</div>
+        {% endfor %}
+
+    </div>
+
+    <div class="block">
+        <h3>Пациенты</h3>
+        {% for patient in patients %}
+        <p>{{ patient.title }}</p>
+        {% else %}
+        <p>Список пациентов пуст!</p>
+        {% endfor %}
+    </div>
+
+    <div class="block">
+        <!-- Form -->
+        <form method="post" enctype="application/x-www-form-urlencoded">
+            <div class="form-group">
+                <label for="fio">Пациент</label>
+                <div class="flex direction-row">
+                    <input id="fio" name="fio" class="form-control" autocomplete="name">
+                </div>
+                <span id="error-fio" class="error display-none">error</span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">e-mail</label>
+                <div class="flex direction-row">
+                    <input id="email" name="email" class="form-control" autocomplete="name" type="email">
+                </div>
+                <span id="error-email" class="error display-none"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="tel">Телефон</label>
+                <div class="flex direction-row">
+                    <input id="tel" name="phone" class="form-control" autocomplete="name" type="tel">
+                </div>
+                <span id="error-phone" class="error display-none"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Дата</label>
+                <div class="flex direction-row">
+                    <input id="date" name="date" class="form-control" autocomplete="name" type="date">
+                </div>
+                <span id="error-date" class="error display-none"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Дата</label>
+                <div class="flex direction-row">
+                    <input id="time" name="time" class="form-control" autocomplete="name" type="time">
+                </div>
+                <span id="error-time" class="error display-none__">error</span>
+            </div>
+
+            <div class="form-group">
+                <button id="btn-save" name="btn-save" class="btn btn-common" type="button">Сохранить</button>
+            </div>
+        </form>
+
+        <!-- Form which will send a POST request to the current URL -->
+        <!--<form method="post">-->
+            <!--<label>Name:-->
+                <!--<input name="submitted-name" autocomplete="name">-->
+            <!--</label>-->
+            <!--<button>Save</button>-->
+        <!--</form>-->
+
+        <!-- Form with fieldset, legend, and label -->
+        <!--<form method="post">-->
+            <!--<fieldset>-->
+                <!--<legend>Title</legend>-->
+                <!--<label><input type="radio" name="radio"> Select me</label>-->
+            <!--</fieldset>-->
+        <!--</form>-->
+
+        <!--<form class="">-->
+            <!--<input id="csrf_token" type="hidden" name="csrf_token" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">-->
+
+            <!--<p id="error" class="error display-none"></p>-->
+
+            <!--<div class="form-group">-->
+                <!--<label for="email">Email:</label>-->
+                <!--<input type="email" class="form-control display-block" id="email" placeholder="ваш email" name="email">-->
+            <!--</div>-->
+
+            <!--<div class="form-group">-->
+                <!--&lt;!&ndash;<label for="fileupload"></label>&ndash;&gt;-->
+                <!--&lt;!&ndash;<form action="/upload" method="post" enctype="multipart/form-data" id="fileupload">&ndash;&gt;-->
+                <!--&lt;!&ndash;<input id="upload" type="file" data-upload="upload" name="filetoupload">&ndash;&gt;-->
+                <!--&lt;!&ndash;<input id="btn_upload" type="button" value="Загрузить">&ndash;&gt;-->
+                <!--&lt;!&ndash;</form>&ndash;&gt;-->
+
+                <!--<input type="file" onchange="upload(this.files[0])">-->
+            <!--</div>-->
+
+            <!--<div class="form-group">-->
+                <!--<label for="pass">Пароль:</label>-->
+                <!--<div class="flex direction-row">-->
+                    <!--<input type="password" class="form-control" id="pass" name="password">-->
+
+                    <!--<div class="password-control">-->
+                        <!--<span id="password-control" data-over="password_control" data-click="password_control" class="material-icons">visibility</span>-->
+                    <!--</div>-->
+
+                    <!--&lt;!&ndash;<div id="password-show" class="password-control mt-5 display-block">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a class="color-common" href="#">Показать пароль</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="form-group">-->
+                <!--<input type="checkbox" name="save" id="save" checked="checked" class="display-inline checkbox"> <span>Запомнить меня</span>-->
+            <!--</div>-->
+
+            <!--&lt;!&ndash;<button type="submit" class="btn btn-primary" style="width:160px" onclick="login();return false">вход</button>&ndash;&gt;-->
+
+            <!--<div class="form-group">-->
+                <!--<input type="submit" id="sign" data-href="/doc/quest/156" class="btn btn-common display-block">Войти</input>-->
+
+                <!--<p class="mt-6">-->
+                    <!--<a class="color-common decoration-block-hover" href="/usr/pass/form">Не помню пароль</a>-->
+                <!--</p>-->
+            <!--</div>-->
+
+        <!--</form>-->
+    </div>
+
 </div>
-<ul>
-    {% for name, item in items %}
-    <li>{{ name }}: {{ item }}</li>
-    {% endfor %}
-</ul>
 {% endblock %}
 
+{% block js_bottom %}
+    <script>
+        const btnUpload = document.getElementById('btn-save');
+
+        if (btnUpload !== null) {
+            btnUpload.addEventListener('click', (event) => {
+                const formData = new FormData();
+                const fio = document.getElementById('fio');
+                const email = document.getElementById('email');
+                const tel = document.getElementById('tel');
+                const date = document.getElementById('date');
+                const time = document.getElementById('time');
+
+                console.log(fio.value)
+
+                formData.append('fio', fio.value);
+                // formData.append('email', email.value);
+                // formData.append('tel', tel.value);
+                // formData.append('date', date.value);
+                // formData.append('time', time.value);
+
+                console.log({ 'formData @': formData })
+
+                fetch('/pull', {
+                    method: 'PUT',
+                    body: formData
+                })
+                    .then(response => {
+                        console.log('response:', response.status);
+                        // console.log('headers:', response.headers.get('Info-Params'));
+                        // const par = response.headers.get('Field-test1');
+                        // console.log({ par })
+                        // const test1 = response.headers.get('Info-Params')['test1'];
+                        // console.log(Object.keys(par))
+                        // mapEls.forEach(logMapElements);
+
+                        // console.log('ok:', response.ok);
+                        return response
+                    })
+                    .then(result => {
+                        console.log(Object.keys(result));
+                        console.log('Success:', result);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                console.log('click', event)
+            });
+        }
+
+        console.log('test')
+    </script>
+
+{% endblock %}

@@ -27,6 +27,10 @@ a {
 .color-common{
     color: var(--common);
 }
+.error {
+    color: red;
+    font-size: smaller;
+}
 .red {
     color: red;
 }
@@ -109,7 +113,9 @@ input {outline: none;}
 .form-group {
     margin-top: 10px;
 }
-
+.form-group label {
+    /*font-size: small;*/
+}
 h1 {
     padding: 5px;
 }

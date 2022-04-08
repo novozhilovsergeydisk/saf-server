@@ -53,39 +53,43 @@ const ready = (() => {
 
     const btnUpload = document.getElementById('btn_uploadfile')
 
-    btnUpload.addEventListener('click', (event) => {
-        // const data = new FormData()
-        // const uploadInput = document.getElementById('upload')
-        //
-        // log(uploadInput.files)
-        //
-        // data.append('file', uploadInput.files[0])
-        //
-        // let upload = fetch('/upload', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json;charset=utf-8'
-        //     },
-        //     body: JSON.stringify(uploadInput)
-        // }).then(
-        //     response => response.json() // if the response is a JSON object
-        // ).then(
-        //     success => console.log(success) // Handle the success response object
-        // ).catch(
-        //     error => console.log(error) // Handle the error response object
-        // );
+    console.log({ btnUpload })
 
-        // response.then(data => {
-        //     log('xxxxxxxxxxxxxxxxxxxx')
-        //     log({ data })
-        // }).catch(err => {
-        //     log({ err })
-        // })
+    if (btnUpload !== null) {
+        btnUpload.addEventListener('click', (event) => {
+            // const data = new FormData()
+            // const uploadInput = document.getElementById('upload')
+            //
+            // log(uploadInput.files)
+            //
+            // data.append('file', uploadInput.files[0])
+            //
+            // let upload = fetch('/upload', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json;charset=utf-8'
+            //     },
+            //     body: JSON.stringify(uploadInput)
+            // }).then(
+            //     response => response.json() // if the response is a JSON object
+            // ).then(
+            //     success => console.log(success) // Handle the success response object
+            // ).catch(
+            //     error => console.log(error) // Handle the error response object
+            // );
 
-        log({ upload })
+            // response.then(data => {
+            //     log('xxxxxxxxxxxxxxxxxxxx')
+            //     log({ data })
+            // }).catch(err => {
+            //     log({ err })
+            // })
 
-        // log({ btnUpload })
-    })
+            log({ upload })
+
+            // log({ btnUpload })
+        })
+    }
 
     // const toggleType =(el => {
     //     if (el.getAttribute('type') === 'password') {

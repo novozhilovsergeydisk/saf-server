@@ -11,13 +11,18 @@ class AdminService {
 
     async clientByPhone(phone) {
         if (phone) {
-            const res = await query('SELECT * FROM crm.clients WHERE phone = $1', [phone]);
+            const res = await query('SELECT * FROM transplant.clients WHERE phone = $1', [phone]);
             return res;
         }
     }
 
-    async order(cli) {
-        log('async');
+    async clinics(client) {
+        const res = await query('SELECT * FROM cabinet ORDER BY name', []);
+        // const data = res[0];
+        log({ res })
+        log(typeof res)
+        return res;
+        // return { admList: {  id: 159, name: 'Гришин C.B.', email: 'jabapoint@list.ru', days_left: -516  } }
     }
 
     async clinicById(client) {

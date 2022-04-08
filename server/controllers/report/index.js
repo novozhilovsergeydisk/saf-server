@@ -10,6 +10,25 @@ const {tmpl} = require('../../lib/Renderer/index.js');
 
 // Handlers
 class reportsControllers {
+    async clinics(client) {
+        const data = await adminService.clinics();
+        client.res.setHeader('reports', 'clinics');
+        client.res.writeHead(200, { 'Connection': 'close' });
+        client.res.end( `${data}` );
+        log({ data })
+        return 'headers_sent';
+    }
+
+    async getClinics(client) {
+        const data = await adminService.clinics();
+        client.res.setHeader('Content-Type', 'application/json');
+        client.res.setHeader('reports', 'clinics');
+        client.res.writeHead(200, { 'Connection': 'close' });
+        client.res.end(JSON.stringify({ success: true, data: data }));
+        log({ data })
+        return 'headers_sent';
+    }
+
     async clinicById(client) {
         const id = client.par.value;
         const data = adminService.clinicById(id);
