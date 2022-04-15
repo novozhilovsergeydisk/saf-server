@@ -78,6 +78,8 @@ const CONSTANTS = {
     MIME_TYPES: MIME_TYPES,
     APP_PATH: appPath,
     SERVER_PATH: appPath + '/server',
+    STORAGE_PATH: appPath + '/server/storage',
+    UPLOAD_PATH: appPath + '/server/storage/upload',
     RESOURCES_PATH: appPath + '/src',
     VIEWS_PATH: appPath + views_name,
     CONTROLLERS_PATH: appPath + '/controllers/',

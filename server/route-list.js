@@ -29,7 +29,9 @@ const routing = {
         '/robots/*': staticController.staticContent,
         '/activate': 'activate',
         '/test': mainController.test,
-        '/clinics': reportsControllers.clinics
+        '/clinics': reportsControllers.clinics,
+        '/xslx': mainController.xslx,
+        '/parse': mainController.parse
     },
     'POST': {
         '/user/add': reportsControllers.addUser,
@@ -38,7 +40,8 @@ const routing = {
         '/login': auth.login,
         '/logout': auth.logout,
         '/upload': responseController.upload,
-        '/clinics': reportsControllers.getClinics
+        '/clinics': reportsControllers.getClinics,
+        '/xslx': responseController.xslx
     },
     'PUT': {
         '/upload': uploadController.upload,

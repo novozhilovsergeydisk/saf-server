@@ -1,15 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 const busboy = require('busboy');
-const {log, __VIEWS, __SERVER, __APP} = require('../../helpers.js');
-const nunjucks = require('nunjucks');
+const {log, __VIEWS, __SERVER, __UPLOAD} = require('../../helpers.js');
+// const nunjucks = require('nunjucks');
 
 log(__SERVER())
 
 const dto = require(__SERVER() + '/lib/DTO/index.js');
 const { tmpl } = require(__SERVER() + '/lib/Renderer/index.js');
 
-nunjucks.configure(__VIEWS(), { autoescape: true });
+// nunjucks.configure(__VIEWS(), { autoescape: true });
 
 // const cached = new Map();
 // const cachedHTML = new Map();
@@ -33,7 +33,7 @@ class UploadControllers {
                 console.log({ filename })
                 client.res.setHeader('File-Upload', filename);
                 try {
-                    const saveTo = path.join(__APP(), `upload/${filename}`);
+                    const saveTo = path.join(__UPLOAD(), filename);
                     // const saveTo = path.join(os.tmpdir(), `saf-server/${random()}`);
                     // console.log({ file })
                     // file.pipe(process.stdout)
@@ -44,12 +44,14 @@ class UploadControllers {
                     console.log({ err })
                 }
             });
+
             bb.on('field', (name, val, info) => {
                 // console.log({ info })
-                // console.log(`Field [${name}]: value: %j`, val);
+                console.log(`Field [${name}]: value: %j`, val);
                 // params.set(name, val);
                 client.res.setHeader(`Field-${name}`, `${val}`);
             });
+
             bb.on('close', () => {
                 client.res.setHeader('Info-Status', true);
                 client.res.writeHead(200, { 'Connection': 'close' });

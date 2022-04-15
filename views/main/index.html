@@ -126,6 +126,8 @@
     <div class="block">
         <!-- Form -->
         <form method="post" enctype="application/x-www-form-urlencoded">
+            <input id="csrf_token" type="hidden" name="csrf_token" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+
             <div class="form-group">
                 <label for="fio">Пациент</label>
                 <div class="flex direction-row">
@@ -137,7 +139,7 @@
             <div class="form-group">
                 <label for="email">e-mail</label>
                 <div class="flex direction-row">
-                    <input id="email" name="email" class="form-control" autocomplete="name" type="email">
+                    <input id="email" name="email" class="form-control" type="email">
                 </div>
                 <span id="error-email" class="error display-none"></span>
             </div>
@@ -145,7 +147,7 @@
             <div class="form-group">
                 <label for="tel">Телефон</label>
                 <div class="flex direction-row">
-                    <input id="tel" name="phone" class="form-control" autocomplete="name" type="tel">
+                    <input id="tel" name="phone" class="form-control" type="tel">
                 </div>
                 <span id="error-phone" class="error display-none"></span>
             </div>
@@ -153,17 +155,29 @@
             <div class="form-group">
                 <label for="date">Дата</label>
                 <div class="flex direction-row">
-                    <input id="date" name="date" class="form-control" autocomplete="name" type="date">
+                    <input id="date" name="date" class="form-control" type="date">
                 </div>
                 <span id="error-date" class="error display-none"></span>
             </div>
 
             <div class="form-group">
-                <label for="time">Дата</label>
+                <label for="time">Время</label>
                 <div class="flex direction-row">
-                    <input id="time" name="time" class="form-control" autocomplete="name" type="time">
+                    <input id="time" name="time" class="form-control" type="time">
                 </div>
-                <span id="error-time" class="error display-none__">error</span>
+                <span id="error-time" class="error display-none">error</span>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Клиники</label>
+                <div class="flex direction-row">
+                    <select name="clinics" id="clinics" class="form-control">
+                        {% for clinic in clinics %}
+                        <option value="{{ clinic.id }}">{{ clinic.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <span id="error-clinics" class="error display-none">error</span>
             </div>
 
             <div class="form-group">
@@ -255,22 +269,22 @@
                 const date = document.getElementById('date');
                 const time = document.getElementById('time');
 
-                console.log(fio.value)
+                // console.log(fio.value)
 
                 formData.append('fio', fio.value);
-                // formData.append('email', email.value);
-                // formData.append('tel', tel.value);
-                // formData.append('date', date.value);
-                // formData.append('time', time.value);
+                formData.append('email', email.value);
+                formData.append('tel', tel.value);
+                formData.append('date', date.value);
+                formData.append('time', time.value);
 
-                console.log({ 'formData @': formData })
+                // console.log({ 'formData @': formData })
 
                 fetch('/pull', {
                     method: 'PUT',
                     body: formData
                 })
                     .then(response => {
-                        console.log('response:', response.status);
+                        console.log('response.status:', response.status);
                         // console.log('headers:', response.headers.get('Info-Params'));
                         // const par = response.headers.get('Field-test1');
                         // console.log({ par })
@@ -289,7 +303,7 @@
                         console.error('Error:', error);
                     });
 
-                console.log('click', event)
+                // console.log('click', event)
             });
         }
 

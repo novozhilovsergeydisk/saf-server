@@ -8,10 +8,11 @@ const http = require('http');
 // const router = require('find-my-way')();
 const Route = require('./routes.js');
 const ClientApp = require('./lib/Client/index.js');
-const {bufferConcat, replace, memory, notify, log, generateToken, hash, httpMethods} = require('./helpers.js');
+const {bufferConcat, replace, memory, notify, log, generateToken, hash, httpMethods, query} = require('./helpers.js');
 const conf = require('./conf.js');
 // const {mkd} = require('./lib/Renderer/index.js');
 const {mailAdmin} = require('./lib/Mailer/index.js');
+const adminService = require('./services/admin-service/index.js');
 
 const { logger } = require('./lib/Logger/index.js');
 
@@ -30,6 +31,7 @@ log({ logger })
 // cache.set('routeList', routeList);
 
 // log({ cache })
+
 
 // if (existsSync('/etc/passwd')) {
 //     log('The path exists.');
@@ -178,6 +180,7 @@ class Server {
 
                 log(client.url)
                 log({ hasRoute })
+                log(client.fileExt)
 
                 if (!hasRoute) {
                     __404(res, '404 - ' + client.url);
@@ -256,7 +259,7 @@ class Server {
                     } else if (req.method === 'POST') {
                         const resolve = await route.resolve(client);
 
-                        log({ resolve })
+                        // log({ resolve })
 
                         if (resolve !== 'headers_sent') {
                             const contentType = req.headers['content-type'];

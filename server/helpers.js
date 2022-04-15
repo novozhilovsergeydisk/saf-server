@@ -2,11 +2,12 @@
 
 const path = require('path');
 const fs = require('fs');
+const xlsx = require('xlsx');
 const crypto = require('crypto');
 const {Client} = require('pg');
 const {mail} = require('./lib/Mailer/index.js');
 const conf = require('./conf.js');
-const {STATIC_PATH, VIEWS_PATH, APP_PATH, SERVER_PATH, MIME_TYPES, ALLOWED_METHODS} = require('../constants.js');
+const {STATIC_PATH, VIEWS_PATH, APP_PATH, SERVER_PATH, STORAGE_PATH, UPLOAD_PATH, MIME_TYPES, ALLOWED_METHODS} = require('../constants.js');
 const TOKEN_LENGTH = 32;
 const ALPHA_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const ALPHA_LOWER = 'abcdefghijklmnopqrstuvwxyz';
@@ -38,6 +39,14 @@ const __APP = (url) => {
 
 const __SERVER = (url) => {
     return (url) ? path.join(SERVER_PATH, url) : SERVER_PATH;
+};
+
+const __STORAGE = (url) => {
+    return (url) ? path.join(SERVER_PATH, url) : SERVER_PATH + '/storage';
+};
+
+const __UPLOAD = (url) => {
+    return (url) ? path.join(SERVER_PATH, url) : SERVER_PATH + '/storage/upload';
 };
 
 const mimeTypes = () => {
@@ -306,6 +315,115 @@ const bufferConcat = (body => {
     return json;
 });
 
+const parseXslx = (input => {
+
+    console.log({ input })
+
+    var book = xlsx.readFileSync(input), result = {};
+    // Циклическое переключение каждой страницы листа на листе
+    book.SheetNames.forEach(function(name){
+        // Получить текущий объект страницы листа
+        var sheet = book.Sheets[name],
+            // Получаем диапазон данных на текущей странице
+            range = xlsx.utils.decode_range(sheet['!ref']),
+            // Сохраняем данные диапазона данных
+            row_start = range.s.r, row_end = range.e.r,
+            col_start = range.s.c, col_end = range.e.c,
+            rows = [], row_data, i, addr, cell;
+        // Перебираем данные построчно
+
+        console.log('START ----------------------')
+        console.log({ sheet })
+        console.log({ range })
+        console.log('END ----------------------')
+
+        for(;row_start<=row_end;row_start++) {
+            row_data = [];
+            // Считываем данные каждого столбца в текущей строке
+            for(i=col_start;i<=col_end;i++) {
+                addr = xlsx.utils.encode_col(i) + xlsx.utils.encode_row(row_start);
+
+                console.log({ addr })
+
+                cell = sheet[addr];
+
+                console.log({ 'cell': cell })
+
+                if (typeof cell === 'object') {
+                    // Если это ссылка, сохраните ее как объект и сохраните исходное значение непосредственно в других форматах
+                    // if(cell.l) {
+                    //     console.log(cell.v)
+                    //     row_data.push({text: cell.v});
+                    // } else {
+                    //     row_data.push(cell.v);
+                    // }
+
+                    // console.log(typeof cell)
+                    // // console.log({ 'cell.v': cell.v })
+                    // console.log(cell.v)
+                    // console.log('--------------------------------------------------')
+
+                    row_data.push(cell.v);
+
+                    // console.log({ 'cell': cell[1] })
+
+                    // console.log(row_data)
+                }
+
+                // console.log({ row_data })
+
+                // Если это ссылка, сохраните ее как объект и сохраните исходное значение непосредственно в других форматах
+                // if(cell.l) {
+                //     console.log(cell.v)
+                //     row_data.push({text: cell.v});
+                // } else {
+                //     row_data.push(cell.v);
+                // }
+
+                // row_data.push(cell.v);
+            }
+            // console.log(row_data)
+            rows.push(row_data);
+
+            // console.log({ rows })
+            //
+            // console.log('--------------------------------------------------')
+        }
+        // console.log({ rows })
+
+        // console.log(rows.length)
+
+        rows.forEach(item => {
+            // if (item.length === 8) {
+            //     // console.log(item[7])
+            // }
+            //
+            // if (item.length === 9) {
+            //     console.log(item[0])
+            //     console.log(item[1])
+            //     console.log(item[4])
+            //     console.log('')
+            //     console.log(item[8])
+            //     console.log('------------------------------')
+            // }
+
+            console.log(item)
+        });
+
+        // for (item in rows) {
+        //     console.log({ item })
+        // }
+
+        console.log('--------------------------------------------------')
+        // Сохраняем данные на текущей странице
+        result[name] = rows;
+    });
+
+    // console.log({ 'result': result })
+
+    return result;
+});
+
 // const IDENTIFIER = /^[a-z$_][a-z$_0-9]*$/i
 
 module.exports = {
@@ -343,5 +461,8 @@ module.exports = {
     __VIEWS,
     __APP,
     __SERVER,
-    __MIME
+    __STORAGE,
+    __UPLOAD,
+    __MIME,
+    parseXslx
 };

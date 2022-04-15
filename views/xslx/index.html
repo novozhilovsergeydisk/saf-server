@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <pre>
+            <form method="POST" enctype="multipart/form-data" action="/">
+                <input type="file" id="file" name="file"/>
+                <select id="bookType" name="bookType">
+                  <option value="xlsb">XLSX</option>
+                  <option value="xlsx">XLSB</option>
+                  <option value="xlsm">XLSM</option>
+                  <option value="biff8">BIFF8 XLS</option>
+                  <option value="biff5">BIFF5 XLS</option>
+                  <option value="biff2">BIFF2 XLS</option>
+                  <option value="xlml">SSML 2003</option>
+                  <option value="ods">ODS</option>
+                  <option value="fods">Flat ODS</option>
+                  <option value="csv">CSV</option>
+                  <option value="txt">Unicode Text</option>
+                  <option value="sylk">Symbolic Link</option>
+                  <option value="html">HTML</option>
+                  <option value="dif">DIF</option>
+                  <option value="dbf">DBF</option>
+                  <option value="rtf">RTF</option>
+                  <option value="prn">Lotus PRN</option>
+                  <option value="eth">Ethercalc</option>
+                </select>
+                <input id="btn-save" type="button" value="Submit Form">
+            </form>
+
+        </pre>
+    </div>
+
+    <script>
+        const btnUpload = document.getElementById('btn-save');
+
+        if (btnUpload !== null) {
+            btnUpload.addEventListener('click', (event) => {
+                const formData = new FormData();
+                const fileField = document.querySelector('input[type="file"]');
+                const bookType = document.getElementById('bookType');
+                formData.append('bookType', bookType.value);
+                formData.append('xslx', fileField.files[0]);
+
+                // console.log({ formData })
+
+                fetch('/xslx', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        const fileUpload = response.headers.get('File-Upload');
+                        console.log({ 'fileUpload': fileUpload })
+                        const infoStatus = response.headers.get('Info-Status');
+                        console.log({ 'infoStatus': infoStatus })
+                        // const status = response.headers.get('Info-Params')['test1'];
+                        console.log('response:', response);
+                        // console.log('headers:', response.headers.get('Info-Params'));
+                        // const par = response.headers.get('Field-test1');
+                        // console.log({ par })
+                        // const test1 = response.headers.get('Info-Params')['test1'];
+                        // console.log(Object.keys(par))
+                        // mapEls.forEach(logMapElements);
+
+                        console.log('ok:', response.ok);
+                        return response
+                    })
+                    .then(result => {
+                        console.log(Object.keys(result));
+                        console.log('Success:', result);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
