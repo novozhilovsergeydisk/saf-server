@@ -21,15 +21,11 @@ const routing = {
         '/img/doctors/*': staticController.staticContent,
         '/api/register': auth.register,
         '/favicon.ico': staticController.staticContent,
-        '/reports/clinic/*': reportsControllers.clinicById,
         '/user/add': reportsControllers.addUser,
-        '/sup/cab/list': reportsControllers.supCabList,
         '/stat': reportsControllers.stat,
         '/upload': uploadController.index,
         '/robots/*': staticController.staticContent,
         '/activate': 'activate',
-        '/test': mainController.test,
-        '/clinics': reportsControllers.clinics,
         '/xslx': mainController.xslx,
         '/parse': mainController.parse
     },
@@ -40,11 +36,11 @@ const routing = {
         '/login': auth.login,
         '/logout': auth.logout,
         '/upload': responseController.upload,
-        '/clinics': reportsControllers.getClinics,
         '/xslx': responseController.xslx
     },
     'PUT': {
         '/upload': uploadController.upload,
+        '/upload-clients': uploadController.uploadClients,
         '/pull': responseController.save,
     }
 };

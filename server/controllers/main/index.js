@@ -31,66 +31,8 @@ class MainControllers {
     }
 
     async index() {
-        if (cached.has(`clinics`)) {
-            const clinics = cached.get(`clinics`);
-
-            const render = tmpl.process({ title: 'Node.js® is a JavaScript runtime built on Chrome\'s V8 JavaScript engine.', clinics: clinics }, 'main/index.html');
-
-            return dto.stream(render);
-
-            log('cached clinics')
-
-            // console.time('cached clinics');
-            // console.time('cached-clinicHTML');
-            // const clinics = cached.get(`clinics`);
-            // if (cachedHTML.has(`clinicById(${id})`)) {
-            //     render = cachedHTML.get(`clinicById(${id})`)
-            //     // stream = promise(render);
-            // } else {
-            //     render = nunjucks.render('reports/index.html', { clinics: clinics });
-            //     cachedHTML.set(`clinicById(${id})`, render);
-            //     // stream = promise(render);
-            // }
-            // console.timeEnd('cached-clinicHTML');
-            // log({ 'cachedHTML.size':cachedHTML.size })
-
-            // cached.set(`clinicById(${id})`, clinics);
-        } else {
-            const clinics = await adminService.clinics();
-
-            // log(adminService.clinics())
-
-
-            // const clinics = await query('SELECT * FROM crm.clients WHERE phone = $1', [phone]);
-            // const clinics = query('')
-
-            const render = tmpl.process({ title: 'Node.js® is a JavaScript runtime built on Chrome\'s V8 JavaScript engine.', clinics: clinics }, 'main/index.html');
-
-            cached.set(`clinics`, render);
-
-            return dto.stream(render);
-
-            log('no cached clinics')
-
-            // console.time('clinicById');
-            // log('-')
-            // return DTOFactory({ stream: 'clinic 2' });
-
-            // const clinics = await adminService.clinicById(id);
-            //
-            // if (!cached.has(`clinicById(${id})`)) {
-            //     cached.set(`clinicById(${id})`, clinics);
-            // }
-            //
-            // render = nunjucks.render('reports/index.html', { clinics: clinics });
-            //
-            // console.time('cached clinics');
-        }
-
         const render = tmpl.process({ title: 'Node.js® is a JavaScript runtime built on Chrome\'s V8 JavaScript engine.', description: 'Roma' }, 'main/index.html');
-
         return dto.stream(render);
-
     }
 
     async upload() {
