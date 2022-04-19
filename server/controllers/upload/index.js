@@ -2,15 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const busboy = require('busboy');
 const xlsx = require('xlsx');
-const {log, __SERVER, __UPLOAD} = require('../../helpers.js');
-// const nunjucks = require('nunjucks');
-
-log(__SERVER())
-
+const {log, query, __SERVER, __UPLOAD} = require('../../helpers.js');
 const dto = require(__SERVER() + '/lib/DTO/index.js');
 const { tmpl } = require(__SERVER() + '/lib/Renderer/index.js');
-
-// nunjucks.configure(__VIEWS(), { autoescape: true });
 
 // const cached = new Map();
 // const cachedHTML = new Map();
@@ -23,130 +17,90 @@ class UploadControllers {
     }
 
     async uploadClients(client) {
-        // log({ client })
-
+        const file = '/Users/sergionov/Projects/transplant.net/node-server/server/storage/upload/patients.xlsx';
         try {
-            const file = './server/storage/upload/clients.xls';
-            log('uploadClients')
             const book = xlsx.readFileSync(file);
             let result = {};
-
-            // console.log({ book })
-
-            // Циклическое переключение каждой страницы листа на листе
-
+            let sheetNumber = 0;
+            let sheetList = {};
+            let error = false;
             book.SheetNames.forEach(function(name){
+                const sheetNames = book.SheetNames;
+                log({ sheetNames })
                 // Получить текущий объект страницы листа
-                var sheet = book.Sheets[name],
-                    // Получаем диапазон данных на текущей странице
+                sheetNumber++;
+                let sheet = book.Sheets[name],
                     range = xlsx.utils.decode_range(sheet['!ref']),
-                    // Сохраняем данные диапазона данных
                     row_start = range.s.r, row_end = range.e.r,
                     col_start = range.s.c, col_end = range.e.c,
                     rows = [], row_data, i, addr, cell;
-                // Перебираем данные построчно
-
-                // console.log('START ----------------------')
-                // console.log({ sheet })
-                // console.log({ range })
-                // console.log('END ----------------------')
-
-                for(;row_start<=row_end;row_start++) {
-                    row_data = [];
-                    // Считываем данные каждого столбца в текущей строке
-                    for(i=col_start;i<=col_end;i++) {
-                        addr = xlsx.utils.encode_col(i) + xlsx.utils.encode_row(row_start);
-
-                        // console.log({ addr })
-
-                        cell = sheet[addr];
-
-                        // console.log({ 'cell': cell })
-
-                        if (typeof cell === 'object') {
-                            // Если это ссылка, сохраните ее как объект и сохраните исходное значение непосредственно в других форматах
-                            // if(cell.l) {
-                            //     console.log(cell.v)
-                            //     row_data.push({text: cell.v});
-                            // } else {
-                            //     row_data.push(cell.v);
-                            // }
-
-                            // console.log(typeof cell)
-                            // // console.log({ 'cell.v': cell.v })
-                            // console.log(cell.v)
-                            // console.log('--------------------------------------------------')
-
-                            row_data.push(cell.v);
-
-                            // console.log({ 'cell': cell[1] })
-
-                            // console.log(row_data)
+                sheetList[sheetNumber] = sheet;
+                log({ sheetNumber })
+                if (sheetNumber === 1) {
+                    for(;row_start<=row_end;row_start++) {
+                        row_data = [];
+                        if (row_start > 0) {
+                            for(i=col_start;i<=col_end;i++) {
+                                addr = xlsx.utils.encode_col(i) + xlsx.utils.encode_row(row_start);
+                                cell = sheet[addr];
+                                if (typeof cell === 'object') {
+                                    row_data.push(cell.v);
+                                }
+                                if (typeof cell === 'undefined') {
+                                    row_data.push('');
+                                }
+                            }
+                            rows.push(row_data);
                         }
-
-                        // console.log({ row_data })
-
-                        // Если это ссылка, сохраните ее как объект и сохраните исходное значение непосредственно в других форматах
-                        // if(cell.l) {
-                        //     console.log(cell.v)
-                        //     row_data.push({text: cell.v});
-                        // } else {
-                        //     row_data.push(cell.v);
-                        // }
-
-                        // row_data.push(cell.v);
                     }
-                    // console.log(row_data)
-                    rows.push(row_data);
-
-                    // console.log({ rows })
-                    //
-                    // console.log('--------------------------------------------------')
+                    let index = 0;
+                    rows.forEach(item => {
+                        const id = "nextval('transplant.clients_id_seq')";
+                        const text = `INSERT INTO transplant.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+                        const values = [item[0], item[1], item[2]];
+                        // log({ values })
+                        const res = query(text, values);
+                        res
+                            .then(data => {
+                                // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
+                                // client.res.writeHead(200, { 'Connection': 'close' });
+                                // client.res.write(text);
+                                // client.res.setHeader('Content-Text' + String(index), text);
+                                log({ data })
+                            })
+                            .catch(err => {
+                                // log({ index })
+                                // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
+                                // client.res.writeHead(500, { 'Connection': 'close' });
+                                // client.res.write(err);
+                                // client.res.setHeader('Content-Error' + String(index), err);
+                                error = true
+                                log('Content-Text' + String(index))
+                                log(err)
+                                // return;
+                            })
+                        // log({ res })
+                        index++;
+                    });
+                    log({ index })
+                    result[name] = rows;
                 }
-                // console.log({ rows })
-
-                // console.log(rows.length)
-
-                rows.forEach(item => {
-                    // if (item.length === 8) {
-                    //     // console.log(item[7])
-                    // }
-                    //
-                    // if (item.length === 9) {
-                    //     console.log(item[0])
-                    //     console.log(item[1])
-                    //     console.log(item[4])
-                    //     console.log('')
-                    //     console.log(item[8])
-                    //     console.log('------------------------------')
-                    // }
-
-                    console.log(item.length)
-                    console.log(item)
-                });
-
-                // for (item in rows) {
-                //     console.log({ item })
-                // }
-
-                console.log('--------------------------------------------------')
-                // Сохраняем данные на текущей странице
-                result[name] = rows;
             });
 
-            // console.log({ 'result': result })
+            // client.res.writeHead(200, { 'Connection': 'close' });
 
-            client.res.end('uploadClients');
+            // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
+            // client.res.writeHead(200, { 'Connection': 'close' });
+            client.res.writeHeader(200, {'Content-Type': 'text/html; charset=utf8', 'Error': error, 'Connection': 'close', });
+            client.res.end(`uploadClients`);
+            return result;
         } catch(err) {
             console.log({ err })
             client.res.writeHead(500, { 'Connection': 'close' });
             client.res.end(`${err}`);
-            // return {foo:'bar'}
         }
-
         // const render = tmpl.process({ title: 'upload', description: 'upload' }, 'upload/index.html');
         // return dto.stream(render);
-
     }
 
     async upload(client) {
