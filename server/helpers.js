@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const path = require('path');
 const fs = require('fs');
@@ -30,6 +30,10 @@ const __STATIC = (url) => {
 };
 
 const __VIEWS = (url) => {
+
+    // console.log({ 'url': url })
+    // console.log({ 'VIEWS_PATH': VIEWS_PATH })
+
     return (url) ? path.join(VIEWS_PATH, url) : VIEWS_PATH;
 };
 

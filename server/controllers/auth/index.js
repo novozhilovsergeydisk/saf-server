@@ -1,8 +1,9 @@
 'use strict';
 
-// const {log, __SERVER} = require('../../helpers.js');
+const {log} = require('../../helpers.js');
 const dto = require('../../lib/DTO/index.js');
 const {tmpl} = require('../../lib/Renderer/index.js');
+const userService = require('../../services/user-service/index.js');
 
 // Handlers
 class Auth {
@@ -11,7 +12,13 @@ class Auth {
     }
 
     async register(client) {
+        // log({ client })
 
+        const data = dto.stream('test');
+
+        // log({ data })
+
+        return data;
     }
 
     async logout(client) {

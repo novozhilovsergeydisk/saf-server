@@ -1,7 +1,7 @@
-'use strict'
+'use strict';
 
 // SAF - A simple and flexible server platform for building web applications and services
-const fs = require('fs')
+const fs = require('fs');
 const http = require('http');
 
 // const formidable = require('formidable');
@@ -136,6 +136,7 @@ const __404 = (res, info = null) => {
 };
 
 const send = (client => {
+    // log({ 'client.data': client.data })
     const data = JSON.stringify(client.data);
     client.res.setHeader('Content-Type', client.mimeType);
     client.res.statusCode = client.statusCode ? statusCode : 200;
@@ -152,6 +153,7 @@ class Server {
     response(mimeType, html, res, status = 200) {
         res.setHeader('Content-Type', mimeType);
         res.statusCode = status;
+        // log({ html })
         res.end(html);
     }
 
@@ -178,9 +180,9 @@ class Server {
             } else {
                 const hasRoute = route.has();
 
-                log(client.url)
-                log({ hasRoute })
-                log(client.fileExt)
+                // log(client.url)
+                // log({ hasRoute })
+                // log(client.fileExt)
 
                 if (!hasRoute) {
                     __404(res, '404 - ' + client.url);
@@ -263,77 +265,98 @@ class Server {
 
                         if (resolve !== 'headers_sent') {
                             const contentType = req.headers['content-type'];
-                            // log({ contentType })
-                            let body = null;
-                            let bodyArr = [];
-                            req.on('data', chunk => {
-                                // log({ chunk })
-                                bodyArr.push(chunk)
-                            });
-                            req.on('end', async function () {
-                                if (contentType === CONTENT_TYPES.FORM_URLENCODED) {
-                                    try {
-                                        body = bufferConcat(bodyArr); // bufferConcat
-                                        client.body = body;
-                                        const { stream } = await route.resolve(client);
-                                        client.data = stream[0];
-                                        response(client);
-                                        mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
-                                    } catch (er) {
-                                        // bad json
-                                        res.statusCode = 400;
-                                        res.end(`error: ${er.message}`);
+                            if (contentType === undefined) {
+                                res.writeHead(400, { 'Connection': 'close' });
+                                res.end(`Bad request`);
+                            } else {
+                                log({ contentType })
+                                let body = null;
+                                let bodyArr = [];
+                                req.on('data', chunk => {
+                                    // log({ chunk })
+                                    bodyArr.push(chunk)
+                                });
+                                req.on('end', async function () {
+                                    if (contentType === CONTENT_TYPES.FORM_URLENCODED) {
+                                        try {
+                                            body = bufferConcat(bodyArr); // bufferConcat
+                                            // log({ body })
+                                            client.body = body;
+                                            const { stream } = await route.resolve(client);
+
+                                            // log({ stream })
+                                            //
+                                            // log(typeof [{foo:'bar'}])
+
+                                            if ((typeof stream) === 'object') {
+                                                client.data = stream[0];
+                                            } else if ((typeof stream) === 'string') {
+                                                client.data = stream;
+                                            } else {
+                                                client.data = null;
+                                            }
+
+                                            // client.data = stream[0];
+                                            response(client);
+                                            mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
+                                        } catch (er) {
+                                            // bad json
+                                            res.statusCode = 400;
+                                            res.end(`error: ${er.message}`);
+                                        }
                                     }
-                                }
-                                if (contentType === CONTENT_TYPES.MULTIPART_FORMDATA) {
-                                    try {
-                                        // log('vbnbnbnfghrt456gfgfgf')
+                                    if (contentType === CONTENT_TYPES.MULTIPART_FORMDATA) {
+                                        try {
+                                            // log('vbnbnbnfghrt456gfgfgf')
 
-                                        body = bufferConcat(bodyArr); // bufferConcat
-                                        log({ body })
-                                        client.body = body;
-                                        const { stream } = await route.resolve(client);
-                                        client.data = stream[0];
+                                            body = bufferConcat(bodyArr); // bufferConcat
+                                            log({ body })
+                                            client.body = body;
+                                            const { stream } = await route.resolve(client);
+                                            client.data = stream[0];
 
-                                        body.forEach(item => {
-                                            log({ item })
-                                        })
+                                            body.forEach(item => {
+                                                log({ item })
+                                            })
 
-                                        log(typeof body)
+                                            log(typeof body)
 
-                                        // fs.writeFile('/Users/sergionov/Projects/transplant.net/node-server/server/xxx.png', body, function (err) {
-                                        //     log('save png')
-                                        //
-                                        //     if(err)
-                                        //         console.log('NNOOOOOOOOOOOO');
-                                        // });
-                                        // response(client);
-                                        // mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
-                                    } catch (er) {
-                                        // bad json
-                                        res.statusCode = 400;
-                                        res.end(`error: ${er.message}`);
+                                            // fs.writeFile('/Users/sergionov/Projects/transplant.net/node-server/server/xxx.png', body, function (err) {
+                                            //     log('save png')
+                                            //
+                                            //     if(err)
+                                            //         console.log('NNOOOOOOOOOOOO');
+                                            // });
+                                            // response(client);
+                                            // mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
+                                        } catch (er) {
+                                            // bad json
+                                            res.statusCode = 400;
+                                            res.end(`error: ${er.message}`);
+                                        }
                                     }
-                                }
-                                if (contentType === CONTENT_TYPES.APPLICATION_JSON) {
-                                    try {
-                                        body = replace('null', '', body);
-                                        // log({ body })
-                                        client.body = body;
-                                        const { stream } = await route.resolve(client);
-                                        client.data = stream[0];
-                                        response(client);
-                                        mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
-                                    } catch (er) {
-                                        // bad json
-                                        res.statusCode = 400;
-                                        res.end(`error: ${er.message}`);
+                                    if (contentType === CONTENT_TYPES.APPLICATION_JSON) {
+                                        try {
+                                            body = replace('null', '', body);
+                                            // log({ body })
+                                            client.body = body;
+                                            const { stream } = await route.resolve(client);
+                                            client.data = stream[0];
+                                            response(client);
+                                            mailAdmin.sendMessage(client.data, 'POST ' + client.url).catch(console.error('mailAdmin.sendMessage'));
+                                        } catch (er) {
+                                            // bad json
+                                            res.statusCode = 400;
+                                            res.end(`error: ${er.message}`);
+                                        }
                                     }
-                                }
-                            });
-                            req.on('information', (info) => {
-                                console.log(`Got information prior to main response: ${info.statusCode}`);
-                            });
+                                });
+                            }
+                        } else {
+                            res.writeHead(500, { 'Connection': 'close' });
+                            res.end(`Request sent
+                            
+                            `);
                         }
                     }
                 }

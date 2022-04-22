@@ -1,4 +1,4 @@
-
+'use strict';
 
 // const { database } = require('../conf.js');
 // const db = require('../lib/DB');
@@ -9,20 +9,12 @@ const { promise, query, generateToken, log } = require('../../helpers');
 class AdminService {
     constructor() {}
 
-    async clientByPhone(phone) {
-        if (phone) {
-            const res = await query('SELECT * FROM transplant.clients WHERE phone = $1', [phone]);
-            return res;
-        }
-    }
-
     async clinics(client) {
-        const res = await query('SELECT * FROM cabinet ORDER BY name', []);
+        const text = 'SELECT * FROM cabinet ORDER BY name';
+        const res = await query(text, []);
         // const data = res[0];
-        log({ res })
-        log(typeof res)
         return res;
-        // return { admList: {  id: 159, name: 'Гришин C.B.', email: 'jabapoint@list.ru', days_left: -516  } }
+        // return { patList: {  id: 159, name: 'Гришин C.B.', email: 'jabapoint@list.ru', days_left: -516  } }
     }
 
     async clinicById(client) {
@@ -34,7 +26,8 @@ class AdminService {
         if (cached.has(`clinicById(${id})`)) {
             console.time('cached-clinicHTML');
             const clinics = cached.get(`clinicById(${id})`);
-            if (cachedHTML.has(`clinicById(${id})`)) {
+            if (cachedHTML.has(`clinicById
+            (${id})`)) {
                 const render = cachedHTML.get(`clinicById(${id})`)
                 stream = promise(render);
             } else {
@@ -78,45 +71,23 @@ class AdminService {
         // const faker = require('faker');
         const name = data.name; // faker.name.findName();
         const phone = data.phone; // faker.internet.email();
-
-        const nextval = "nextval('crm.clients_id_seq')";
-
-        const text = `INSERT INTO crm.clients VALUES(${nextval}, $1, $2, $3) RETURNING *`;
+        const nextval = "nextval('transplant.clients_id_seq')";
+        const text = `INSERT INTO transplant.clients VALUES(${nextval}, $1, $2, $3) RETURNING *`;
         const values = [name, phone, generateToken(10)];
 
         log({ values })
 
         return query(text, values);
     }
-    async addOrder(client_id) {
-        log(new Date())
-        log(client_id)
-        // const faker = require('faker');
-        // const name = data.name; // faker.name.findName();
-        // const phone = data.phone; // faker.internet.email();
-
-        const nextval = "nextval('crm.orders_id_seq')";
-        const text = `INSERT INTO crm.orders VALUES(${nextval}, $1, now(), now()) RETURNING *`;
-        const values = [client_id];
-        const result = query(text, values);
-        log({ result })
-        return result;
-    }
 
     addClient(client) {
         // const body = client.body;
         const { name, phone } = client.body;
-        log({ name });
-        log({ phone });
-
-        // log(name, phone);
         const faker = require('faker');
         const randomName = faker.name.findName();
         const randomEmail = faker.internet.email();
-
-        const nextval = "nextval('crm.clients_id_seq')";
-
-        const text = `INSERT INTO crm.clients VALUES(${nextval}, $1, $2, $3) RETURNING *`;
+        const id = "nextval('transplant.clients_id_seq')";
+        const text = `INSERT INTO transplant.clients VALUES(id, $1, $2, $3) RETURNING *`;
         const values = [randomName, randomEmail, generateToken()];
 
         log({ values });
@@ -124,17 +95,14 @@ class AdminService {
         return query(text, values);
     }
 
-    order(client) {
-        const faker = require('faker');
-        const randomName = faker.name.findName();
-        const randomEmail = faker.internet.email();
-
-        const nextval = "nextval('crm.clients_id_seq')";
-
-        const text = `INSERT INTO tcrm.clients VALUES(${nextval}, $1, $2, $3) RETURNING *`;
-        const values = [randomName, randomEmail, generateToken()];
-        return query(text, values);
+    async clientByPhone(phone) {
+        if (phone) {
+            const text = 'SELECT * FROM transplant.clients WHERE phone = $1';
+            const res = await query(text, [phone]);
+            return res;
+        }
     }
+
 }
 
 module.exports = new AdminService();

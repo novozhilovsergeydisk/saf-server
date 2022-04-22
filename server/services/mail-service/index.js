@@ -1,5 +1,7 @@
+'use strict';
+
 const nodemailer = require('nodemailer');
-const conf = require('../conf.js');
+const conf = require('../../conf.js');
 
 class MailService {
     constructor(obj = null) {
