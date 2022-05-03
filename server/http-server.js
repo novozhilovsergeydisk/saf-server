@@ -1,20 +1,179 @@
 'use strict';
 
+const conf = require('./conf.js');
+process.env.PGHOST = conf.db.host;
+process.env.PGUSER = conf.db.user;
+process.env.PGDATABASE = conf.db.name;
+process.env.PGPASSWORD = conf.db.password;
+process.env.PGPORT = conf.db.port;
+
 // SAF - A simple and flexible server platform for building web applications and services
 const fs = require('fs');
 const http = require('http');
+
+const { faker } = require('@faker-js/faker');
 
 // const formidable = require('formidable');
 // const router = require('find-my-way')();
 const Route = require('./routes.js');
 const ClientApp = require('./lib/Client/index.js');
 const {bufferConcat, replace, memory, notify, log, generateToken, hash, httpMethods, query} = require('./helpers.js');
-const conf = require('./conf.js');
 // const {mkd} = require('./lib/Renderer/index.js');
 const {mailAdmin} = require('./lib/Mailer/index.js');
 const adminService = require('./services/admin-service/index.js');
 
 const { logger } = require('./lib/Logger/index.js');
+
+const { Pool } = require('pg');
+const pool = new Pool();
+for (let i = 1; i <= 250; i++) {
+//     pool.connect((err, client, release) => {
+//         if (err) {
+//             return console.error('Error acquiring client', err.stack)
+//         }
+//
+//             // log({ i })
+//     const id = `nextval('${conf.db.schema}.clients_id_seq')`;
+//     const text = `INSERT INTO ${conf.db.schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+//     // log({ text })
+//     const randomName = faker.name.findName(); // Rowan Nikolaus
+//     const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
+//     const randomPhoneNumber = faker.phone.phoneNumber(); // (279) 329-8663 x30233
+//     const values = [randomName, randomPhoneNumber , randomEmail];
+// // // const values = [item[0], item[1], item[2]];
+// // //     log({ values })
+// //     const res = query(text, values);
+//
+//         client.query(text, values, (err, result) => {
+//             release()
+//             if (err) {
+//                 return console.error('Error executing query', err.stack)
+//             }
+//             log({ i })
+//             console.log(result.rows)
+//         })
+//
+//         // client.query('SELECT NOW()', (err, result) => {
+//         //     release()
+//         //     if (err) {
+//         //         return console.error('Error executing query', err.stack)
+//         //     }
+//         //     log({ i })
+//         //     console.log(result.rows)
+//         // })
+//
+//         // client.query('SELECT NOW()', (err, result) => {
+//         //     release()
+//         //     if (err) {
+//         //         return console.error('Error executing query', err.stack)
+//         //     }
+//         //     console.log(result.rows)
+//         // })
+//     })
+}
+
+// for (let i = 1; i <= 500; i++) {
+//     log({ i })
+//     const id = `nextval('${conf.db.schema}.clients_id_seq')`;
+//     const text = `INSERT INTO ${conf.db.schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+//     // log({ text })
+//     const randomName = faker.name.findName(); // Rowan Nikolaus
+//     const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
+//     const randomPhoneNumber = faker.phone.phoneNumber(); // (279) 329-8663 x30233
+//     const values = [randomName, randomPhoneNumber , randomEmail];
+// // const values = [item[0], item[1], item[2]];
+// //     log({ values })
+//     const res = query(text, values);
+//     res
+//         .then(data => {
+//             // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
+//             // client.res.writeHead(200, { 'Connection': 'close' });
+//             // client.res.write(text);
+//             // client.res.setHeader('Content-Text' + String(index), text);
+//             // log({ data })
+//         })
+//         .catch(err => {
+//             // log({ index })
+//             // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
+//             // client.res.writeHead(500, { 'Connection': 'close' });
+//             // client.res.write(err);
+//             // client.res.setHeader('Content-Error' + String(index), err);
+//             // error = true
+//             // log('id ' + String(id))
+//             // log({ text })
+//             log({ i })
+//             log({ values })
+//             log({ err })
+//             log('--------------------------------------------------------------')
+//             // return;
+//         })
+// }
+
+// const insertClient = async (userName, userRole) => {
+//     try {
+//
+//         try {
+//             const client_pg = new Client();
+//             await client_pg.connect();
+//             const res = await client_pg.query(text, values);
+//             resolve(res.rows);
+//             await client_pg.end();
+//         } catch (e) {
+//             reject(e.message);
+//         }
+//
+//         await client.connect();           // gets connection
+//         await client.query(
+//             `INSERT INTO "users" ("name", "role")
+//              VALUES ($1, $2)`, [userName, userRole]); // sends queries
+//         return true;
+//     } catch (error) {
+//         console.error(error.stack);
+//         return false;
+//     } finally {
+//         await client.end();               // closes connection
+//     }
+// };
+
+// const id = `nextval('${conf.db.schema}.clients_id_seq')`;
+// const text = `INSERT INTO ${conf.db.schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+// log({ text })
+// const randomName = faker.name.findName(); // Rowan Nikolaus
+// const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
+// const randomPhoneNumber = faker.phone.phoneNumber(); // (279) 329-8663 x30233
+// const values = [randomName, randomPhoneNumber , randomEmail];
+// // const values = [item[0], item[1], item[2]];
+// log({ values })
+// const res = query(text, values);
+// res
+
+//     .then(data => {
+//         // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
+//         // client.res.writeHead(200, { 'Connection': 'close' });
+//         // client.res.write(text);
+//         // client.res.setHeader('Content-Text' + String(index), text);
+//         log({ data })
+//     })
+//     .catch(err => {
+//         // log({ index })
+//         // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
+//         // client.res.writeHead(500, { 'Connection': 'close' });
+//         // client.res.write(err);
+//         // client.res.setHeader('Content-Error' + String(index), err);
+//         // error = true
+//         // log('id ' + String(id))
+//         // log({ text })
+//         log({ values })
+//         log({ err })
+//
+//         log('--------------------------------------------------------------')
+//         // return;
+//     })
+
+
+
+
+
 
 // const { randomFillSync } = require('crypto');
 // // const os = require('os');
@@ -56,12 +215,6 @@ log({ logger })
 // log({ sys });
 
 // sys.puts(sys.inspect(someVariable));
-
-process.env.PGHOST = conf.db.host;
-process.env.PGUSER = conf.db.user;
-process.env.PGDATABASE = conf.db.name;
-process.env.PGPASSWORD = conf.db.password;
-process.env.PGPORT = conf.db.port;
 
 console.table(memory())
 

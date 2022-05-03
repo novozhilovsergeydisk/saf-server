@@ -286,13 +286,15 @@ const connect = (sql => {
     });
 });
 
+// const client_pg = new Client();
+
 const select = connect;
 
 const parse = ((text, values) => {
     return new Promise((resolve, reject) => {
         (async () => {
+            const client_pg = new Client();
             try {
-                const client_pg = new Client();
                 await client_pg.connect();
                 const res = await client_pg.query(text, values);
                 resolve(res.rows);

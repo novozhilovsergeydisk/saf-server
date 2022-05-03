@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/novozhilovsergeydisk/saf-server#readme",
   "devDependencies": {
+    "@faker-js/faker": "^6.3.1",
     "eslint": "^8.8.0",
-    "faker": "^5.5.3",
     "nodemon": "^2.0.15"
   },
   "dependencies": {

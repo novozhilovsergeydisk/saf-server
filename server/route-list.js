@@ -40,7 +40,7 @@ const routing = {
     },
     'PUT': {
         '/upload': uploadController.upload,
-        '/upload-clients': uploadController.uploadClients,
+        '/upload-clients': uploadController.saveClients,
         '/pull': responseController.save,
     }
 };

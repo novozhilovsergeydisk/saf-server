@@ -1,4 +1,5 @@
 'use strict';
+const { faker } = require('@faker-js/faker');
 
 const fs = require('fs');
 const path = require('path');
@@ -7,7 +8,11 @@ const xlsx = require('xlsx');
 const {log, query, __SERVER, __UPLOAD} = require('../../helpers.js');
 const dto = require(__SERVER() + '/lib/DTO/index.js');
 const { tmpl } = require(__SERVER() + '/lib/Renderer/index.js');
-
+const conf = require('../../conf.js');
+const { Pool } = require('pg');
+const pool = new Pool();
+// log(`${conf.db.schema}`)
+// log({ __UPLOAD })
 // const cached = new Map();
 // const cachedHTML = new Map();
 
@@ -18,8 +23,8 @@ class UploadControllers {
         return dto.stream(render);
     }
 
-    async uploadClients(client) {
-        const file = '/Users/sergionov/Projects/transplant.net/node-server/server/storage/upload/patients.xlsx';
+    async saveClients(client) {
+        const file = __UPLOAD() + '/clients.xls';
         try {
             const book = xlsx.readFileSync(file);
             let result = {};
@@ -56,35 +61,111 @@ class UploadControllers {
                         }
                     }
                     let index = 0;
+                    let res = null;
                     rows.forEach(item => {
-                        const id = "nextval('transplant.clients_id_seq')";
-                        const text = `INSERT INTO transplant.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
-                        const values = [item[0], item[1], item[2]];
+                        if (index < 190) {
+                            pool.connect((err, client, release) => {
+                                if (err) {
+                                    return console.error('Error acquiring client', err.stack)
+                                }
+                                const id = `nextval('${conf.db.schema}.clients_id_seq')`;
+                                const text = `INSERT INTO ${conf.db.schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+                                const values = [item[0], item[1], item[2]];
+                                client.query(text, values, (err, result) => {
+                                    release()
+                                    if (err) {
+                                        return console.error('Error executing query', err.stack)
+                                    }
+                                    // log({ i })
+                                    console.log(result.rows)
+                                })
+                            })
+                        }
+
+                        // pool.connect((err, client, release) => {
+                        //     if (err) {
+                        //         return console.error('Error acquiring client', err.stack)
+                        //     }
+                        //
+                        //     // log({ i })
+                        //     const id = `nextval('${conf.db.schema}.clients_id_seq')`;
+                        //     const text = `INSERT INTO ${conf.db.schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+                        //     // log({ text })
+                        //
+                        //     // const randomName = faker.name.findName(); // Rowan Nikolaus
+                        //     // const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
+                        //     // const randomPhoneNumber = faker.phone.phoneNumber(); // (279) 329-8663 x30233
+                        //     // const values = [randomName, randomPhoneNumber , randomEmail];
+                        //
+                        //     const values = [item[0], item[1], item[2]];
+                        //
+                        //     client.query(text, values, (err, result) => {
+                        //         release()
+                        //         if (err) {
+                        //             return console.error('Error executing query', err.stack)
+                        //         }
+                        //         log({ i })
+                        //         console.log(result.rows)
+                        //     })
+                        //
+                        //     // client.query('SELECT NOW()', (err, result) => {
+                        //     //     release()
+                        //     //     if (err) {
+                        //     //         return console.error('Error executing query', err.stack)
+                        //     //     }
+                        //     //     log({ i })
+                        //     //     console.log(result.rows)
+                        //     // })
+                        //
+                        //     // client.query('SELECT NOW()', (err, result) => {
+                        //     //     release()
+                        //     //     if (err) {
+                        //     //         return console.error('Error executing query', err.stack)
+                        //     //     }
+                        //     //     console.log(result.rows)
+                        //     // })
+                        // })
+
+                        // const id = `nextval('${conf.db.schema}.clients_id_seq')`;
+                        // const text = `INSERT INTO ${conf.db.schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+                        // // log({ text })
+                        //
+                        // const randomName = faker.name.findName(); // Rowan Nikolaus
+                        // const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
+                        // const randomPhoneNumber = faker.phone.phoneNumber(); // (279) 329-8663 x30233
+                        // const values = [randomName, randomPhoneNumber , randomEmail];
+                        // const values = [item[0], item[1], item[2]];
                         // log({ values })
-                        const res = query(text, values);
-                        res
-                            .then(data => {
-                                // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
-                                // client.res.writeHead(200, { 'Connection': 'close' });
-                                // client.res.write(text);
-                                // client.res.setHeader('Content-Text' + String(index), text);
-                                log({ data })
-                            })
-                            .catch(err => {
-                                // log({ index })
-                                // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
-                                // client.res.writeHead(500, { 'Connection': 'close' });
-                                // client.res.write(err);
-                                // client.res.setHeader('Content-Error' + String(index), err);
-                                error = true
-                                log('Content-Text' + String(index))
-                                log(err)
-                                // return;
-                            })
+
+                        // res = query(text, values);
+                        // res
+                        //     .then(data => {
+                        //         // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
+                        //         // client.res.writeHead(200, { 'Connection': 'close' });
+                        //         // client.res.write(text);
+                        //         // client.res.setHeader('Content-Text' + String(index), text);
+                        //         // log({ data })
+                        //     })
+                        //     .catch(err => {
+                        //         // log({ index })
+                        //         // client.res.setHeader('Content-Type', 'text/html; charset=utf8');
+                        //         // client.res.writeHead(500, { 'Connection': 'close' });
+                        //         // client.res.write(err);
+                        //         // client.res.setHeader('Content-Error' + String(index), err);
+                        //         error = true
+                        //         // log('id ' + String(id))
+                        //         // log({ text })
+                        //         log({ values })
+                        //         log({ err })
+                        //
+                        //         log('--------------------------------------------------------------')
+                        //         // return;
+                        //     })
+                        //
                         // log({ res })
                         index++;
                     });
-                    log({ index })
+                    // log({ index })
                     result[name] = rows;
                 }
             });
