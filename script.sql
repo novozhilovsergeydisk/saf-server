@@ -4,6 +4,17 @@ SELECT * FROM current_catalog
 CREATE SCHEMA crm
 ;
 
+CREATE TABLE crm.token (
+	id serial NOT NULL,
+	user_id INT NOT NULL,
+	refreshToken VARCHAR(100) DEFAULT NULL,
+	CONSTRAINT token_pkey PRIMARY KEY (id),
+	CONSTRAINT fk_users
+  		FOREIGN KEY(user_id)
+	  		REFERENCES crm.users(id)
+	  		ON DELETE CASCADE
+);
+
 -- DROP TABLE crm.clients
 -- 1
 CREATE TABLE crm.clients (

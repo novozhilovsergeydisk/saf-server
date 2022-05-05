@@ -7,6 +7,9 @@ process.env.PGDATABASE = conf.db.name;
 process.env.PGPASSWORD = conf.db.password;
 process.env.PGPORT = conf.db.port;
 
+process.env.JWT_ACCESS_TOKEN = conf.jwt_access_token;
+process.env.JWT_REFRESH_TOKEN = conf.jwt_refresh_token;
+
 // SAF - A simple and flexible server platform for building web applications and services
 const fs = require('fs');
 const http = require('http');
@@ -26,6 +29,9 @@ const { logger } = require('./lib/Logger/index.js');
 
 const { Pool } = require('pg');
 const pool = new Pool();
+
+log(process.env)
+
 for (let i = 1; i <= 250; i++) {
 //     pool.connect((err, client, release) => {
 //         if (err) {

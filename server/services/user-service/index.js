@@ -48,7 +48,7 @@ class UserService {
         //const hashPassword = await bcrypt.hash(password, 3);
 
         // const secret = 'abcdefg';
-        const hashPassword = crypto.createHmac('sha256', secret)
+        const hashPassword = crypto.createHmac('sha256', password)
             .update('I love cupcakes')
             .digest('hex');
 
