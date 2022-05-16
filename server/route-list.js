@@ -7,8 +7,6 @@ const {staticController, mainController} = require('./controllers/main/index.js'
 const {responseController} = require('./services/response-service/index.js')
 const { getContent }   = require('./lib/File/index.js')
 
-// console.log({ 'uploadController': uploadController })
-
 const routing = {
     'GET': {
         '/': mainController.index,

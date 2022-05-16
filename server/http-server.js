@@ -30,9 +30,9 @@ const { logger } = require('./lib/Logger/index.js');
 const { Pool } = require('pg');
 const pool = new Pool();
 
-log(process.env)
+// log(process.env)
 
-for (let i = 1; i <= 250; i++) {
+// for (let i = 1; i <= 250; i++) {
 //     pool.connect((err, client, release) => {
 //         if (err) {
 //             return console.error('Error acquiring client', err.stack)
@@ -76,7 +76,7 @@ for (let i = 1; i <= 250; i++) {
 //         //     console.log(result.rows)
 //         // })
 //     })
-}
+// }
 
 // for (let i = 1; i <= 500; i++) {
 //     log({ i })
@@ -175,11 +175,6 @@ for (let i = 1; i <= 250; i++) {
 //         log('--------------------------------------------------------------')
 //         // return;
 //     })
-
-
-
-
-
 
 // const { randomFillSync } = require('crypto');
 // // const os = require('os');

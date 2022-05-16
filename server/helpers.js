@@ -286,8 +286,6 @@ const connect = (sql => {
     });
 });
 
-// const client_pg = new Client();
-
 const select = connect;
 
 const parse = ((text, values) => {
