@@ -84,6 +84,7 @@ const parse = (input => {
         rows.forEach(item => {
             // if (item.length === 8) {
             //     // console.log(item[7])
+
             // }
             //
             // if (item.length === 9) {

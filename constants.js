@@ -1,7 +1,8 @@
-const path = require('path');
-const { views_path } = require('./server/conf.js');
+'use strict';
 
-// console.log({ 'views_path': views_path })
+const path = require('path');
+
+const views_path = process.env.VIEWS_PATH;
 
 const MIME_TYPES = {
     html:    'text/html',
@@ -25,14 +26,25 @@ const MIME_TYPES = {
     mp4:     'video/mp4'
 };
 
-// var idx = array.indexOf(element);
-
 const ALLOWED_METHODS = ['GET', 'POST', 'PUT'];
 
-// let test = ALLOWED_METHODS.indexOf('PUT');
-// console.log({test })
-// test = ALLOWED_METHODS.indexOf('PATCH');
-// console.log({test })
+const appPath = path.resolve(__dirname);
+
+const CONSTANTS = {
+    MIME_TYPES: MIME_TYPES,
+    APP_PATH: appPath,
+    SERVER_PATH: appPath + '/server',
+    SERVICES_PATH: appPath + '/server/services',
+    STORAGE_PATH: appPath + '/server/storage',
+    UPLOAD_PATH: appPath + '/server/storage/upload',
+    RESOURCES_PATH: appPath + '/src',
+    VIEWS_PATH: appPath + views_path,
+    CONTROLLERS_PATH: appPath + '/controllers/',
+    STATIC_PATH: path.join(appPath, './static'),
+    ALLOWED_METHODS: ALLOWED_METHODS
+};
+
+module.exports = CONSTANTS;
 
 // const HTTPMethod = {
 //     'ACL': false,
@@ -70,24 +82,3 @@ const ALLOWED_METHODS = ['GET', 'POST', 'PUT'];
 //     'UNLOCK': false,
 //     'UNSUBSCRIBE' : false
 // };
-
-const appPath = path.resolve(__dirname);
-
-// console.log({ appPath });
-// console.log(appPath + views_name);
-
-const CONSTANTS = {
-    MIME_TYPES: MIME_TYPES,
-    APP_PATH: appPath,
-    SERVER_PATH: appPath + '/server',
-    SERVICES_PATH: appPath + '/server/services',
-    STORAGE_PATH: appPath + '/server/storage',
-    UPLOAD_PATH: appPath + '/server/storage/upload',
-    RESOURCES_PATH: appPath + '/src',
-    VIEWS_PATH: appPath + views_path,
-    CONTROLLERS_PATH: appPath + '/controllers/',
-    STATIC_PATH: path.join(appPath, './static'),
-    ALLOWED_METHODS: ALLOWED_METHODS
-};
-
-module.exports = CONSTANTS;

@@ -58,16 +58,45 @@ const {log} = require('../../helpers.js');
 // }
 
 // 6
-const X = {foo: 'bar', do: 'it'};
-
-const {
-    setImmediate,
-} = require('timers/promises');
-
-// setImmediate('result').then((res) => {
-//     console.log(res);  // Prints 'result'
+// const X = {foo: 'bar', do: 'it'};
+//
+// const {
+//     setImmediate,
+// } = require('timers/promises');
+//
+// // setImmediate('result').then((res) => {
+// //     console.log(res);  // Prints 'result'
+// // });
+//
+// setImmediate(X).then((res) => {
+//     log({ res });  // Prints 'result'
 // });
 
-setImmediate(X).then((res) => {
-    log({ res });  // Prints 'result'
+// 7
+
+setImmediate(() => {
+    console.log('setImmediate')
+    //выполнить некий код
+})
+
+const bar = () => console.log('bar')
+const baz = () => console.log('baz')
+const foo = () => {
+    console.log('foo')
+    setTimeout(bar, 0)
+    new Promise((resolve, reject) =>
+        resolve('should be right after baz, before bar')
+    ).then(resolve => console.log(resolve))
+    baz()
+}
+foo();
+process.nextTick(() => {
+    console.log('process.nextTick')
+    //выполнить какие-то действия
 });
+//console.log('=================');
+
+
+
+
+

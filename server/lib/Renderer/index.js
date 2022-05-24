@@ -70,6 +70,9 @@ class Context {
     }
 
     process(data, path) {
+        log({ data })
+        log({ path })
+
         return this.renderer.render(data, path);
     }
 }

@@ -6,7 +6,6 @@ const xlsx = require('xlsx');
 const crypto = require('crypto');
 const {Client} = require('pg');
 const {mail} = require('./lib/Mailer/index.js');
-const conf = require('./conf.js');
 const {STATIC_PATH, VIEWS_PATH, APP_PATH, SERVER_PATH, STORAGE_PATH, UPLOAD_PATH, MIME_TYPES, ALLOWED_METHODS} = require('../constants.js');
 const TOKEN_LENGTH = 32;
 const ALPHA_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -14,8 +13,6 @@ const ALPHA_LOWER = 'abcdefghijklmnopqrstuvwxyz';
 const ALPHA = ALPHA_UPPER + ALPHA_LOWER;
 const DIGIT = '0123456789';
 const ALPHA_DIGIT = ALPHA + DIGIT;
-
-// console.log({ 'ALLOWED_METHODS': ALLOWED_METHODS['GET'] })
 
 const httpMethods = () => {
     return ALLOWED_METHODS;
@@ -30,10 +27,6 @@ const __STATIC = (url) => {
 };
 
 const __VIEWS = (url) => {
-
-    // console.log({ 'url': url })
-    // console.log({ 'VIEWS_PATH': VIEWS_PATH })
-
     return (url) ? path.join(VIEWS_PATH, url) : VIEWS_PATH;
 };
 
@@ -154,8 +147,9 @@ const generateToken = (length = null) => {
 const token = generateToken;
 
 const hash = () => {
+    // log({ 'process.env.SECRET_KEY': process.env.SECRET_KEY })
     const phrase = generateToken();
-    const hash = crypto.createHmac('sha256', conf.secret)
+    const hash = crypto.createHmac('sha256', process.env.SECRET_KEY)
         .update(phrase)
         .digest('hex');
     return hash;
@@ -325,15 +319,15 @@ const parseXslx = (input => {
 
     var book = xlsx.readFileSync(input), result = {};
     // Циклическое переключение каждой страницы листа на листе
-    book.SheetNames.forEach(function(name){
+    book.SheetNames.forEach(function(name) {
         // Получить текущий объект страницы листа
         var sheet = book.Sheets[name],
-            // Получаем диапазон данных на текущей странице
-            range = xlsx.utils.decode_range(sheet['!ref']),
-            // Сохраняем данные диапазона данных
-            row_start = range.s.r, row_end = range.e.r,
-            col_start = range.s.c, col_end = range.e.c,
-            rows = [], row_data, i, addr, cell;
+        // Получаем диапазон данных на текущей странице
+        range = xlsx.utils.decode_range(sheet['!ref']),
+        // Сохраняем данные диапазона данных
+        row_start = range.s.r, row_end = range.e.r,
+        col_start = range.s.c, col_end = range.e.c,
+        rows = [], row_data, i, addr, cell;
         // Перебираем данные построчно
 
         console.log('START ----------------------')
@@ -398,19 +392,6 @@ const parseXslx = (input => {
         // console.log(rows.length)
 
         rows.forEach(item => {
-            // if (item.length === 8) {
-            //     // console.log(item[7])
-            // }
-            //
-            // if (item.length === 9) {
-            //     console.log(item[0])
-            //     console.log(item[1])
-            //     console.log(item[4])
-            //     console.log('')
-            //     console.log(item[8])
-            //     console.log('------------------------------')
-            // }
-
             console.log(item)
         });
 
@@ -418,7 +399,7 @@ const parseXslx = (input => {
         //     console.log({ item })
         // }
 
-        console.log('--------------------------------------------------')
+        // console.log('--------------------------------------------------')
         // Сохраняем данные на текущей странице
         result[name] = rows;
     });

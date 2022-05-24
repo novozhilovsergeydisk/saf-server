@@ -10,22 +10,50 @@ const {tmpl} = require('../../lib/Renderer/index.js');
 
 // Handlers
 class reportsControllers {
+    async reports(client) {
+        const data = await adminService.clinics();
+        const reports = await adminService.reports();
+
+        // reports.forEach(item => {
+        //     log(item[0].count)
+        // })
+
+        // log(typeof  reports)
+
+        log({ reports })
+        const render = tmpl.process({ reports: {}, clinics: data }, 'reports/index.html');
+        return render;
+    }
+
+    async annualReports(client) {
+        const data = await adminService.annualReports();
+        const render = tmpl.process({ reports: data }, 'reports/annual/index.html');
+        return render;
+    }
+
+    async monthlyReports() {
+        const data = await adminService.monthlyReports();
+        const render = tmpl.process({ reports: data }, 'reports/monthly/index.html');
+        return render;
+    }
+
     async clinics(client) {
         const data = await adminService.clinics();
-        client.res.setHeader('reports', 'clinics');
+        log(typeof data)
+        client.res.setHeader('Content-Type', 'text/html');
+        client.res.setHeader('clinics', data);
         client.res.writeHead(200, { 'Connection': 'close' });
         client.res.end( `${data}` );
-        log({ data })
         return 'headers_sent';
     }
 
     async getClinics(client) {
-        const data = await adminService.clinics();
+        const clinics = await adminService.clinics();
         client.res.setHeader('Content-Type', 'application/json');
         client.res.setHeader('reports', 'clinics');
         client.res.writeHead(200, { 'Connection': 'close' });
-        client.res.end(JSON.stringify({ success: true, data: data }));
-        log({ data })
+        const data = JSON.stringify({ success: true, data: clinics });
+        client.res.end(data);
         return 'headers_sent';
     }
 

@@ -1,17 +1,17 @@
 'use strict';
 
 const nodemailer = require('nodemailer');
-const conf = require('../../conf.js');
+// const conf = require('../../conf.js');
 
 class MailService {
     constructor(obj = null) {
         this.transporter = nodemailer.createTransport({
-            host: conf.mailer.host,
-            port: conf.mailer.port,
-            secure: conf.mailer.secure,
+            host: process.env.MAILER_HOST,
+            port: process.env.MAILER_PORT,
+            secure: process.env.MAILER_SECURE,
             auth: {
-                user: conf.mailer.auth.user,
-                pass: conf.mailer.auth.pass
+                user: process.env.MAILER_AUTH_USER,
+                pass: process.env.MAILER_AUTH_PASS
             }
         });
 

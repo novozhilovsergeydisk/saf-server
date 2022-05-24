@@ -2,23 +2,11 @@
 
 // const UserModel = require('../models/user-model');
 const users = require('../../models/Users/index.js');
-const secret = require('../../conf.js');
 //const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const mailService = require('../mail-service/index.js');
-// const db = require('../../lib/Database/index.js');
 const {DTOFactory, log} = require('../../helpers');
 const crypto = require('crypto');
-
-log({ users })
-
-// const pg = db.open({
-//     user: 'postgres',
-//     host: '127.0.0.1',
-//     database: 'transplant_net_ru',
-//     password: 'postgres_12345',
-//     port: 5432
-// });
 
 class UserService {
     constructor() {}

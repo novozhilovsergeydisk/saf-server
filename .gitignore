@@ -1,7 +1,7 @@
 .clinic/
 .idea/
+.env
 node_modules/
-server/conf.js
 test/
 
 

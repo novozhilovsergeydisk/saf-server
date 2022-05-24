@@ -9,6 +9,94 @@ const { promise, query, generateToken, log } = require('../../helpers');
 class AdminService {
     constructor() {}
 
+    // 2021 8188
+    // 2020 4905
+
+    async reports() {
+        // const someString = 'hi';
+        // log({ 'Symbol.iterator': Symbol.iterator })
+        // log(typeof someString[Symbol.iterator]); // "function"
+        // const iterator = someString[Symbol.iterator]();
+        // log(iterator + ''); // "[object String Iterator]"
+        //
+        // log(iterator.next()); // { value: "h", done: false }
+        // log(iterator.next()); // { value: "i", done: false }
+        // log(iterator.next()); // { value: undefined, done: true }
+
+        const years = [ 2020, 2021, 2022 ];
+        const arrRes = [];
+
+        for (const year of years) {
+            const sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '${year}-01-01 00:00:00' AND datetime < '${year}-01-30 23:59:59' AND uri LIKE '%pat%'`;
+            const res = await query(sql, []);
+            arrRes.push(res);
+            // log({ res })
+        }
+
+        arrRes.forEach(year => {
+            log({ year })
+        })
+
+        // log({ arrRes })
+
+        return arrRes;
+    }
+
+    async monthlyReports() {
+        const days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,28, 29, 30];
+        const months = [];
+        const arrRes = [];
+
+        for (const day of days) {
+            const sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '2022-01-${day} 00:00:00' AND datetime < '2022-01-30 23:59:59' AND uri LIKE '%pat%'`;
+            const res = await query(sql, []);
+            arrRes.push(res);
+            // log({ res })
+        }
+
+        arrRes.forEach(year => {
+            log({ year })
+        })
+
+        const sqlStr = `SELECT count(*)
+            FROM 
+              account a
+            INNER JOIN 
+              doc_pat dp ON dp.patient = a.id
+            INNER JOIN 
+              cab_acct ca ON ca.account = dp.doctor
+            INNER JOIN 
+              acct_pat ap ON ap.account = a.id
+        `;
+
+
+
+        // log({ arrRes })
+
+        return arrRes;
+    }
+
+    async annualReports() {
+        const years = [ 2020, 2021, 2022 ];
+        const arrRes = [];
+
+        for (const year of years) {
+            const sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '${year}-01-01 00:00:00' AND datetime < '${year}-01-30 23:59:59' AND uri LIKE '%pat%'`;
+            const res = await query(sql, []);
+            arrRes.push(res);
+            // log({ res })
+        }
+
+        arrRes.forEach(year => {
+            log({ year })
+        })
+
+        // log({ arrRes })
+
+        return arrRes;
+    }
+
+
     async clinics(client) {
         const text = 'SELECT * FROM cabinet ORDER BY name';
         const res = await query(text, []);

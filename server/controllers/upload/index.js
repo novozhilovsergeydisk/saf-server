@@ -8,11 +8,9 @@ const xlsx = require('xlsx');
 const {log, query, __SERVER, __UPLOAD} = require('../../helpers.js');
 const dto = require(__SERVER() + '/lib/DTO/index.js');
 const { tmpl } = require(__SERVER() + '/lib/Renderer/index.js');
-const conf = require('../../conf.js');
 const { Pool } = require('pg');
 const pool = new Pool();
-// log(`${conf.db.schema}`)
-// log({ __UPLOAD })
+
 // const cached = new Map();
 // const cachedHTML = new Map();
 
@@ -22,6 +20,8 @@ class UploadControllers {
         const render = tmpl.process({ title: 'upload', description: 'upload' }, 'upload/index.html');
         return dto.stream(render);
     }
+
+    async
 
     async saveClients(client) {
         const file = __UPLOAD() + '/clients.xls';
@@ -61,15 +61,16 @@ class UploadControllers {
                         }
                     }
                     let index = 0;
-                    let res = null;
+                    // let res = null;
                     rows.forEach(item => {
                         if (index < 190) {
                             pool.connect((err, client, release) => {
                                 if (err) {
                                     return console.error('Error acquiring client', err.stack)
                                 }
-                                const id = `nextval('${conf.db.schema}.clients_id_seq')`;
-                                const text = `INSERT INTO ${conf.db.schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+                                const schema = process.env.PGSCHEMA;
+                                const id = `nextval('${schema}.clients_id_seq')`;
+                                const text = `INSERT INTO ${schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
                                 const values = [item[0], item[1], item[2]];
                                 client.query(text, values, (err, result) => {
                                     release()
@@ -88,8 +89,8 @@ class UploadControllers {
                         //     }
                         //
                         //     // log({ i })
-                        //     const id = `nextval('${conf.db.schema}.clients_id_seq')`;
-                        //     const text = `INSERT INTO ${conf.db.schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+                        //     const id = `nextval('$schema}.clients_id_seq')`;
+                        //     const text = `INSERT INTO ${schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
                         //     // log({ text })
                         //
                         //     // const randomName = faker.name.findName(); // Rowan Nikolaus
@@ -126,8 +127,8 @@ class UploadControllers {
                         //     // })
                         // })
 
-                        // const id = `nextval('${conf.db.schema}.clients_id_seq')`;
-                        // const text = `INSERT INTO ${conf.db.schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
+                        // const id = `nextval('${schema}.clients_id_seq')`;
+                        // const text = `INSERT INTO ${schema}.clients VALUES(${id}, $1, $2, $3) RETURNING *`;
                         // // log({ text })
                         //
                         // const randomName = faker.name.findName(); // Rowan Nikolaus

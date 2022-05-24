@@ -1,15 +1,22 @@
 const nodemailer = require('nodemailer');
-const conf = require('../conf.js');
+
+const host = process.env.MAILER_HOST;
+const port = process.env.MAILER_PORT;
+const secure = process.env.MAILER_SECURE;
+const user = process.env.MAILER_AUTH_USER;
+const user_pass = process.env.MAILER_AUTH_PASS;
+const admin_user = process.env.MAILER_AUTH_ADMIN_USER;
+const admin_pass = process.env.MAILER_AUTH_ADMIN_PASS;
 
 class MailService {
     constructor(obj = null) {
         this.transporter = nodemailer.createTransport({
-            host: conf.mailer.host,
-            port: conf.mailer.port,
-            secure: conf.mailer.secure,
+            host: host,
+            port: port,
+            secure: secure,
             auth: {
-                user: conf.mailer.auth.user,
-                pass: conf.mailer.auth.pass
+                user: user,
+                pass: user_pass
             }
         });
 
@@ -46,13 +53,13 @@ class MailerAdmin{
         const { host, port, secure  } = conf.mailer;
         const { admin_user, admin_pass  } = conf.mailer.auth;
         const transporter = nodemailer.createTransport({
-            host: host,
-            port: port,
-            secure: secure, // true for 465, false for other ports
+            host: process.env.MAILER_HOST,
+            port: process.env.MAILER_PORT,
+            secure: process.env.MAILER_SECURE,
             auth: {
-                user: admin_user, // generated ethereal user
-                pass: admin_pass, // generated ethereal password
-            },
+                user: process.env.MAILER_AUTH_ADMIN_USER,
+                pass: process.env.MAILER_AUTH_ADMIN_PASS
+            }
         });
 
         const info = await transporter.sendMail({
