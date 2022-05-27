@@ -150,6 +150,13 @@ function usersRoutes(router) {
         // log({ res })
         res.end('{"message":"clinics"}')
     })
+
+    router.on('GET', '/form/user', (req, res) => {
+        // log({ res })
+        const render = tmpl.process({ data: {} }, 'forms/user/index.html')
+        // log({ render })
+        res.end(render)
+    })
 }
 
 // console.log(router.routes)
@@ -233,6 +240,7 @@ const handler = new Handler()
 // log(typeof handler.patients)
 router.on('GET', '/patients/', handler.patients)
 router.on('GET', '/doctors/', handler.doctors)
+
 
 router.on('POST', '/add/user', handler.addUser)
 

@@ -2,6 +2,8 @@ const log = (data => {
     console.log(data)
 })
 
+// console.log('test')
+
 async function sendFile(file) {
     const formdata = new FormData();
     formdata.append('image', file, 'image.png');
