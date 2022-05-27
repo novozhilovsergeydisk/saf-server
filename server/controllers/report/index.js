@@ -1,3 +1,5 @@
+'use strict';
+
 const nunjucks = require('nunjucks');
 // const userService = require('../service/user-service.js');
 const adminService = require('../../services/admin-service/index.js');

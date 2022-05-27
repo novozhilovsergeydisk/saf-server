@@ -58,6 +58,10 @@ class Route {
         return isRoute;
     }
 
+    routes() {
+        return this.routing;
+    }
+
     async resolve() {
         // log('resolve')
         let par;

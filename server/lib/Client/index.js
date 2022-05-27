@@ -34,19 +34,20 @@ class Client {
         this.url = url;
         this.fileExt = fileExt;
         this.mimeType = mimeType;
-
-        // log({ mimeType })
-
-        // log({ 'url = ': url });
-
-        // this.parseCookie();
     }
 
-    // static async getInstance(host {
-    //     const client = new Client(host);
-    //     await Session.restore(client);
-    //     return client;
-    // }
+    static async getInstance(req, res) {
+        return new Client(req, res);
+        // const client = new Client(host);
+        // await Session.restore(client);
+        // return client;
+    }
+
+    send(res, text, mimeType, status = 200) {
+        res.setHeader('Content-Type', (mimeType === null) ? this.mimeType : mimeType);
+        res.statusCode = status;
+        res.end(text);
+    }
 
     async getCookie() {
         return this.cookie;

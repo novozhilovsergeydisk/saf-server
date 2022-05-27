@@ -1,6 +1,8 @@
 'use strict';
 
-const { __VIEWS } = require('../../helpers.js');
+const { __VIEWS, log, dump } = require('../../helpers.js');
+
+dump(__VIEWS())
 
 const nunjucks = require('nunjucks');
 nunjucks.configure(__VIEWS(), { autoescape: true });
@@ -57,9 +59,9 @@ class HTMLRenderer extends Renderer {
 
 class NunjuksRenderer extends Renderer {
     render(data, path) {
-        // console.log({ '__VIEWS()': __VIEWS() })
-        // console.log({ path })
-        // console.log({ data })
+        log({ '__VIEWS()': __VIEWS() })
+        log({ path })
+        log({ data })
         return nunjucks.render(path, data)
     }
 }

@@ -1,3 +1,5 @@
+'use strict';
+
 const nodemailer = require('nodemailer');
 
 const host = process.env.MAILER_HOST;

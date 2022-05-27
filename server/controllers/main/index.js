@@ -1,5 +1,5 @@
 const fs = require('fs');
-const {log, statPath, __STATIC, query, select} = require('../../helpers.js');
+const {removeLastSlash, statPath, __STATIC, query, select} = require('../../helpers.js');
 // const nunjucks = require('nunjucks');
 const dto = require('../../lib/DTO/index.js');
 const {tmpl} = require('../../lib/Renderer/index.js');
@@ -71,6 +71,15 @@ class MainControllers {
         return dto.stream('Node.js is a JavaScript runtime...');
 
     }
+
+    async content(url) {
+        let data = null;
+        const stats = statPath(__STATIC(url));
+        if(stats && stats.isFile()) {
+            data = fs.createReadStream(__STATIC(url));
+        }
+        return data;
+    }
 }
 
 class StaticControllers {
@@ -86,9 +95,32 @@ class StaticControllers {
         }
         return dto.stream(data); //DTOFactory({ stream: stream });
     }
+
+    async resContent(url) {
+        let data = null;
+        const stats = statPath(__STATIC(url));
+        if(stats && stats.isFile()) {
+            data = fs.createReadStream(__STATIC(url));
+        }
+        return data;
+    }
+}
+
+let hello = async () => {
+    return "Hello"
+};
+
+const getContent = async (url) => {
+    url = removeLastSlash('/', url);
+    let data = null;
+    const stats = statPath(__STATIC(url));
+    if(stats && stats.isFile()) {
+        data = await fs.createReadStream(__STATIC(url));
+    }
+    return data;
 }
 
 const mainController = new MainControllers();
 const staticController = new StaticControllers();
 
-module.exports = { mainController, staticController };
+module.exports = { mainController, staticController, getContent };

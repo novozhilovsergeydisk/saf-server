@@ -14,6 +14,8 @@ const ALPHA = ALPHA_UPPER + ALPHA_LOWER;
 const DIGIT = '0123456789';
 const ALPHA_DIGIT = ALPHA + DIGIT;
 
+// console.log({ 'process.cwd()': process.cwd() })
+
 const httpMethods = () => {
     return ALLOWED_METHODS;
 };
@@ -60,6 +62,10 @@ const errorLog = err => {
     console.error(err);
 };
 
+const error = err => {
+    console.error(err);
+};
+
 const __ERROR = errorLog;
 const __error = errorLog;
 const bytesToMb = bytes => Math.round(bytes / 1000, 2) / 1000;
@@ -72,6 +78,18 @@ const statPath = (path => {
 });
 
 const sliceLastSymbol = ((mod, url) => {
+    let urlMod = url;
+    if (mod === url) return url;
+    if (mod === '/') {
+        const lastSymbol = url.charAt(url.length - 1);
+        if (lastSymbol === '/') {
+            urlMod = url.slice (0, - 1);
+        }
+    }
+    return urlMod;
+});
+
+const removeLastSlash = ((mod, url) => {
     let urlMod = url;
     if (mod === url) return url;
     if (mod === '/') {
@@ -164,6 +182,10 @@ const capitalizeFirstLetter = (string) => {
 };
 
 const log = data => console.log(data);
+
+const dump = dump => {
+    log({ dump });
+}
 
 const start = () => {
     log('');
@@ -313,6 +335,18 @@ const bufferConcat = (body => {
     return json;
 });
 
+const concatBuffer = (body => {
+    const bufConcat = Buffer.concat(body).toString();
+    const bufArray = bufConcat.split('&');
+    let obj = {};
+    let arr = [];
+    bufArray.map((item) => {
+        arr = item.split('=');
+        obj[arr[0]] = arr[1];
+    });
+    return obj;
+});
+
 const parseXslx = (input => {
 
     console.log({ input })
@@ -414,7 +448,9 @@ const parseXslx = (input => {
 module.exports = {
     capitalizeFirstLetter,
     DTOFactory,
-    log, start,
+    log,
+    start,
+    dump,
     end,
     getFunctionParams,
     getFunctionBody,
@@ -428,16 +464,18 @@ module.exports = {
     sql,
     query,
     bufferConcat,
+    concatBuffer,
     promise,
     reject,
     __ERROR,
-    __error,
+    error,
     throwErr,
     errorLog,
     replace,
     notify,
     memory,
     sliceLastSymbol,
+    removeLastSlash,
     db,
     statPath,
     isAllowed,

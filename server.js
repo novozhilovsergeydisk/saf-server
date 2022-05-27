@@ -1,4 +1,7 @@
-'use strict';
+'use strict'
+
+const dotenv = require('dotenv')
+dotenv.config()
 
 /*
   Char codes:
@@ -31,15 +34,220 @@
 //
 // //console.log({ 'match': match })
 
+// ******* Common server 1
 
-// ******* Common server
+// const server = require('./server/http-server');
+// const HOST_NAME = '127.0.0.1';
+// const PORT = 3000;
+// server.start(PORT, HOST_NAME);
 
-const server = require('./server/http-server');
-const HOST_NAME = '127.0.0.1';
-const PORT = 3000;
-server.start(PORT, HOST_NAME);
+// ******* END Common server 1
 
-// ******* END Common server
+// ******* Common server 2
+
+const http = require('http')
+const path = require('path')
+
+const {concatBuffer, log, dump} = require('./server/helpers.js')
+const router = require('find-my-way')({
+    defaultRoute: (req, res) => {
+        res.statusCode = 404
+        const render = tmpl.process({}, '404/index.html')
+        res.end(render)
+        // res.end('404 - PAGE NOT FOUND')
+    },
+    maxParamLength: 500
+})
+const {getContent} = require('./server/controllers/main/index.js')
+const {tmpl} = require('./server/lib/Renderer/index.js')
+const {MIME_TYPES} = require('./constants.js')
+
+function pipe(req, res, stream, mimeType) {
+    const fileExt = path.extname(req.url).substring(1);
+    mimeType = mimeType || MIME_TYPES[fileExt] || MIME_TYPES.html;
+    res.setHeader('Content-Type', mimeType);
+    res.statusCode = 200;
+    stream.pipe(res);
+}
+
+function error(res, status, mimeType, err) {
+    res.setHeader('Content-Type', mimeType || MIME_TYPES.html);
+    res.statusCode = status || 404;
+    res.end(err || 'UNKNOWN ERROR')
+}
+
+function error404(res) {
+    res.setHeader('Content-Type', MIME_TYPES.html);
+    res.statusCode = 404;
+    res.end('404 - PAGE NOT FOUND')
+}
+
+function error405(res) {
+    res.setHeader('Content-Type', MIME_TYPES.html);
+    res.statusCode = 405;
+    res.end('405 - RESOURCE NOT FOUND')
+}
+
+function error500(res) {
+    res.setHeader('Content-Type', MIME_TYPES.html);
+    res.statusCode = 500;
+    res.end('500 - SERVER ERROR')
+}
+
+function resolveresource(req, res, mimeType) {
+    getContent(req.url).then(stream => {
+        (stream === null) ? error404(res) : pipe(req, res, stream, mimeType)
+    }).catch(err => {
+        log({err})
+    })
+}
+
+function staticRoutes(router) {
+    router.on('GET', '/css/*', (req, res) => {
+        resolveresource(req, res)
+    })
+
+    router.on('GET', '/fonts/*', (req, res) => {
+        resolveresource(req, res)
+    })
+
+    router.on('GET', '/webfonts/*', (req, res) => {
+        resolveresource(req, res)
+    })
+
+    router.on('GET', '/img/*', (req, res) => {
+        resolveresource(req, res)
+    })
+
+    router.on('GET', '/js/*', (req, res) => {
+        resolveresource(req, res)
+    })
+
+    router.on('GET', '/robots/robots.txt', (req, res) => {
+        resolveresource(req, res, MIME_TYPES.textPlain)
+    })
+
+    router.on('GET', '/favicon.ico', (req, res) => {
+        resolveresource(req, res)
+    })
+
+    // log('staticRoutes')
+}
+
+function usersRoutes(router) {
+    router.on('GET', '/', (req, res, params) => {
+        log({params})
+        res.end('{"message":"transplant.net"}')
+    })
+
+    const store = {foo: 'bar'}
+    router.on('GET', '/reports', ['foo', 'bar'], (req, res, params) => {
+        log({params})
+        res.end('{"message":"reports"}')
+    }, store)
+
+    router.on('GET', '/clinics', (req, res, params) => {
+        // log({ res })
+        res.end('{"message":"clinics"}')
+    })
+}
+
+// console.log(router.routes)
+
+// users routes
+
+usersRoutes(router)
+
+// dump(router.routes)
+
+// static routes
+
+staticRoutes(router)
+
+// dump(router.routes)
+
+// router.on('GET', '/css/*', (req, res) => {
+//     resolveresource(req, res)
+// })
+//
+// router.on('GET', '/fonts/*', (req, res) => {
+//     resolveresource(req, res)
+// })
+//
+// router.on('GET', '/webfonts/*', (req, res) => {
+//     resolveresource(req, res)
+// })
+//
+// router.on('GET', '/img/*', (req, res) => {
+//     resolveresource(req, res)
+// })
+//
+// router.on('GET', '/js/*', (req, res) => {
+//     resolveresource(req, res)
+// })
+//
+// router.on('GET', '/robots/robots.txt', (req, res) => {
+//     resolveresource(req, res, MIME_TYPES.text)
+// })
+//
+// router.on('GET', '/favicon.ico', (req, res) => {
+//     resolveresource(req, res)
+// })
+
+//
+
+function Handler() {
+    if (!(this instanceof Handler)) {
+        return new Handler()
+    }
+}
+
+Handler.prototype.patients = function patients(req, res) {
+    res.end('patients')
+}
+
+Handler.prototype.doctors = function doctors(req, res) {
+    res.end('doctors')
+}
+
+Handler.prototype.addUser = function addUser(req, res) {
+    let body = null;
+    let bodyArr = [];
+    req.on('data', chunk => {
+        // log({ chunk })
+        bodyArr.push(chunk)
+    })
+    req.on('end', async () => {
+        // log({ chunk })
+        body = concatBuffer(bodyArr); // bufferConcat
+        log({ body })
+    })
+    // log({ data })
+    // dump(data._events.end)
+    res.end('addUser')
+
+}
+
+const handler = new Handler()
+
+// log(typeof handler.patients)
+router.on('GET', '/patients/', handler.patients)
+router.on('GET', '/doctors/', handler.doctors)
+
+router.on('POST', '/add/user', handler.addUser)
+
+// dump(router.routes)
+
+const server = http.createServer((req, res) => {
+    router.lookup(req, res)
+})
+
+server.listen(3000, err => {
+    if (err) throw err
+    console.log('Server listening on: http://localhost:3000')
+})
+
+// ******* END Common server 2
 
 
 // const { randomFillSync } = require('crypto');
