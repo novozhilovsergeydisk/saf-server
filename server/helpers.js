@@ -324,20 +324,22 @@ const sql = parse;
 const query = parse;
 
 const bufferConcat = (body => {
-    const bufConcat = Buffer.concat(body).toString();
-    const bufArray = bufConcat.split('&');
-    let json = {};
-    let arr = [];
-    bufArray.map((item) => {
-        arr = item.split('=');
-        json[arr[0]] = arr[1];
-    });
-    return json;
+    return Buffer.concat(body).toString();
+    // const bufArray = bufConcat.split('&');
+    // let json = {};
+    // let arr = [];
+    // // bufArray.map((item) => {
+    // //     arr = item.split('=');
+    // //     json[arr[0]] = arr[1];
+    // // });
+    // return json;
 });
 
 const concatBuffer = (body => {
     const bufConcat = Buffer.concat(body).toString();
+    log({ bufConcat })
     const bufArray = bufConcat.split('&');
+    log({ bufArray })
     let obj = {};
     let arr = [];
     bufArray.map((item) => {

@@ -1,8 +1,30 @@
-const log = (data => {
-    console.log(data)
-})
+const log = data => console.log(data)
+const dump = dump => console.log({ dump })
 
-// console.log('test')
+
+async function fetchRequest(route) {
+    const formdata = new FormData();
+    // formdata.append('image', file, 'image.png');
+
+    const res = await fetch(route, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+        },
+        body: formdata
+    })
+
+    const  data = await res.json()
+
+    log({ data })
+
+    if (res.status !== 200) {
+        throw new Error(data.message);
+    }
+
+    return data;
+}
 
 async function sendFile(file) {
     const formdata = new FormData();
@@ -53,6 +75,8 @@ function upload(file) {
 const ready = (() => {
     log('ready');
 
+    // 1
+
     const btnUpload = document.getElementById('btn_uploadfile')
 
     console.log({ btnUpload })
@@ -92,6 +116,74 @@ const ready = (() => {
             // log({ btnUpload })
         })
     }
+
+    // 2
+
+    const btnSave = document.getElementById('btn-save')
+
+    // log({ btnSave })
+
+    const fe = async () => {
+        // const formdata = new FormData();
+
+        const fio = document.getElementById('fio')
+        const email = document.getElementById('email')
+        const phone = document.getElementById('phone')
+        const date = document.getElementById('date')
+        const time = document.getElementById('time')
+        const data = { fio: fio.value, email: email.value, phone: phone.value, date: date.value, time: time.value }
+
+        // log({ data })
+
+        let response = await fetch('/form/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(data)
+        });
+
+        let result = await response.json();
+        dump(result);
+
+        // res.then(data => {
+        //     const r = data.json()
+        //
+        //     dump(data)
+        // }).catch(err => log({ err }))
+    }
+
+    btnSave.addEventListener('click', (e) => {
+        const formdata = new FormData();
+
+        fe()
+
+        // log({ formdata })
+        //
+        // const res = fetch('/form/data', {
+        //     method: 'POST',
+        //     credentials: 'include',
+        //     headers: {
+        //         'Content-type': 'application/x-www-form-urlencoded'
+        //     },
+        //     body: formdata
+        // })
+
+        // const data = res.json()
+
+
+
+        // log({ data })
+
+        // if (res.status !== 200) {
+        //     throw new Error(res);
+        // }
+
+        // return res
+
+        // log({ e })
+        // log('click btnSave')
+    })
 
     // const toggleType =(el => {
     //     if (el.getAttribute('type') === 'password') {

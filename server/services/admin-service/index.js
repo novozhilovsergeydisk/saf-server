@@ -12,6 +12,14 @@ class AdminService {
     // 2021 8188
     // 2020 4905
 
+    async patientTotal(client) {
+        const sql = ``;
+
+
+
+        return res;
+    }
+
     async reports() {
         // const someString = 'hi';
         // log({ 'Symbol.iterator': Symbol.iterator })
@@ -42,21 +50,21 @@ class AdminService {
         return arrRes;
     }
 
-    async monthlyReports() {
+    async monthlyReports(year, month) {
         const days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,28, 29, 30];
         const months = [];
         const arrRes = [];
 
         for (const day of days) {
-            const sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '2022-01-${day} 00:00:00' AND datetime < '2022-01-30 23:59:59' AND uri LIKE '%pat%'`;
+            const sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '${year}-${month}-${day} 00:00:00' AND datetime < '${year}-${month}-30 23:59:59' AND uri LIKE '%pat%'`;
             const res = await query(sql, []);
-            arrRes.push(res);
-            // log({ res })
+            arrRes.push({day: day, res: res});
+            log({ res })
         }
 
-        arrRes.forEach(year => {
-            log({ year })
-        })
+        // arrRes.forEach(year => {
+        //     log({ year })
+        // })
 
         const sqlStr = `SELECT count(*)
             FROM 

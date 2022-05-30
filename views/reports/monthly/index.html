@@ -1,6 +1,9 @@
 {% extends "templates/base.html" %}
 {% set title = "Отчет по transplant.net за месяц" %}
-{% set h1 = "transplant.net" %}
+
+{% block meta %}
+{{ super() }}
+{% endblock %}
 
 {% block css %}
 {{ super() }}
@@ -67,10 +70,8 @@
 
 {% block content %}
 <div id="content" class="content">
-    <h3>{% title %}</h3>
+    <div id="report-one">report-one</div>
 
-    <div id="report-one"></div>
-
-    <div id="report-two"></div>
+    <div id="report-two">report-two</div>
 </div>
 {% endblock %}

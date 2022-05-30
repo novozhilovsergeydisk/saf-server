@@ -48,7 +48,8 @@ dotenv.config()
 const http = require('http')
 const path = require('path')
 
-const {concatBuffer, log, dump} = require('./server/helpers.js')
+const {concatBuffer, bufferConcat, log, dump} = require('./server/helpers.js')
+const reportsController = require('./server/controllers/patients/index.js')
 const router = require('find-my-way')({
     defaultRoute: (req, res) => {
         res.statusCode = 404
@@ -62,16 +63,39 @@ const {getContent} = require('./server/controllers/main/index.js')
 const {tmpl} = require('./server/lib/Renderer/index.js')
 const {MIME_TYPES} = require('./constants.js')
 
+function html(res, data, status) {
+    res.setHeader('Content-Type', MIME_TYPES.html)
+    res.statusCode = status || 200
+    res.end(data.toString())
+}
+
+function json(res, data, status) {
+    res.setHeader('Content-Type', MIME_TYPES.json)
+    res.statusCode = status || 200
+    res.end(JSON.stringify(data))
+}
+
+function send(res, data, mimeType, status) {
+    res.setHeader('Content-Type', mimeType || MIME_TYPES.json)
+    res.statusCode = status || 200
+    res.end(data.toString())
+}
+
+function getMimeType(req, mimeType) {
+    const fileExt = path.extname(req.url).substring(1)
+    mimeType = mimeType || MIME_TYPES[fileExt] || MIME_TYPES.html
+    return mimeType
+}
+
 function pipe(req, res, stream, mimeType) {
-    const fileExt = path.extname(req.url).substring(1);
-    mimeType = mimeType || MIME_TYPES[fileExt] || MIME_TYPES.html;
-    res.setHeader('Content-Type', mimeType);
-    res.statusCode = 200;
-    stream.pipe(res);
+    mimeType = getMimeType(req, mimeType)
+    res.setHeader('Content-Type', mimeType)
+    res.statusCode = 200
+    stream.pipe(res)
 }
 
 function error(res, status, mimeType, err) {
-    res.setHeader('Content-Type', mimeType || MIME_TYPES.html);
+    res.setHeader('Content-Type', mimeType || MIME_TYPES.html)
     res.statusCode = status || 404;
     res.end(err || 'UNKNOWN ERROR')
 }
@@ -83,13 +107,13 @@ function error404(res) {
 }
 
 function error405(res) {
-    res.setHeader('Content-Type', MIME_TYPES.html);
+    res.setHeader('Content-Type', MIME_TYPES.html)
     res.statusCode = 405;
     res.end('405 - RESOURCE NOT FOUND')
 }
 
 function error500(res) {
-    res.setHeader('Content-Type', MIME_TYPES.html);
+    res.setHeader('Content-Type', MIME_TYPES.html)
     res.statusCode = 500;
     res.end('500 - SERVER ERROR')
 }
@@ -134,74 +158,79 @@ function staticRoutes(router) {
     // log('staticRoutes')
 }
 
-function usersRoutes(router) {
-    router.on('GET', '/', (req, res, params) => {
-        log({params})
+function getRoutes(router) {
+    router.on('GET', '/reports/annual', (req, res) => {
+        // log({ res })
+        // const render = tmpl.process({ data: {} }, 'forms/user/index.html')
+        // log({ render })
+        html(res, 'reports/annual')
+    })
+
+    router.on('GET', '/reports/monthly/:year/:month', (req, res, params) => {
+        log({ params })
+        const data = reportsController.monthlyReports(2022, 5)
+
+        // Object.keys(key => {
+        //     log({ key })
+        // })
+
+        // log({ data })
+        const render = tmpl.process({ data: data }, 'reports/monthly/index.html')
+        // log({ render })
+        html(res, render)
+    })
+
+    router.on('GET', '/patients/total', (req, res) => {
+        // log({ res })
+        // const render = tmpl.process({ data: {} }, 'forms/user/index.html')
+        // log({ render })
+        json(res, '/patients/total')
+    })
+
+    router.on('GET', '/patients/active', (req, res) => {
+        send(res, {'patients-active': '/patients/active'})
+    })
+
+    router.on('GET', '/', (req, res) => {
         res.end('{"message":"transplant.net"}')
     })
 
     const store = {foo: 'bar'}
-    router.on('GET', '/reports', ['foo', 'bar'], (req, res, params) => {
-        log({params})
+    router.on('GET', '/reports', ['foo', 'bar'], (req, res) => {
         res.end('{"message":"reports"}')
     }, store)
 
     router.on('GET', '/clinics', (req, res, params) => {
-        // log({ res })
         res.end('{"message":"clinics"}')
     })
 
-    router.on('GET', '/form/user', (req, res) => {
-        // log({ res })
-        const render = tmpl.process({ data: {} }, 'forms/user/index.html')
-        // log({ render })
-        res.end(render)
+    // router.on('GET', '/form/user', (req, res) => {
+    //     // log({ res })
+    //     const render = tmpl.process({ data: {} }, 'forms/user/index.html')
+    //     // log({ render })
+    //     res.end(render)
+    // })
+}
+
+function postRoutes(router) {
+    router.on('POST', '/form/user/add', (req, res) => {
+        const data = 'test' // {name: 'postRoutes'}
+        // log({ data })
+        send(res, data)
+    })
+
+    router.on('POST', '/patients/total', (req, res) => {
+        const data = '/patients/total' // {name: 'postRoutes'}
+        // log({ data })
+        send(res, data)
     })
 }
 
-// console.log(router.routes)
+postRoutes(router)
 
-// users routes
-
-usersRoutes(router)
-
-// dump(router.routes)
-
-// static routes
+getRoutes(router)
 
 staticRoutes(router)
-
-// dump(router.routes)
-
-// router.on('GET', '/css/*', (req, res) => {
-//     resolveresource(req, res)
-// })
-//
-// router.on('GET', '/fonts/*', (req, res) => {
-//     resolveresource(req, res)
-// })
-//
-// router.on('GET', '/webfonts/*', (req, res) => {
-//     resolveresource(req, res)
-// })
-//
-// router.on('GET', '/img/*', (req, res) => {
-//     resolveresource(req, res)
-// })
-//
-// router.on('GET', '/js/*', (req, res) => {
-//     resolveresource(req, res)
-// })
-//
-// router.on('GET', '/robots/robots.txt', (req, res) => {
-//     resolveresource(req, res, MIME_TYPES.text)
-// })
-//
-// router.on('GET', '/favicon.ico', (req, res) => {
-//     resolveresource(req, res)
-// })
-
-//
 
 function Handler() {
     if (!(this instanceof Handler)) {
@@ -217,22 +246,25 @@ Handler.prototype.doctors = function doctors(req, res) {
     res.end('doctors')
 }
 
-Handler.prototype.addUser = function addUser(req, res) {
+Handler.prototype.getFormData = function (req, res) {
     let body = null;
     let bodyArr = [];
     req.on('data', chunk => {
         // log({ chunk })
         bodyArr.push(chunk)
     })
-    req.on('end', async () => {
+    return req.on('end', async () => {
         // log({ chunk })
-        body = concatBuffer(bodyArr); // bufferConcat
-        log({ body })
+        body = Buffer.concat(bodyArr).toString() // bufferConcat(bodyArr) // bufferConcat
+        // log({ bodyArr })
+        // log({ body })
+        // return body
+        json(res, body)
+        // res.end('/form/data/*')
     })
     // log({ data })
     // dump(data._events.end)
-    res.end('addUser')
-
+    // res.end('/form/data')
 }
 
 const handler = new Handler()
@@ -240,9 +272,14 @@ const handler = new Handler()
 // log(typeof handler.patients)
 router.on('GET', '/patients/', handler.patients)
 router.on('GET', '/doctors/', handler.doctors)
+router.on('GET', '/form/user', (req, res) => {
+    const render = tmpl.process({ data: {} }, 'forms/user/index.html')
+    html(res, render)
+})
 
-
-router.on('POST', '/add/user', handler.addUser)
+router.on('POST', '/form/data', (req, res) => {
+    handler.getFormData(req, res)
+})
 
 // dump(router.routes)
 
