@@ -246,14 +246,14 @@ Handler.prototype.doctors = function doctors(req, res) {
     res.end('doctors')
 }
 
-Handler.prototype.getFormData = function (req, res) {
+Handler.prototype.getPatientMonthly = function (req, res) {
     let body = null;
     let bodyArr = [];
     req.on('data', chunk => {
         // log({ chunk })
         bodyArr.push(chunk)
     })
-    return req.on('end', async () => {
+    req.on('end', async () => {
         // log({ chunk })
         body = Buffer.concat(bodyArr).toString() // bufferConcat(bodyArr) // bufferConcat
         // log({ bodyArr })
@@ -272,13 +272,13 @@ const handler = new Handler()
 // log(typeof handler.patients)
 router.on('GET', '/patients/', handler.patients)
 router.on('GET', '/doctors/', handler.doctors)
-router.on('GET', '/form/user', (req, res) => {
+router.on('GET', '/patients/monthly', (req, res) => {
     const render = tmpl.process({ data: {} }, 'forms/user/index.html')
     html(res, render)
 })
 
-router.on('POST', '/form/data', (req, res) => {
-    handler.getFormData(req, res)
+router.on('POST', '/patients/monthly', (req, res) => {
+    handler.getPatientMonthly(req, res)
 })
 
 // dump(router.routes)

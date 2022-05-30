@@ -2,7 +2,7 @@
 
 const { __VIEWS, log, dump } = require('../../helpers.js');
 
-dump(__VIEWS())
+// dump(__VIEWS())
 
 const nunjucks = require('nunjucks');
 nunjucks.configure(__VIEWS(), { autoescape: true });
@@ -59,9 +59,9 @@ class HTMLRenderer extends Renderer {
 
 class NunjuksRenderer extends Renderer {
     render(data, path) {
-        log({ '__VIEWS()': __VIEWS() })
-        log({ path })
-        log({ data })
+        // log({ '__VIEWS()': __VIEWS() })
+        // log({ path })
+        // log({ data })
         return nunjucks.render(path, data)
     }
 }
@@ -72,9 +72,6 @@ class Context {
     }
 
     process(data, path) {
-        log({ data })
-        log({ path })
-
         return this.renderer.render(data, path);
     }
 }

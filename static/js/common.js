@@ -133,9 +133,7 @@ const ready = (() => {
         const time = document.getElementById('time')
         const data = { fio: fio.value, email: email.value, phone: phone.value, date: date.value, time: time.value }
 
-        // log({ data })
-
-        let response = await fetch('/form/data', {
+        let response = await fetch('/patients/monthly', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
