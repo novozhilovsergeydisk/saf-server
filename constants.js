@@ -1,10 +1,11 @@
 'use strict';
 
-// const path = require('path');
+const path = require('path');
 
+const appPath = process.cwd();
 const views_path = process.env.VIEWS_PATH;
 
-const appPath = process.cwd(); // path.resolve(__dirname);
+// console.log({ 'views_path': views_path })
 
 const MIME_TYPES = {
     html:      'text/html',
@@ -28,21 +29,54 @@ const MIME_TYPES = {
     mp3:       'audio/mpeg',
     mp4:       'video/mp4'
 };
-
 const ALLOWED_METHODS = ['GET', 'POST', 'PUT'];
+
+// ******* info
+const os = require('os');
+const hostname = os.hostname();
+const info = {
+    packageName: require('../package.json').name,
+    packageVersion: require('../package.json').version,
+    projectFolderFromScript: path.normalize(path.join(__dirname, path.sep, '..', path.sep)),
+    hostname,
+    protocol: 'http',
+    address: process.env.HTTP_ADDRESS || '127.0.0.1',
+    port: process.env.HTTP_PORT || 3000,
+    folders: {
+        serverName: 'server',
+        servicesName: 'server/services',
+        storageName: 'server/storage',
+        uploadName: 'server/storage/upload',
+        controllersName: 'controllers',
+        sourcesName: 'src',
+        staticName: 'static',
+        templatesFolderName: 'templates',
+        publicAssetsFolderName: 'public',
+        cssAssetsFolderName: 'css',
+        imagesAssetsFolderName: 'img',
+        jsAssetsFolderName: 'js'
+    }
+};
+info.imagesFolderFromScript = path.normalize(path.join(info.projectFolderFromScript, path.sep, info.folders.publicAssetsFolderName, path.sep, info.folders.imagesAssetsFolderName, path.sep));
+info.serverUrl = `${info.protocol}://${info.address}:${info.port}`;
+info.source = info.serverUrl;
+info.queueName = `${info.packageName}-${info.packageVersion}`;
+info.message = `трансплант.net web application just started at '${info.hostname}' and available at '${info.serverUrl}'!`;
+// *******
 
 const CONSTANTS = {
     MIME_TYPES: MIME_TYPES,
     ALLOWED_METHODS: ALLOWED_METHODS,
     APP_PATH: appPath,
-    SERVER_PATH: appPath + '/server',
-    SERVICES_PATH: appPath + '/server/services',
-    STORAGE_PATH: appPath + '/server/storage',
-    UPLOAD_PATH: appPath + '/server/storage/upload',
-    RESOURCES_PATH: appPath + '/src',
+    SERVER_PATH: appPath + path.sep + info.folders.serverName,
+    SERVICES_PATH: appPath + path.sep + info.folders.servicesName,
+    STORAGE_PATH: appPath + path.sep + info.folders.storageName,
+    UPLOAD_PATH: appPath + path.sep + info.folders.uploadName,
+    SOURCES_PATH: appPath + path.sep + info.folders.sourcesName,
     VIEWS_PATH: appPath + views_path,
-    CONTROLLERS_PATH: appPath + '/controllers/',
-    STATIC_PATH: appPath + '/static'
+    CONTROLLERS_PATH: appPath + path.sep + info.folders.controllersName,
+    STATIC_PATH: appPath + path.sep + info.folders.staticName,
+    INFO: info
 };
 
 module.exports = CONSTANTS;

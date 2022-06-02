@@ -1,5 +1,23 @@
 'use strict'
 
+console.log('script start');
+
+// setTimeout(function () {
+//     console.log('setTimeout');
+// }, 0);
+//
+// Promise.resolve()
+//     .then(function () {
+//         console.log('promise_1');
+//     })
+//     .then(function () {
+//         console.log('promise_2');
+//     });
+//
+// console.log('script end');
+//
+// console.log('--------------------------')
+
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -46,138 +64,80 @@ dotenv.config()
 // ******* Common server 2
 
 const http = require('http')
-const path = require('path')
+// const path = require('path')
 
-const {concatBuffer, bufferConcat, log, dump} = require('./server/helpers.js')
+//
+
+const {hash, generateToken, log} = require('./server/helpers.js')
 const reportsController = require('./server/controllers/patients/index.js')
 const router = require('find-my-way')({
     defaultRoute: (req, res) => {
         res.statusCode = 404
         const render = tmpl.process({}, '404/index.html')
         res.end(render)
-        // res.end('404 - PAGE NOT FOUND')
     },
     maxParamLength: 500
 })
-const {getContent} = require('./server/controllers/main/index.js')
+// const {getContent} = require('./server/controllers/main/index.js')
 const {tmpl} = require('./server/lib/Renderer/index.js')
-const {MIME_TYPES} = require('./constants.js')
+// const {MIME_TYPES} = require('./constants.js')
+const {app, staticRoute} = require('./src/app.js')
 
-function html(res, data, status) {
-    res.setHeader('Content-Type', MIME_TYPES.html)
-    res.statusCode = status || 200
-    res.end(data.toString())
-}
+//
 
-function json(res, data, status) {
-    res.setHeader('Content-Type', MIME_TYPES.json)
-    res.statusCode = status || 200
-    res.end(JSON.stringify(data))
-}
+// staticRoute('/css/*', router)
+// staticRoute('/fonts/*', router)
+// staticRoute('/iwebfonts/*', router)
+// staticRoute('/img/*', router)
+// staticRoute('/js/*', router)
+// staticRoute('/robots/robots.txt', router)
+// staticRoute('/favicon.ico', router)
 
-function send(res, data, mimeType, status) {
-    res.setHeader('Content-Type', mimeType || MIME_TYPES.json)
-    res.statusCode = status || 200
-    res.end(data.toString())
-}
+const routes = ['/css' +
+'/*', '/fonts/*', '/iwebfonts/*', '/img/*',  '/js/*', '/robots/robots.txt', '/favicon.ico']
 
-function getMimeType(req, mimeType) {
-    const fileExt = path.extname(req.url).substring(1)
-    mimeType = mimeType || MIME_TYPES[fileExt] || MIME_TYPES.html
-    return mimeType
-}
+staticRoute(routes, router)
 
-function pipe(req, res, stream, mimeType) {
-    mimeType = getMimeType(req, mimeType)
-    res.setHeader('Content-Type', mimeType)
-    res.statusCode = 200
-    stream.pipe(res)
-}
+const staticRoutes = (router => {
+    // router.on('GET', '/css/*', (req, res) => {
+    //     app.resolveresource(req, res)
+    // })
+    // router.on('GET', '/fonts/*', (req, res) => {
+    //     app.resolveresource(req, res)
+    // })
+    // router.on('GET', '/webfonts/*', (req, res) => {
+    //     app.resolveresource(req, res)
+    // })
+    // // router.on('GET', '/img/*', (req, res) => {
+    // //     app.resolveresource(req, res)
+    // // })
+    // router.on('GET', '/js/*', (req, res) => {
+    //     app.resolveresource(req, res)
+    // })
+    // router.on('GET', '/robots/robots.txt', (req, res) => {
+    //     app.resolveresource(req, res, MIME_TYPES.textPlain)
+    // })
+    // router.on('GET', '/favicon.ico', (req, res) => {
+    //     app.resolveresource(req, res)
+    // })
+})
 
-function error(res, status, mimeType, err) {
-    res.setHeader('Content-Type', mimeType || MIME_TYPES.html)
-    res.statusCode = status || 404;
-    res.end(err || 'UNKNOWN ERROR')
-}
-
-function error404(res) {
-    res.setHeader('Content-Type', MIME_TYPES.html);
-    res.statusCode = 404;
-    res.end('404 - PAGE NOT FOUND')
-}
-
-function error405(res) {
-    res.setHeader('Content-Type', MIME_TYPES.html)
-    res.statusCode = 405;
-    res.end('405 - RESOURCE NOT FOUND')
-}
-
-function error500(res) {
-    res.setHeader('Content-Type', MIME_TYPES.html)
-    res.statusCode = 500;
-    res.end('500 - SERVER ERROR')
-}
-
-function resolveresource(req, res, mimeType) {
-    getContent(req.url).then(stream => {
-        (stream === null) ? error404(res) : pipe(req, res, stream, mimeType)
-    }).catch(err => {
-        log({err})
-    })
-}
-
-function staticRoutes(router) {
-    router.on('GET', '/css/*', (req, res) => {
-        resolveresource(req, res)
-    })
-
-    router.on('GET', '/fonts/*', (req, res) => {
-        resolveresource(req, res)
-    })
-
-    router.on('GET', '/webfonts/*', (req, res) => {
-        resolveresource(req, res)
-    })
-
-    router.on('GET', '/img/*', (req, res) => {
-        resolveresource(req, res)
-    })
-
-    router.on('GET', '/js/*', (req, res) => {
-        resolveresource(req, res)
-    })
-
-    router.on('GET', '/robots/robots.txt', (req, res) => {
-        resolveresource(req, res, MIME_TYPES.textPlain)
-    })
-
-    router.on('GET', '/favicon.ico', (req, res) => {
-        resolveresource(req, res)
-    })
+function _static(router) {
+    // staticRoutes(router)
 
     // log('staticRoutes')
 }
 
-function getRoutes(router) {
+function get(router) {
     router.on('GET', '/reports/annual', (req, res) => {
-        // log({ res })
-        // const render = tmpl.process({ data: {} }, 'forms/user/index.html')
-        // log({ render })
-        html(res, 'reports/annual')
+        app.html(res, 'reports/annual')
     })
 
     router.on('GET', '/reports/monthly/:year/:month', (req, res, params) => {
-        log({ params })
+        log({params})
         const data = reportsController.monthlyReports(2022, 5)
-
-        // Object.keys(key => {
-        //     log({ key })
-        // })
-
-        // log({ data })
-        const render = tmpl.process({ data: data }, 'reports/monthly/index.html')
-        // log({ render })
-        html(res, render)
+        const render = tmpl.process({data: data}, 'reports/monthly/index.html')
+        app.html(res, render)
     })
 
     router.on('GET', '/patients/total', (req, res) => {
@@ -204,15 +164,22 @@ function getRoutes(router) {
         res.end('{"message":"clinics"}')
     })
 
-    // router.on('GET', '/form/user', (req, res) => {
-    //     // log({ res })
-    //     const render = tmpl.process({ data: {} }, 'forms/user/index.html')
-    //     // log({ render })
-    //     res.end(render)
-    // })
+    router.on('GET', '/room/:id', (req, res, params) => {
+        // log(generateToken())
+        // log(hash())
+        log({params})
+        const roomId = generateToken()
+        const render = tmpl.process({roomId: roomId}, 'chat/index.html')
+        html(res, render)
+    })
+
+    router.on('GET', '/test', (req, res) => {
+        const render = 'test'
+        res.end(render)
+    })
 }
 
-function postRoutes(router) {
+function post(router) {
     router.on('POST', '/form/user/add', (req, res) => {
         const data = 'test' // {name: 'postRoutes'}
         // log({ data })
@@ -226,11 +193,13 @@ function postRoutes(router) {
     })
 }
 
-postRoutes(router)
+post(router)
 
-getRoutes(router)
+get(router)
 
-staticRoutes(router)
+_static(router)
+
+//
 
 function Handler() {
     if (!(this instanceof Handler)) {
@@ -246,7 +215,8 @@ Handler.prototype.doctors = function doctors(req, res) {
     res.end('doctors')
 }
 
-Handler.prototype.getPatientMonthly = function (req, res) {
+Handler.prototype.getPatientMonthly = function (req, res, params) {
+    log({params})
     let body = null;
     let bodyArr = [];
     req.on('data', chunk => {
@@ -267,29 +237,41 @@ Handler.prototype.getPatientMonthly = function (req, res) {
     // res.end('/form/data')
 }
 
+Handler.prototype.get = function () {
+    router.on('GET', '/patients', handler.patients)
+    router.on('GET', '/doctors', handler.doctors)
+    router.on('GET', '/patients/monthly', (req, res) => {
+        const render = tmpl.process({data: {}}, 'forms/user/index.html')
+        app.html(res, render)
+    })
+    router.on('GET', '/form/user', (req, res) => {
+        const patients = reportsController.monthlyReports(2022, 5)
+        const render = tmpl.process({data: {title: '/form/user', patients: patients}}, 'forms/user/index.html')
+        app.html(res, render)
+    })
+}
+
+Handler.prototype.post = function () {
+    router.on('POST', '/patients/monthly', (req, res) => {
+        handler.getPatientMonthly(req, res)
+    })
+}
+
 const handler = new Handler()
 
-// log(typeof handler.patients)
-router.on('GET', '/patients/', handler.patients)
-router.on('GET', '/doctors/', handler.doctors)
-router.on('GET', '/patients/monthly', (req, res) => {
-    const render = tmpl.process({ data: {} }, 'forms/user/index.html')
-    html(res, render)
-})
+handler.get()
 
-router.on('POST', '/patients/monthly', (req, res) => {
-    handler.getPatientMonthly(req, res)
-})
+handler.post()
 
-// dump(router.routes)
+//
 
 const server = http.createServer((req, res) => {
     router.lookup(req, res)
 })
 
-server.listen(3000, err => {
+server.listen(process.env.HTTP_PORT, err => {
     if (err) throw err
-    console.log('Server listening on: http://localhost:3000')
+    console.log(`Server listening on: http://localhost: ${process.env.HTTP_PORT}`)
 })
 
 // ******* END Common server 2

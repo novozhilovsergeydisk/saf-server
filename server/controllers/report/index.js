@@ -23,9 +23,13 @@ class reportsControllers {
         // log(typeof  reports)
 
         log({ reports })
-        const render = tmpl.process({ reports: {}, clinics: data }, 'reports/index.html');
+        const render = tmpl.process({ data: 'test', clinics: data }, 'reports/index.html');
         return render;
     }
+
+    //
+    // const form = new FormData(document.getElementById('form'));
+
 
     async annualReports(client) {
         const data = await adminService.annualReports();

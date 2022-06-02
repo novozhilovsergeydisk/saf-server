@@ -6,13 +6,17 @@ const xlsx = require('xlsx');
 const crypto = require('crypto');
 const {Client} = require('pg');
 const {mail} = require('./lib/Mailer/index.js');
-const {STATIC_PATH, VIEWS_PATH, APP_PATH, SERVER_PATH, STORAGE_PATH, UPLOAD_PATH, MIME_TYPES, ALLOWED_METHODS} = require('../constants.js');
+const {STATIC_PATH, VIEWS_PATH, APP_PATH, SERVER_PATH, STORAGE_PATH, UPLOAD_PATH, MIME_TYPES, ALLOWED_METHODS, INFO} = require('../constants.js');
 const TOKEN_LENGTH = 32;
 const ALPHA_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const ALPHA_LOWER = 'abcdefghijklmnopqrstuvwxyz';
 const ALPHA = ALPHA_UPPER + ALPHA_LOWER;
 const DIGIT = '0123456789';
 const ALPHA_DIGIT = ALPHA + DIGIT;
+
+// console.log(VIEWS_PATH)
+
+// console.log({ INFO })
 
 // console.log({ 'process.cwd()': process.cwd() })
 

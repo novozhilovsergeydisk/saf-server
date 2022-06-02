@@ -59,7 +59,7 @@ class AdminService {
             const sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '${year}-${month}-${day} 00:00:00' AND datetime < '${year}-${month}-30 23:59:59' AND uri LIKE '%pat%'`;
             const res = await query(sql, []);
             arrRes.push({day: day, res: res});
-            log({ res })
+            // log({ res })
         }
 
         // arrRes.forEach(year => {

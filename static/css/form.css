@@ -1,0 +1,74 @@
+input {outline: none}
+
+.form-btn {
+    display: block;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    width: 200px;
+}
+.form-btn-main {
+    color: #FFFFFF;
+    background: #1c7a8A;
+    border-color: #1c7a8A;
+}
+.form-btn-default {
+    color: #333333;
+    background-color: #ffffff;
+    border-color: #d9d9d9;
+}
+.form-btn-main:hover {
+    color: #FFFFFF;
+    background: #166b87;
+    border-color: #166b87;
+}
+.form-btn-main:active {
+    background-color: #106f89;
+    border-color: #106f89;
+}
+.form-btn-default:hover {
+    background-color: #f2f2f2;
+    border-color: #c1e2b3;
+}
+.form-btn-default:active, .form-btn-default.active {
+    color: #333333;
+    background-image: none;
+    background-color: #f3f3f3;
+    border-color: #adadad;
+}
+
+.form-control {
+    height: 32px;
+    width: 200px;
+    padding: 5px 10px;
+    line-height: 1.4;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.form-control:hover {
+    border-color: #A7A5A5;
+}
+.form-control:focus {
+    box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
+    border-color: #969696;
+}
+
+.form-group {
+    margin-top: 10px;
+}
+.form-group label {
+    font-size: small;
+}

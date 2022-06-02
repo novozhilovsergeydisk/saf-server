@@ -1,91 +1,49 @@
 {% extends "templates/base.html" %}
-{% set title = "Отчеты transplant.net" %}
-{% set h1 = "transplant.net" %}
+{% set h3 = "transplant.net" %}
 
 {% block css %}
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/flex.css">
+<link rel="stylesheet" href="/css/utility.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/form.css">
+{% endblock %}
+
+{% block js %}
 {{ super() }}
-<style>
-    .flex {
-        display: flex;
-    }
-
-    .box-item {
-        padding: 7px;
-
-        /*display: inline-block;*/
-        /*flex: 1 1 100px;*/
-
-        /*background: tomato;*/
-        /*max-width: 200px;*/
-        /*height: 150px;*/
-
-        /*margin: 10px;*/
-        /*line-height: 150px;*/
-        /*font-weight: bold;*/
-        /*font-size: 3rem;*/
-        /*text-align: center;*/
-    }
-
-    .content {
-        display: flex;
-        padding: 10px;
-    }
-
-    .block {
-        padding: 17px;
-        /*background: #e9e9e9;*/
-    }
-
-
-    .block p {
-        font-size: 14px;
-        padding: 3px;
-        color: #212529;
-    }
-
-    .box {
-        display: flex;
-        flex-wrap: wrap;
-        /*justify-content: space-around;*/
-        padding: 0;
-        margin: 0;
-    }
-
-    .bold {
-        font-weight: bold;
-    }
-
-    .border-top {
-        border-top: 1px solid #c2c2c2;
-    }
-
-    .smaller {
-        font-size: smaller;
-    }
-</style>
+<script src="/js/index.js"></script>
 {% endblock %}
 
 {% block content %}
-<div id="content" class="content">
-    <h3>Отчеты по transplant.net</h3>
 
-    <div class="block">
-        <h3>Пациенты</h3>
+<div class="item">
+    <div class="item-group">
+         Отчет по трансплант.net
+    </div>
+    <button class="item__action">Confirm</button>
+</div>
+
+<div id="content" class="wrapper padding-10">
+    <div class="wrapper-item padding-5">
+        <h3>{{ h3 }}</h3>
+        <h5>{{ title }}</h5>
         {% for patient in patients %}
-        <p>{{ patient.title }}</p>
+        <p>кол-во {{ patient.count }}</p>
         {% else %}
         <p>Список пациентов пуст!</p>
         {% endfor %}
     </div>
 
-    <div class="block">
+    <div class="wrapper-item padding-5">
         <!-- Form -->
-        <form method="post" enctype="application/x-www-form-urlencoded">
+        <form id="form-patient" method="post" enctype="application/x-www-form-urlencoded">
             <input id="csrf_token" type="hidden" name="csrf_token" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
 
             <div class="form-group">
                 <label for="fio">Пациент</label>
-                <div class="flex direction-row">
+                <div class="">
                     <input id="fio" name="fio" class="form-control" autocomplete="name">
                 </div>
                 <span id="error-fio" class="error display-none">error</span>
@@ -93,7 +51,7 @@
 
             <div class="form-group">
                 <label for="email">e-mail</label>
-                <div class="flex direction-row">
+                <div class="">
                     <input id="email" name="email" class="form-control" type="email">
                 </div>
                 <span id="error-email" class="error display-none"></span>
@@ -101,7 +59,7 @@
 
             <div class="form-group">
                 <label for="phone">Телефон</label>
-                <div class="flex direction-row">
+                <div class="">
                     <input id="phone" name="phone" class="form-control" type="tel">
                 </div>
                 <span id="error-phone" class="error display-none"></span>
@@ -109,7 +67,7 @@
 
             <div class="form-group">
                 <label for="date">Дата</label>
-                <div class="flex direction-row">
+                <div class="">
                     <input id="date" name="date" class="form-control" type="date">
                 </div>
                 <span id="error-date" class="error display-none"></span>
@@ -117,7 +75,7 @@
 
             <div class="form-group">
                 <label for="time">Время</label>
-                <div class="flex direction-row">
+                <div class="">
                     <input id="time" name="time" class="form-control" type="time">
                 </div>
                 <span id="error-time" class="error display-none">error</span>
@@ -130,13 +88,13 @@
                         {% for clinic in clinics %}
                         <option value="{{ clinic.id }}">{{ clinic.name }}</option>
                         {% endfor %}
+
                     </select>
                 </div>
-                <span id="error-clinics" class="error display-none">error</span>
             </div>
 
             <div class="form-group">
-                <button id="btn-save" name="btn-save" class="btn btn-common" type="button">Сохранить</button>
+                <input id="btn-save" name="btn-save" class="form-btn form-btn-main" type="button" value="Сохранить" />
             </div>
         </form>
 

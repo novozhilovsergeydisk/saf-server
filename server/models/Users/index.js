@@ -9,7 +9,7 @@ class Users {
         if (email) {
             const text = 'SELECT * FROM transplant.clients WHERE email = $1';
             const res = await query(text, [email]);
-            log({ res })
+            // log({ res })
             return res;
         }
         return null;

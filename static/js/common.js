@@ -1,7 +1,6 @@
 const log = data => console.log(data)
 const dump = dump => console.log({ dump })
 
-
 async function fetchRequest(route) {
     const formdata = new FormData();
     // formdata.append('image', file, 'image.png');
@@ -121,40 +120,8 @@ const ready = (() => {
 
     const btnSave = document.getElementById('btn-save')
 
-    // log({ btnSave })
-
-    const fe = async () => {
-        // const formdata = new FormData();
-
-        const fio = document.getElementById('fio')
-        const email = document.getElementById('email')
-        const phone = document.getElementById('phone')
-        const date = document.getElementById('date')
-        const time = document.getElementById('time')
-        const data = { fio: fio.value, email: email.value, phone: phone.value, date: date.value, time: time.value }
-
-        let response = await fetch('/patients/monthly', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(data)
-        });
-
-        let result = await response.json();
-        dump(result);
-
-        // res.then(data => {
-        //     const r = data.json()
-        //
-        //     dump(data)
-        // }).catch(err => log({ err }))
-    }
-
     btnSave.addEventListener('click', (e) => {
-        const formdata = new FormData();
-
-        fe()
+        log({ btnSave })
 
         // log({ formdata })
         //

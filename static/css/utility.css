@@ -76,7 +76,7 @@
 .w-80 {width: 80px}
 .w-90 {width: 90px}
 .w-100 {width: 100px}
-.w-200 {width: 200px; !important;}
+.w-200 {width: 200px}
 .w-300 {width: 300px}
 .w-400 {width: 400px}
 .w-500 {width: 500px}
@@ -239,6 +239,30 @@
 /******* END *******/
 
 /******* padding-top *******/
+.padding-2 {
+    padding: 2px;
+}
+.padding-3 {
+    padding: 3px;
+}
+.padding-4 {
+    padding: 4px;
+}
+.padding-5 {
+    padding: 5px;
+}
+.padding-10 {
+    padding: 10px;
+}
+.padding-15 {
+    padding: 15px;
+}
+.padding-20 {
+    padding: 20px;
+}
+/******* END *******/
+
+/******* padding-top *******/
 .pt-1 {padding-top: 1px}
 .pt-2 {padding-top: 2px}
 .pt-3 {padding-top: 3px}
@@ -300,7 +324,7 @@
 .border-yellow {border: 1px solid yellow}
 .border-brown {border: 1px solid brown}
 .border-black {border: 1px solid #000000}
-.border-grid {border: 1px solid #CCCCCC}
+.border-gray {border: 1px solid #CCCCCC}
 
 .top-green {border-top: 1px solid green}
 .top-red {border-top: 1px solid red}
@@ -308,7 +332,7 @@
 .top-yellow {border-top: 1px solid yellow}
 .top-brown {border-top: 1px solid brown}
 .top-black {border-top: 1px solid #000000}
-.top-grid {border-top: 1px solid #CCCCCC}
+.top-gray {border-top: 1px solid #CCCCCC}
 
 .bottom-green {border-bottom: 1px solid green}
 .bottom-red {border-bottom: 1px solid red}
@@ -316,7 +340,7 @@
 .bottom-yellow {border-bottom: 1px solid yellow}
 .bottom-brown {border-bottom: 1px solid brown}
 .bottom-black {border-bottom: 1px solid #000000}
-.bottom-grid {border-bottom: 1px solid #CCCCCC}
+.bottom-gray {border-bottom: 1px solid #CCCCCC}
 
 .left-green {border-left: 1px solid green}
 .left-red {border-left: 1px solid red}
@@ -324,7 +348,7 @@
 .left-yellow {border-left: 1px solid yellow}
 .left-brown {border-left: 1px solid brown}
 .left-black {border-left: 1px solid #000000}
-.left-grid {border-left: 1px solid #CCCCCC}
+.left-gray {border-left: 1px solid #CCCCCC}
 
 .right-green {border-right: 1px solid green}
 .right-red {border-right: 1px solid red}
@@ -332,7 +356,7 @@
 .right-yellow {border-right: 1px solid yellow}
 .right-brown {border-right: 1px solid brown}
 .right-black {border-right: 1px solid #000000}
-.right-grid {border-right: 1px solid #CCCCCC}
+.right-gray {border-right: 1px solid #CCCCCC}
 
 .border-ddd {border: 1px solid #DDDDDD}
 
@@ -351,49 +375,49 @@
 .list-type-none {list-style-type: none}
 
 /* Flex styles https://habr.com/ru/post/467049/ */
-.flex {
-    display: flex;
-}
-.flex-flow-wrap {
-    flex-flow: row wrap;
-}
-.inline-flex {
-    display: inline-flex;
-}
-.flex-start {
-    justify-content: flex-start;
-}
-.justify-space-between {
-    justify-content: space-between;
-}
-.direction-row {
-    flex-direction: row;
-}
-.direction-col {
-    flex-direction: column;
-}
-.align-items-center {
-    align-items: center;
-}
-.content-space-evenly {
-    align-content: space-evenly;
-}
-.flex-wrap {
-    flex-wrap: wrap;
-}
-.flex-no-wrap {
-    flex-wrap: nowrap;
-}
-.flex-item {
-    padding: 2px;
-    margin-bottom: 2px;
-}
-.flex-item-double {
-    padding: 2px;
-    margin-bottom: 4px;
-}
-.flex-cell {
-    padding: 2px;
-    margin: 4px 0;
-}
+/*.flex {*/
+    /*display: flex;*/
+/*}*/
+/*.flex-flow-wrap {*/
+    /*flex-flow: row wrap;*/
+/*}*/
+/*.inline-flex {*/
+    /*display: inline-flex;*/
+/*}*/
+/*.flex-start {*/
+    /*justify-content: flex-start;*/
+/*}*/
+/*.justify-space-between {*/
+    /*justify-content: space-between;*/
+/*}*/
+/*.direction-row {*/
+    /*flex-direction: row;*/
+/*}*/
+/*.direction-col {*/
+    /*flex-direction: column;*/
+/*}*/
+/*.align-items-center {*/
+    /*align-items: center;*/
+/*}*/
+/*.content-space-evenly {*/
+    /*align-content: space-evenly;*/
+/*}*/
+/*.flex-wrap {*/
+    /*flex-wrap: wrap;*/
+/*}*/
+/*.flex-no-wrap {*/
+    /*flex-wrap: nowrap;*/
+/*}*/
+/*.flex-item {*/
+    /*padding: 2px;*/
+    /*margin-bottom: 2px;*/
+/*}*/
+/*.flex-item-double {*/
+    /*padding: 2px;*/
+    /*margin-bottom: 4px;*/
+/*}*/
+/*.flex-cell {*/
+    /*padding: 2px;*/
+    /*margin: 4px 0;*/
+/*}*/
 /* END Flex styles */
