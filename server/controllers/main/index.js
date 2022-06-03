@@ -1,5 +1,5 @@
 const fs = require('fs');
-const {removeLastSlash, statPath, __STATIC, query, select} = require('../../helpers.js');
+const {removeLastSlash, statPath, __STATIC, log} = require('../../helpers.js');
 // const nunjucks = require('nunjucks');
 const dto = require('../../lib/DTO/index.js');
 const {tmpl} = require('../../lib/Renderer/index.js');
@@ -111,10 +111,13 @@ let hello = async () => {
 };
 
 const getContent = async (url) => {
+    // log({ url })
     url = removeLastSlash('/', url);
     let data = null;
     const stats = statPath(__STATIC(url));
+    // log({ stats })
     if(stats && stats.isFile()) {
+        log('is file')
         data = await fs.createReadStream(__STATIC(url));
     }
     return data;

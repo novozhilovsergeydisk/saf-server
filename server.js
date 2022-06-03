@@ -82,51 +82,13 @@ const router = require('find-my-way')({
 const {tmpl} = require('./server/lib/Renderer/index.js')
 // const {MIME_TYPES} = require('./constants.js')
 const {app, staticRoute} = require('./src/app.js')
+const {handler} = require('./src/handler.js')
 
 //
 
-// staticRoute('/css/*', router)
-// staticRoute('/fonts/*', router)
-// staticRoute('/iwebfonts/*', router)
-// staticRoute('/img/*', router)
-// staticRoute('/js/*', router)
-// staticRoute('/robots/robots.txt', router)
-// staticRoute('/favicon.ico', router)
-
-const routes = ['/css' +
-'/*', '/fonts/*', '/iwebfonts/*', '/img/*',  '/js/*', '/robots/robots.txt', '/favicon.ico']
+const routes = ['/css' + '/*', '/fonts/*', '/iwebfonts/*', '/img/*',  '/js/*', '/robots/robots.txt', '/favicon.ico']
 
 staticRoute(routes, router)
-
-const staticRoutes = (router => {
-    // router.on('GET', '/css/*', (req, res) => {
-    //     app.resolveresource(req, res)
-    // })
-    // router.on('GET', '/fonts/*', (req, res) => {
-    //     app.resolveresource(req, res)
-    // })
-    // router.on('GET', '/webfonts/*', (req, res) => {
-    //     app.resolveresource(req, res)
-    // })
-    // // router.on('GET', '/img/*', (req, res) => {
-    // //     app.resolveresource(req, res)
-    // // })
-    // router.on('GET', '/js/*', (req, res) => {
-    //     app.resolveresource(req, res)
-    // })
-    // router.on('GET', '/robots/robots.txt', (req, res) => {
-    //     app.resolveresource(req, res, MIME_TYPES.textPlain)
-    // })
-    // router.on('GET', '/favicon.ico', (req, res) => {
-    //     app.resolveresource(req, res)
-    // })
-})
-
-function _static(router) {
-    // staticRoutes(router)
-
-    // log('staticRoutes')
-}
 
 function get(router) {
     router.on('GET', '/reports/annual', (req, res) => {
@@ -136,6 +98,9 @@ function get(router) {
     router.on('GET', '/reports/monthly/:year/:month', (req, res, params) => {
         log({params})
         const data = reportsController.monthlyReports(2022, 5)
+
+        log({ data })
+
         const render = tmpl.process({data: data}, 'reports/monthly/index.html')
         app.html(res, render)
     })
@@ -197,71 +162,72 @@ post(router)
 
 get(router)
 
-_static(router)
-
 //
 
-function Handler() {
-    if (!(this instanceof Handler)) {
-        return new Handler()
-    }
-}
+// function Handler() {
+//     if (!(this instanceof Handler)) {
+//         return new Handler()
+//     }
+// }
+//
+// Handler.prototype.patients = function patients(req, res) {
+//     res.end('patients')
+// }
+//
+// Handler.prototype.doctors = function doctors(req, res) {
+//     res.end('doctors')
+// }
+//
+// Handler.prototype.getPatientMonthly = function (req, res, params) {
+//     log({params})
+//     let body = null;
+//     let bodyArr = [];
+//     req.on('data', chunk => {
+//         // log({ chunk })
+//         bodyArr.push(chunk)
+//     })
+//     req.on('end', async () => {
+//         // log({ chunk })
+//         body = Buffer.concat(bodyArr).toString() // bufferConcat(bodyArr) // bufferConcat
+//         // log({ bodyArr })
+//         // log({ body })
+//         // return body
+//         json(res, body)
+//         // res.end('/form/data/*')
+//     })
+//     // log({ data })
+//     // dump(data._events.end)
+//     // res.end('/form/data')
+// }
+//
+// Handler.prototype.get = function () {
+//     router.on('GET', '/patients', handler.patients)
+//     router.on('GET', '/doctors', handler.doctors)
+//     router.on('GET', '/patients/monthly', (req, res) => {
+//         const render = tmpl.process({data: {}}, 'forms/user/index.html')
+//         app.html(res, render)
+//     })
+//     router.on('GET', '/form/user', (req, res) => {
+//         const patients = reportsController.monthlyReports(2022, 5)
+//         const render = tmpl.process({data: {title: '/form/user', patients: patients}}, 'forms/user/index.html')
+//         app.html(res, render)
+//     })
+// }
+//
+// Handler.prototype.post = function () {
+//     router.on('POST', '/patients/monthly', (req, res) => {
+//         handler.getPatientMonthly(req, res)
+//     })
+// }
+//
+// const handler = new Handler()
+//
+// handler.get()
+//
+// handler.post()
 
-Handler.prototype.patients = function patients(req, res) {
-    res.end('patients')
-}
-
-Handler.prototype.doctors = function doctors(req, res) {
-    res.end('doctors')
-}
-
-Handler.prototype.getPatientMonthly = function (req, res, params) {
-    log({params})
-    let body = null;
-    let bodyArr = [];
-    req.on('data', chunk => {
-        // log({ chunk })
-        bodyArr.push(chunk)
-    })
-    req.on('end', async () => {
-        // log({ chunk })
-        body = Buffer.concat(bodyArr).toString() // bufferConcat(bodyArr) // bufferConcat
-        // log({ bodyArr })
-        // log({ body })
-        // return body
-        json(res, body)
-        // res.end('/form/data/*')
-    })
-    // log({ data })
-    // dump(data._events.end)
-    // res.end('/form/data')
-}
-
-Handler.prototype.get = function () {
-    router.on('GET', '/patients', handler.patients)
-    router.on('GET', '/doctors', handler.doctors)
-    router.on('GET', '/patients/monthly', (req, res) => {
-        const render = tmpl.process({data: {}}, 'forms/user/index.html')
-        app.html(res, render)
-    })
-    router.on('GET', '/form/user', (req, res) => {
-        const patients = reportsController.monthlyReports(2022, 5)
-        const render = tmpl.process({data: {title: '/form/user', patients: patients}}, 'forms/user/index.html')
-        app.html(res, render)
-    })
-}
-
-Handler.prototype.post = function () {
-    router.on('POST', '/patients/monthly', (req, res) => {
-        handler.getPatientMonthly(req, res)
-    })
-}
-
-const handler = new Handler()
-
-handler.get()
-
-handler.post()
+handler.get(router)
+handler.post(router)
 
 //
 

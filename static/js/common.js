@@ -123,8 +123,55 @@ const ready = (() => {
     btnSave.addEventListener('click', (e) => {
         log({ btnSave })
 
-        // log({ formdata })
+        // const formData = new FormData();
+        // const fio = document.getElementById('fio');
+        // const email = document.getElementById('email');
+        // const phone = document.getElementById('phone');
+        // const date = document.getElementById('date');
+        // const time = document.getElementById('time');
         //
+        // console.log(fio.value)
+        //
+        // formData.append('fio', fio.value);
+        // formData.append('email', email.value);
+        // formData.append('phone', phone.value);
+        // formData.append('date', date.value);
+        // formData.append('time', time.value);
+
+        const fio = document.getElementById('fio').value
+        const email = document.getElementById('email').value
+        const phone = document.getElementById('phone').value
+        const date = document.getElementById('date').value
+        const time = document.getElementById('time').value
+
+        const data = {
+            fio: fio,
+            email: email,
+            phone: phone,
+            date: date,
+            time: time
+        }
+
+        console.log({ data })
+
+        const result = fetch('/patients/monthly', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+
+        result
+        .then(result => {
+            // console.log(Object.keys(result))
+            console.log('Success:', result.status)
+        })
+        .catch(error => {
+            console.error('Error:', error)
+        })
+
         // const res = fetch('/form/data', {
         //     method: 'POST',
         //     credentials: 'include',
@@ -133,19 +180,12 @@ const ready = (() => {
         //     },
         //     body: formdata
         // })
-
         // const data = res.json()
-
-
-
         // log({ data })
-
         // if (res.status !== 200) {
         //     throw new Error(res);
         // }
-
         // return res
-
         // log({ e })
         // log('click btnSave')
     })

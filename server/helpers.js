@@ -77,8 +77,11 @@ const bytesToMb = bytes => Math.round(bytes / 1000, 2) / 1000;
 const statPath = (path => {
     try {
         return fs.statSync(path);
-    } catch (ex) {}
-    return false;
+    } catch (ex) {
+        // console.log('Error statPath')
+        // console.log({ ex })
+        return false;
+    }
 });
 
 const sliceLastSymbol = ((mod, url) => {
@@ -91,6 +94,16 @@ const sliceLastSymbol = ((mod, url) => {
         }
     }
     return urlMod;
+});
+
+const removeLastSymbol = ((symbol, url) => {
+    let newUrl = url;
+    if (symbol === url) return url;
+    const lastSymbol = url.charAt(url.length - 1);
+    if (lastSymbol === symbol) {
+        newUrl= url.slice (0, - 1);
+    }
+    return newUrl;
 });
 
 const removeLastSlash = ((mod, url) => {
@@ -493,5 +506,6 @@ module.exports = {
     __STORAGE,
     __UPLOAD,
     __MIME,
-    parseXslx
+    parseXslx,
+    removeLastSymbol
 };
