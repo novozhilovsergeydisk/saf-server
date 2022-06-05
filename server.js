@@ -80,7 +80,7 @@ const router = require('find-my-way')({
 })
 // const {getContent} = require('./server/controllers/main/index.js')
 const {tmpl} = require('./server/lib/Renderer/index.js')
-// const {MIME_TYPES} = require('./constants.js')
+const {MIME_TYPES} = require('./constants.js')
 const {app, staticRoute} = require('./src/app.js')
 const {handler} = require('./src/handler.js')
 
@@ -117,8 +117,18 @@ function get(router) {
     })
 
     router.on('GET', '/', (req, res) => {
-        res.end('{"message":"transplant.net"}')
+        res.setHeader('Content-Type', MIME_TYPES.plain)
+        res.end('{"message":"/"}')
     })
+
+    //
+
+    router.on('GET', '/crm/forms', (req, res) => {
+        const render = tmpl.process({ data: {} }, 'crm/forms/index.html')
+        app.html(res, render)
+    })
+
+    //
 
     const store = {foo: 'bar'}
     router.on('GET', '/reports', ['foo', 'bar'], (req, res) => {

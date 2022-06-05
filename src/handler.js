@@ -41,7 +41,44 @@ Handler.prototype.getPatientMonthly = function (req, res) {
     })
 }
 
+Handler.prototype.getPatientMonthly = function (req, res) {
+    let bodyArr = [];
+    req.on('data', chunk => {
+        bodyArr.push(chunk)
+    })
+    return req.on('end', async () => {
+        const body = Buffer.concat(bodyArr).toString() // bufferConcat(bodyArr) // bufferConcat
+        // log({ bodyArr })
+        // log({ body })
+        // return body
 
+        log({ 'body': body })
+        log({ 'JSON.parse(body)': JSON.parse(body) })
+        log('---------------------------------------------')
+
+        return req.body = body
+
+        // app.json(res, body)
+
+    })
+}
+
+Handler.prototype.clientAdd = function (req, res) {
+    let bodyArr = [];
+    req.on('data', chunk => {
+        bodyArr.push(chunk)
+    })
+    return req.on('end', async () => {
+        const body = Buffer.concat(bodyArr).toString()
+
+        const { fio, email } = JSON.parse(body)
+        log({ 'fio': fio })
+        log({ 'email': email })
+        // log({ 'body': body })
+        // log({ 'JSON.parse(body)': JSON.parse(body) })
+        log('---------------------------------------------')
+    })
+}
 
 //
 
@@ -60,6 +97,17 @@ Handler.prototype.get = function (router) {
 }
 
 Handler.prototype.post = function (router) {
+    router.on('POST', '/client/add', (req, res) => {
+        handler.clientAdd(req, res)
+
+        // data.then(data => log({ 'data.then': data.body })).catch(err => log({ err }))
+
+        // const body = data.body
+        // log({ 'data': data })
+        // const jsonParse = JSON.parse(body)
+        // log({ jsonParse })
+    })
+
     router.on('POST', '/patients/monthly', (req, res) => {
         const data = handler.getPatientMonthly(req, res)
 

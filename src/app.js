@@ -21,6 +21,11 @@ App.prototype.json = function (res, data, status) {
     res.statusCode = status || 200
     res.end(JSON.stringify(data))
 }
+App.prototype.plain = function (res, data, status) {
+    res.setHeader('Content-Type', MIME_TYPES.textPlain)
+    res.statusCode = status || 200
+    res.end(data.toString())
+}
 App.prototype.send = function (res, data, mimeType, status) {
     res.setHeader('Content-Type', mimeType || MIME_TYPES.json)
     res.statusCode = status || 200

@@ -154,7 +154,7 @@ const ready = (() => {
 
         console.log({ data })
 
-        const result = fetch('/patients/monthly', {
+        const result = fetch('/client/add', {
             method: 'POST',
             credentials: 'include',
             headers: {

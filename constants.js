@@ -9,7 +9,7 @@ const views_path = process.env.VIEWS_PATH;
 
 const MIME_TYPES = {
     html:      'text/html',
-    textPlain: 'text/plain',
+    plain:     'text/plain',
     js:        'application/javascript',
     json:      'application/json',
     pdf:       'application/pdf',
@@ -35,8 +35,8 @@ const ALLOWED_METHODS = ['GET', 'POST', 'PUT'];
 const os = require('os');
 const hostname = os.hostname();
 const info = {
-    packageName: require('../package.json').name,
-    packageVersion: require('../package.json').version,
+    packageName: require('./package.json').name,
+    packageVersion: require('./package.json').version,
     projectFolderFromScript: path.normalize(path.join(__dirname, path.sep, '..', path.sep)),
     hostname,
     protocol: 'http',

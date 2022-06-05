@@ -4,7 +4,7 @@
   "description": "SAF platform",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon -e js,mjs,json,css,html server.js",
+    "dev": "nodemon -e js,mjs,json,css,html,txt,sql server.js",
     "start": "node server.js",
     "redix": "nodemon test/redix-tree.js"
   },

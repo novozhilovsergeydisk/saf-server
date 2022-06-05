@@ -1,0 +1,166 @@
+{% extends "templates/base.html" %}
+{% set h3 = "crm forms" %}
+
+{% block css %}
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/flex.css">
+<link rel="stylesheet" href="/css/utility.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/form.css">
+{% endblock %}
+
+{% block js %}
+{{ super() }}
+<script src="/js/index.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div id="content" class="wrapper justify-space-around">
+    <div class="wrapper-item">
+        <!-- form-client -->
+        <h1>Клиент</h1>
+        <form id="form-client" method="post" enctype="application/x-www-form-urlencoded">
+            <input id="form-client-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+
+            <div class="form-group">
+                <label for="form-client-fio">ФИО</label>
+                <div class="">
+                    <input id="form-client-fio" class="form-control" autocomplete="name">
+                </div>
+                <span id="form-client-fio-error" class="error display-none">error</span>
+            </div>
+
+            <div class="form-group">
+                <label for="form-client-email">e-mail</label>
+                <div class="">
+                    <input id="form-client-email" class="form-control" type="email">
+                </div>
+                <span id="form-client-email-error" class="error display-none"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="form-client-phone">Телефон</label>
+                <div class="">
+                    <input id="form-client-phone" class="form-control" type="tel">
+                </div>
+                <span id="form-client-phone-error" class="error display-none"></span>
+            </div>
+
+            <div class="form-group">
+                <input id="form-client-btn-save" class="form-btn form-btn-main" type="button" value="Добавить" />
+            </div>
+        </form>
+    </div>
+
+    <div class="wrapper-item">
+        <!-- form-services -->
+        <h1>Услуга</h1>
+        <form id="form-services" method="post" enctype="application/x-www-form-urlencoded">
+            <input id="form-services-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+
+            <div class="form-group">
+                <label for="form-services-name">Название</label>
+                <div class="">
+                    <input id="form-services-name" class="form-control" autocomplete="name">
+                </div>
+                <span id="form-services-name-error" class="error display-none">error</span>
+            </div>
+
+            <div class="form-group">
+                <label for="form-services-price-from">Цена от</label>
+                <div class="">
+                    <input id="form-services-price-from" class="form-control" type="name">
+                </div>
+                <span id="form-services-price-from-error" class="error display-none"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="form-services-price-to">Цена до</label>
+                <div class="">
+                    <input id="form-services-price-to" class="form-control" type="name">
+                </div>
+                <span id="form-services-price-to-error" class="error display-none"></span>
+            </div>
+
+            <div class="form-group">
+                <input id="form-services-btn-save" class="form-btn form-btn-main" type="button" value="Добавить" />
+            </div>
+        </form>
+    </div>
+    
+    <div class="wrapper-item">
+        <!-- form-records -->
+        <h1>Запись</h1>
+        <form id="form-records" method="post" enctype="application/x-www-form-urlencoded">
+            <input id="form-records-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+
+            <div class="form-group">
+                <label for="date">Дата</label>
+                <div class="">
+                    <input id="date" name="date" class="form-control" type="date">
+                </div>
+                <span id="error-date" class="error display-none"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Время</label>
+                <div class="">
+                    <input id="time" name="time" class="form-control" type="time">
+                </div>
+                <span id="error-time" class="error display-none">error</span>
+            </div>
+
+            <div class="form-group">
+                <label for="services-list">Услуга</label>
+                <div class="flex direction-row">
+                    <select id="services-list" class="form-control">
+                        {% for service in services %}
+                        <option value="{{ service.id }}">{{ service.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input id="btn-save-form-records" class="form-btn form-btn-main" type="button" value="Добавить" />
+            </div>
+        </form>
+    </div>
+
+    <div class="wrapper-item">
+        <!-- form-client-pay -->
+        <h1>Оплата</h1>
+        <form id="form-client-pay" method="post" enctype="application/x-www-form-urlencoded">
+            <input id="form-client-pay-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+
+            <div class="form-group">
+                <label for="form-client-pay-sum">Сумма оплаты</label>
+                <div class="">
+                    <input id="form-client-pay-sum" class="form-control" autocomplete="name">
+                </div>
+                <span id="form-client-pay-sum-error" class="error display-none">error</span>
+            </div>
+
+            <div class="form-group">
+                <label for="records-list">Записи клиентов</label>
+                <div class="flex direction-row">
+                    <select id="records-list" class="form-control">
+                        {% for record in records %}
+                        <option value="{{ record.id }}">{{ record.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input id="form-client-pay-btn-save" class="form-btn form-btn-main" type="button" value="Оплатить" />
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
