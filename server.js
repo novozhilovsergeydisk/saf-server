@@ -81,14 +81,22 @@ const router = require('find-my-way')({
 // const {getContent} = require('./server/controllers/main/index.js')
 const {tmpl} = require('./server/lib/Renderer/index.js')
 const {MIME_TYPES} = require('./constants.js')
-const {app, staticRoute} = require('./src/app.js')
+const {app, _static} = require('./src/app.js')
 const {handler} = require('./src/handler.js')
+
+const nativeTest = require('./src/test.js')
+
+const ui = () => {log('ui')}
+
+// nativeTest()
+log(typeof nativeTest)
+log({ nativeTest })
 
 //
 
-const routes = ['/css' + '/*', '/fonts/*', '/iwebfonts/*', '/img/*',  '/js/*', '/robots/robots.txt', '/favicon.ico']
+const staticRoutes = ['/css' + '/*', '/fonts/*', '/iwebfonts/*', '/img/*',  '/js/*', '/robots/robots.txt', '/favicon.ico']
 
-staticRoute(routes, router)
+_static(staticRoutes, router)
 
 function get(router) {
     router.on('GET', '/reports/annual', (req, res) => {

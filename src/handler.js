@@ -30,6 +30,8 @@ Handler.prototype.getPatientMonthly = function (req, res) {
         // log({ body })
         // return body
 
+        //const insert = pg.query('insert into patients values(nextval(\'users_id_seq\'), $1, $2, $3)', ['patient@transplant.' + generateToken(), generateToken.v4(), false], cb);
+
         log({ 'body': body })
         log({ 'JSON.parse(body)': JSON.parse(body) })
         log('---------------------------------------------')
@@ -71,9 +73,10 @@ Handler.prototype.clientAdd = function (req, res) {
     return req.on('end', async () => {
         const body = Buffer.concat(bodyArr).toString()
 
-        const { fio, email } = JSON.parse(body)
+        const { fio, email, phone } = JSON.parse(body)
         log({ 'fio': fio })
         log({ 'email': email })
+        log({ 'phone': phone })
         // log({ 'body': body })
         // log({ 'JSON.parse(body)': JSON.parse(body) })
         log('---------------------------------------------')
@@ -98,6 +101,30 @@ Handler.prototype.get = function (router) {
 
 Handler.prototype.post = function (router) {
     router.on('POST', '/client/add', (req, res) => {
+        handler.clientAdd(req, res)
+
+        // data.then(data => log({ 'data.then': data.body })).catch(err => log({ err }))
+
+        // const body = data.body
+        // log({ 'data': data })
+        // const jsonParse = JSON.parse(body)
+        // log({ jsonParse })
+    })
+
+    router.on('POST', '/patients/monthly', (req, res) => {
+        const data = handler.getPatientMonthly(req, res)
+
+        data.then(data => log(data.body)).catch(err => log({ err }))
+
+        // const body = data.body
+        // log({ 'data': data })
+        // const jsonParse = JSON.parse(body)
+        // log({ jsonParse })
+    })
+}
+
+Handler.prototype.post = function (router) {
+    router.on('POST', '/crm/form/add', (req, res) => {
         handler.clientAdd(req, res)
 
         // data.then(data => log({ 'data.then': data.body })).catch(err => log({ err }))

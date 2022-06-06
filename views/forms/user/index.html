@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/css/normalize.css">
 <link rel="stylesheet" href="/css/flex.css">
 <link rel="stylesheet" href="/css/utility.css">
+
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/form.css">
 {% endblock %}
@@ -18,152 +19,153 @@
 
 {% block content %}
 
-<div class="item">
-    <div class="item-group">
-         Отчет по трансплант.net
+<div class="container">
+    <div class="item">
+        <div class="item-group">
+            <h3>Отчет по трансплант.net</h3>
+        </div>
     </div>
-    <button class="item__action">Confirm</button>
-</div>
 
-<div id="content" class="wrapper padding-10">
-    <!-- <div class="wrapper-item padding-5">
-        <h3>{{ h3 }}</h3>
-        <h5>{{ title }}</h5>
-        {% for patient in patients %}
-        <p>кол-во {{ patient.count }}</p>
-        {% else %}
-        <p>Список пациентов пуст!</p>
-        {% endfor %}
-    </div> -->
+    <div id="content" class="wrapper padding-10">
+        <!--&lt;!&ndash; <div class="wrapper-item padding-5">-->
+        <!--<h3>{{ h3 }}</h3>-->
+        <!--<h5>{{ title }}</h5>-->
+        <!--{% for patient in patients %}-->
+        <!--<p>кол-во {{ patient.count }}</p>-->
+        <!--{% else %}-->
+        <!--<p>Список пациентов пуст!</p>-->
+        <!--{% endfor %}-->
+        <!--</div> &ndash;&gt;-->
 
-    <div class="wrapper-item padding-5">
-        <!-- Form -->
-        <form id="form-patient" method="post" enctype="application/x-www-form-urlencoded">
-            <input id="csrf_token" type="hidden" name="csrf_token" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+        <div class="wrapper-item padding-5">
+            <!-- Form -->
+            <form id="form-patient" method="post" enctype="application/x-www-form-urlencoded">
+                <input id="csrf_token" type="hidden" name="csrf_token" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
 
-            <div class="form-group">
-                <label for="fio">Клиент</label>
-                <div class="">
-                    <input id="fio" name="fio" class="form-control" autocomplete="name">
+                <div class="form-group">
+                    <label for="fio">Клиент</label>
+                    <div class="">
+                        <input id="fio" name="fio" class="form-control" autocomplete="name">
+                    </div>
+                    <span id="error-fio" class="error display-none">error</span>
                 </div>
-                <span id="error-fio" class="error display-none">error</span>
-            </div>
 
-            <div class="form-group">
-                <label for="email">e-mail</label>
-                <div class="">
-                    <input id="email" name="email" class="form-control" type="email">
+                <div class="form-group">
+                    <label for="email">e-mail</label>
+                    <div class="">
+                        <input id="email" name="email" class="form-control" type="email">
+                    </div>
+                    <span id="error-email" class="error display-none"></span>
                 </div>
-                <span id="error-email" class="error display-none"></span>
-            </div>
 
-            <div class="form-group">
-                <label for="phone">Телефон</label>
-                <div class="">
-                    <input id="phone" name="phone" class="form-control" type="tel">
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <div class="">
+                        <input id="phone" name="phone" class="form-control" type="tel">
+                    </div>
+                    <span id="error-phone" class="error display-none"></span>
                 </div>
-                <span id="error-phone" class="error display-none"></span>
-            </div>
 
-            <div class="form-group">
-                <label for="date">Дата</label>
-                <div class="">
-                    <input id="date" name="date" class="form-control" type="date">
+                <div class="form-group">
+                    <label for="date">Дата</label>
+                    <div class="">
+                        <input id="date" name="date" class="form-control" type="date">
+                    </div>
+                    <span id="error-date" class="error display-none"></span>
                 </div>
-                <span id="error-date" class="error display-none"></span>
-            </div>
 
-            <div class="form-group">
-                <label for="time">Время</label>
-                <div class="">
-                    <input id="time" name="time" class="form-control" type="time">
+                <div class="form-group">
+                    <label for="time">Время</label>
+                    <div class="">
+                        <input id="time" name="time" class="form-control" type="time">
+                    </div>
+                    <span id="error-time" class="error display-none">error</span>
                 </div>
-                <span id="error-time" class="error display-none">error</span>
-            </div>
 
-            <div class="form-group">
-                <label for="time">Клиники</label>
-                <div class="flex direction-row">
-                    <select name="clinics" id="clinics" class="form-control">
-                        {% for clinic in clinics %}
-                        <option value="{{ clinic.id }}">{{ clinic.name }}</option>
-                        {% endfor %}
+                <div class="form-group">
+                    <label for="time">Клиники</label>
+                    <div class="flex direction-row">
+                        <select name="clinics" id="clinics" class="form-control">
+                            {% for clinic in clinics %}
+                            <option value="{{ clinic.id }}">{{ clinic.name }}</option>
+                            {% endfor %}
 
-                    </select>
+                        </select>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <input id="btn-save" name="btn-save" class="form-btn form-btn-main" type="button" value="Сохранить" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <input id="btn-save" name="btn-save" class="form-btn form-btn-main" type="button" value="Сохранить" />
+                </div>
+            </form>
 
-        <!-- Form which will send a POST request to the current URL -->
-        <!--<form method="post">-->
-        <!--<label>Name:-->
-        <!--<input name="submitted-name" autocomplete="name">-->
-        <!--</label>-->
-        <!--<button>Save</button>-->
-        <!--</form>-->
+            <!-- Form which will send a POST request to the current URL -->
+            <!--<form method="post">-->
+            <!--<label>Name:-->
+            <!--<input name="submitted-name" autocomplete="name">-->
+            <!--</label>-->
+            <!--<button>Save</button>-->
+            <!--</form>-->
 
-        <!-- Form with fieldset, legend, and label -->
-        <!--<form method="post">-->
-        <!--<fieldset>-->
-        <!--<legend>Title</legend>-->
-        <!--<label><input type="radio" name="radio"> Select me</label>-->
-        <!--</fieldset>-->
-        <!--</form>-->
+            <!-- Form with fieldset, legend, and label -->
+            <!--<form method="post">-->
+            <!--<fieldset>-->
+            <!--<legend>Title</legend>-->
+            <!--<label><input type="radio" name="radio"> Select me</label>-->
+            <!--</fieldset>-->
+            <!--</form>-->
 
-        <!--<form class="">-->
-        <!--<input id="csrf_token" type="hidden" name="csrf_token" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">-->
+            <!--<form class="">-->
+            <!--<input id="csrf_token" type="hidden" name="csrf_token" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">-->
 
-        <!--<p id="error" class="error display-none"></p>-->
+            <!--<p id="error" class="error display-none"></p>-->
 
-        <!--<div class="form-group">-->
-        <!--<label for="email">Email:</label>-->
-        <!--<input type="email" class="form-control display-block" id="email" placeholder="ваш email" name="email">-->
-        <!--</div>-->
+            <!--<div class="form-group">-->
+            <!--<label for="email">Email:</label>-->
+            <!--<input type="email" class="form-control display-block" id="email" placeholder="ваш email" name="email">-->
+            <!--</div>-->
 
-        <!--<div class="form-group">-->
-        <!--&lt;!&ndash;<label for="fileupload"></label>&ndash;&gt;-->
-        <!--&lt;!&ndash;<form action="/upload" method="post" enctype="multipart/form-data" id="fileupload">&ndash;&gt;-->
-        <!--&lt;!&ndash;<input id="upload" type="file" data-upload="upload" name="filetoupload">&ndash;&gt;-->
-        <!--&lt;!&ndash;<input id="btn_upload" type="button" value="Загрузить">&ndash;&gt;-->
-        <!--&lt;!&ndash;</form>&ndash;&gt;-->
+            <!--<div class="form-group">-->
+            <!--&lt;!&ndash;<label for="fileupload"></label>&ndash;&gt;-->
+            <!--&lt;!&ndash;<form action="/upload" method="post" enctype="multipart/form-data" id="fileupload">&ndash;&gt;-->
+            <!--&lt;!&ndash;<input id="upload" type="file" data-upload="upload" name="filetoupload">&ndash;&gt;-->
+            <!--&lt;!&ndash;<input id="btn_upload" type="button" value="Загрузить">&ndash;&gt;-->
+            <!--&lt;!&ndash;</form>&ndash;&gt;-->
 
-        <!--<input type="file" onchange="upload(this.files[0])">-->
-        <!--</div>-->
+            <!--<input type="file" onchange="upload(this.files[0])">-->
+            <!--</div>-->
 
-        <!--<div class="form-group">-->
-        <!--<label for="pass">Пароль:</label>-->
-        <!--<div class="flex direction-row">-->
-        <!--<input type="password" class="form-control" id="pass" name="password">-->
+            <!--<div class="form-group">-->
+            <!--<label for="pass">Пароль:</label>-->
+            <!--<div class="flex direction-row">-->
+            <!--<input type="password" class="form-control" id="pass" name="password">-->
 
-        <!--<div class="password-control">-->
-        <!--<span id="password-control" data-over="password_control" data-click="password_control" class="material-icons">visibility</span>-->
-        <!--</div>-->
+            <!--<div class="password-control">-->
+            <!--<span id="password-control" data-over="password_control" data-click="password_control" class="material-icons">visibility</span>-->
+            <!--</div>-->
 
-        <!--&lt;!&ndash;<div id="password-show" class="password-control mt-5 display-block">&ndash;&gt;-->
-        <!--&lt;!&ndash;<a class="color-common" href="#">Показать пароль</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--</div>-->
-        <!--</div>-->
+            <!--&lt;!&ndash;<div id="password-show" class="password-control mt-5 display-block">&ndash;&gt;-->
+            <!--&lt;!&ndash;<a class="color-common" href="#">Показать пароль</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--</div>-->
+            <!--</div>-->
 
-        <!--<div class="form-group">-->
-        <!--<input type="checkbox" name="save" id="save" checked="checked" class="display-inline checkbox"> <span>Запомнить меня</span>-->
-        <!--</div>-->
+            <!--<div class="form-group">-->
+            <!--<input type="checkbox" name="save" id="save" checked="checked" class="display-inline checkbox"> <span>Запомнить меня</span>-->
+            <!--</div>-->
 
-        <!--&lt;!&ndash;<button type="submit" class="btn btn-primary" style="width:160px" onclick="login();return false">вход</button>&ndash;&gt;-->
+            <!--&lt;!&ndash;<button type="submit" class="btn btn-primary" style="width:160px" onclick="login();return false">вход</button>&ndash;&gt;-->
 
-        <!--<div class="form-group">-->
-        <!--<input type="submit" id="sign" data-href="/doc/quest/156" class="btn btn-common display-block">Войти</input>-->
+            <!--<div class="form-group">-->
+            <!--<input type="submit" id="sign" data-href="/doc/quest/156" class="btn btn-common display-block">Войти</input>-->
 
-        <!--<p class="mt-6">-->
-        <!--<a class="color-common decoration-block-hover" href="/usr/pass/form">Не помню пароль</a>-->
-        <!--</p>-->
-        <!--</div>-->
+            <!--<p class="mt-6">-->
+            <!--<a class="color-common decoration-block-hover" href="/usr/pass/form">Не помню пароль</a>-->
+            <!--</p>-->
+            <!--</div>-->
 
-        <!--</form>-->
+            <!--</form>-->
+        </div>
     </div>
 </div>
 

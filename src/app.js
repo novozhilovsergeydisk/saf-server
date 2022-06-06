@@ -4,8 +4,8 @@ const path = require('path')
 const fs = require('fs')
 
 const {MIME_TYPES} = require('../constants.js')
-const {getContent} = require('../server/controllers/main/index.js')
-const {log, statPath, __STATIC, removeLastSymbol} = require('../server/helpers.js')
+// const {getContent} = require('../server/controllers/main/index.js')
+const {statPath, __STATIC, removeLastSymbol} = require('../server/helpers.js')
 
 function App() {
 
@@ -49,7 +49,7 @@ App.prototype.error = function (req, res, status, mimeType, err) {
     res.end(err || 'UNKNOWN ERROR')
 }
 App.prototype.error404 = function (req, res, err) {
-    res.setHeader('Content-Type', MIME_TYPES.textPlain)
+    res.setHeader('Content-Type', 'text/plain')
     res.statusCode = 404
     res.end(err || '404 - Not Found')
 }
@@ -134,7 +134,7 @@ const isString = (data => {
     return ((typeof url) === 'string') ? true : false
 })
 
-const staticRoute = ((urls, router) => {
+const _static = ((urls, router) => {
     if (isObject(urls)) {
         urls.forEach(url => {
             router.on('GET', url, (req, res) => {
@@ -152,7 +152,7 @@ const staticRoute = ((urls, router) => {
 })
 
 const app = new App()
-module.exports = {app, staticRoute}
+module.exports = {app, _static}
 
 
 // 1xx: Informational (информационные):

@@ -14,29 +14,35 @@ input {outline: none}
     border-radius: 4px;
     width: 200px;
 }
+
 .form-btn-main {
     color: #FFFFFF;
     background: #1c7a8A;
     border-color: #1c7a8A;
 }
+
 .form-btn-default {
     color: #333333;
     background-color: #ffffff;
     border-color: #d9d9d9;
 }
+
 .form-btn-main:hover {
     color: #FFFFFF;
     background: #166b87;
     border-color: #166b87;
 }
+
 .form-btn-main:active {
     background-color: #106f89;
     border-color: #106f89;
 }
+
 .form-btn-default:hover {
     background-color: #f2f2f2;
     border-color: #c1e2b3;
 }
+
 .form-btn-default:active, .form-btn-default.active {
     color: #333333;
     background-image: none;
@@ -57,10 +63,12 @@ input {outline: none}
     -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    font-size: 12px;
 }
 .form-control:hover {
     border-color: #A7A5A5;
 }
+
 .form-control:focus {
     box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
     border-color: #969696;
@@ -69,6 +77,11 @@ input {outline: none}
 .form-group {
     margin-top: 10px;
 }
+
 .form-group label {
     font-size: small;
+}
+
+.form-group > label, input {
+    font-size: 14px;
 }

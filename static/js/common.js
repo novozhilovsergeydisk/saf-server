@@ -118,10 +118,10 @@ const ready = (() => {
 
     // 2
 
-    const btnSave = document.getElementById('btn-save')
+    const formClientBtnSave = document.getElementById('form-client-btn-save')
 
-    btnSave.addEventListener('click', (e) => {
-        log({ btnSave })
+    formClientBtnSave.addEventListener('click', (e) => {
+        log({ formClientBtnSave })
 
         // const formData = new FormData();
         // const fio = document.getElementById('fio');
@@ -138,23 +138,19 @@ const ready = (() => {
         // formData.append('date', date.value);
         // formData.append('time', time.value);
 
-        const fio = document.getElementById('fio').value
-        const email = document.getElementById('email').value
-        const phone = document.getElementById('phone').value
-        const date = document.getElementById('date').value
-        const time = document.getElementById('time').value
+        const fio = document.getElementById('form-client-fio').value
+        const email = document.getElementById('form-client-email').value
+        const phone = document.getElementById('form-client-phone').value
 
         const data = {
             fio: fio,
             email: email,
-            phone: phone,
-            date: date,
-            time: time
+            phone: phone
         }
 
         console.log({ data })
 
-        const result = fetch('/client/add', {
+        const result = fetch('/crm/form/add', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -189,6 +185,15 @@ const ready = (() => {
         // log({ e })
         // log('click btnSave')
     })
+
+    // 3
+
+    // const formClientBtnSave = document.getElementById('form-client-btn-save')
+    //
+    // btnSave.addEventListener('click', (e) => {
+    //     log({formClientBtnSave})
+    //
+    // })
 
     // const toggleType =(el => {
     //     if (el.getAttribute('type') === 'password') {

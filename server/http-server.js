@@ -325,6 +325,7 @@ class Server {
     }
 
     createServer(port, host) {
+        log('CREAYE SERVER@')
         const server = http.createServer(async (req, res) => {
             // const { method, url, headers } = req;
             const client = new app(req, res);

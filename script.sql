@@ -48,6 +48,7 @@ CREATE TABLE crm.records (
 	id SERIAL NOT NULL,
 	client_id INT NOT NULL,
 	__date__ TIMESTAMP WITH TIME ZONE NOT NULL,
+--	__sum__ NUMERIC(12,2) NOT NULL,
 	CONSTRAINT records_pkey PRIMARY KEY (id),
    	CONSTRAINT fk_clients
   		FOREIGN KEY(client_id)
@@ -99,21 +100,23 @@ CREATE TABLE crm.users (
 CREATE TABLE crm.services (
 	id SERIAL NOT NULL,
 	"name" VARCHAR(50) NOT NULL,
-	__sum__ NUMERIC(12,2) NOT NULL,
 	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
 	updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
 	CONSTRAINT services_pkey PRIMARY KEY (id),
 	CONSTRAINT services_name_key UNIQUE (name)
 );
 
--- 10 CREATE TABLE crm.orders
-CREATE TABLE crm.orders (
-	id serial NOT NULL,
-	client_id int4 NOT NULL,
-	service_date timestamp NOT NULL,
-	created_at timestamp NOT NULL,
-	CONSTRAINT orders_pkey PRIMARY KEY (id),
-	CONSTRAINT orders_client_id_fkey FOREIGN KEY (client_id) REFERENCES crm.clients(id) ON DELETE CASCADE
+-- 10 CREATE TABLE crm.recordspay
+CREATE TABLE crm.recordspay (
+	id SERIAL NOT NULL,
+	record_id INT NOT NULL,
+	__date__ TIMESTAMP WITH TIME ZONE NOT NULL,
+--	__sum__ NUMERIC(12,2) NOT NULL,
+	CONSTRAINT recordspay_pkey PRIMARY KEY (id),
+   	CONSTRAINT fk_records
+  		FOREIGN KEY(record_id)
+	  		REFERENCES crm.records(id)
+	  		ON DELETE CASCADE
 );
 
 -- END CREATE
@@ -125,14 +128,14 @@ CREATE TABLE crm.orders (
 
 
 SELECT
-	* 
+	*
 	-- schemaname, tablename, tableowner, hasindexes
-FROM 
+FROM
     pg_tables
 --WHERE 1=1
 --AND tableowner != null
 --AND schemaname != null
-ORDER BY 
+ORDER BY
     tablename
 ;
 
