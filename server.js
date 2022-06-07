@@ -21,6 +21,14 @@ console.log('script start');
 const dotenv = require('dotenv')
 dotenv.config()
 
+// const { Pool } = require('pg');
+// const pool = new Pool();
+//
+// pool.query('SELECT NOW()', (err, res) => {
+//     console.log(err, res)
+//     pool.end()
+// })
+
 /*
   Char codes:
     '!': 33 - !
@@ -131,7 +139,7 @@ function get(router) {
 
     //
 
-    router.on('GET', '/crm/forms', (req, res) => {
+    router.on('GET', '/crm/clients/insert', (req, res) => {
         const render = tmpl.process({ data: {} }, 'crm/forms/index.html')
         app.html(res, render)
     })

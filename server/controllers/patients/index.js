@@ -51,7 +51,6 @@ class reportsControllers {
         return 'headers_sent';
     }
 
-
     async getClinics(client) {
         const clinics = await adminService.clinics();
         client.res.setHeader('Content-Type', 'application/json');

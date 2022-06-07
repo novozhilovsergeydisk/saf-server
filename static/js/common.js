@@ -118,6 +118,24 @@ const ready = (() => {
 
     // 2
 
+    async function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return await response.json(); // parses JSON response into native JavaScript objects
+    }
+
     const formClientBtnSave = document.getElementById('form-client-btn-save')
 
     formClientBtnSave.addEventListener('click', (e) => {
@@ -150,23 +168,30 @@ const ready = (() => {
 
         console.log({ data })
 
-        const result = fetch('/crm/form/add', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
+        postData('/crm/clients/insert', data)
+            .then((data) => {
+                console.log({ data }); // JSON data parsed by `response.json()` call
+            });
 
-        result
-        .then(result => {
-            // console.log(Object.keys(result))
-            console.log('Success:', result.status)
-        })
-        .catch(error => {
-            console.error('Error:', error)
-        })
+        // const result = await fetch('/crm/clients/insert', {
+        //     method: 'POST',
+        //     credentials: 'include',
+        //     headers: {
+        //         'Content-type': 'application/json'
+        //     },
+        //     body: JSON.stringify(data)
+        // })
+        //
+        // log({ result })
+
+        // result
+        // .then(result => {
+        //     // console.log(Object.keys(result))
+        //     console.log('Success:', result.json())
+        // })
+        // .catch(error => {
+        //     console.error('Error:', error)
+        // })
 
         // const res = fetch('/form/data', {
         //     method: 'POST',

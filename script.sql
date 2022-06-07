@@ -20,9 +20,9 @@ CREATE SCHEMA if NOT EXISTS crm
 -- 1 CREATE TABLE crm.clients
 CREATE TABLE crm.clients (
 	id serial NOT NULL,
-	"name" VARCHAR(30) NOT NULL,
-	phone VARCHAR(30) NOT NULL,
-	email VARCHAR(100) DEFAULT NULL,
+	"name" varchar(30) NOT NULL,
+	phone varchar(30) NOT NULL,
+	email varchar(100) NULL DEFAULT NULL::character varying,
 	CONSTRAINT clients_phone_key UNIQUE (phone),
 	CONSTRAINT clients_pkey PRIMARY KEY (id)
 );
