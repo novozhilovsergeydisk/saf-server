@@ -22,7 +22,7 @@ App.prototype.json = function (res, data, status) {
     res.end(JSON.stringify(data))
 }
 App.prototype.plain = function (res, data, status) {
-    res.setHeader('Content-Type', MIME_TYPES.textPlain)
+    res.setHeader('Content-Type', MIME_TYPES.plain)
     res.statusCode = status || 200
     res.end(data.toString())
 }
@@ -44,7 +44,7 @@ App.prototype.pipe = function (req, res, stream, mimeType) {
     stream.pipe(res)
 }
 App.prototype.error = function (req, res, status, mimeType, err) {
-    res.setHeader('Content-Type', mimeType || MIME_TYPES.html)
+    res.setHeader('Content-Type', mimeType || MIME_TYPES.plain)
     res.statusCode = status || 404
     res.end(err || 'UNKNOWN ERROR')
 }
@@ -54,12 +54,12 @@ App.prototype.error404 = function (req, res, err) {
     res.end(err || '404 - Not Found')
 }
 App.prototype.error405 = function (req, res, err) {
-    res.setHeader('Content-Type', MIME_TYPES.textPlain)
+    res.setHeader('Content-Type', MIME_TYPES.plain)
     res.statusCode = 405
     res.end(err || '405 - Method Not Allowed')
 }
 App.prototype.error500 = function (req, res, err) {
-    res.setHeader('Content-Type', MIME_TYPES.textPlain)
+    res.setHeader('Content-Type', MIME_TYPES.plain)
     res.statusCode = 500
     res.end(err || '500 - Internal Server Error')
 }

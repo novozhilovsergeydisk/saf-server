@@ -74,7 +74,25 @@ function upload(file) {
 const ready = (() => {
     log('ready');
 
-    // 1
+    async function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return await response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    // form-upload
 
     const btnUpload = document.getElementById('btn_uploadfile')
 
@@ -116,45 +134,12 @@ const ready = (() => {
         })
     }
 
-    // 2
-
-    async function postData(url = '', data = {}) {
-        // Default options are marked with *
-        const response = await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *client
-            body: JSON.stringify(data) // body data type must match "Content-Type" header
-        });
-        return await response.json(); // parses JSON response into native JavaScript objects
-    }
+    // form-client
 
     const formClientBtnSave = document.getElementById('form-client-btn-save')
 
     formClientBtnSave.addEventListener('click', (e) => {
         log({ formClientBtnSave })
-
-        // const formData = new FormData();
-        // const fio = document.getElementById('fio');
-        // const email = document.getElementById('email');
-        // const phone = document.getElementById('phone');
-        // const date = document.getElementById('date');
-        // const time = document.getElementById('time');
-        //
-        // console.log(fio.value)
-        //
-        // formData.append('fio', fio.value);
-        // formData.append('email', email.value);
-        // formData.append('phone', phone.value);
-        // formData.append('date', date.value);
-        // formData.append('time', time.value);
 
         const fio = document.getElementById('form-client-fio').value
         const email = document.getElementById('form-client-email').value
@@ -170,86 +155,38 @@ const ready = (() => {
 
         postData('/crm/clients/insert', data)
             .then((data) => {
-                console.log({ data }); // JSON data parsed by `response.json()` call
-            });
+                console.log({ data });
+            })
+            .catch(err => log({ err }));;
 
-        // const result = await fetch('/crm/clients/insert', {
-        //     method: 'POST',
-        //     credentials: 'include',
-        //     headers: {
-        //         'Content-type': 'application/json'
-        //     },
-        //     body: JSON.stringify(data)
-        // })
-        //
-        // log({ result })
-
-        // result
-        // .then(result => {
-        //     // console.log(Object.keys(result))
-        //     console.log('Success:', result.json())
-        // })
-        // .catch(error => {
-        //     console.error('Error:', error)
-        // })
-
-        // const res = fetch('/form/data', {
-        //     method: 'POST',
-        //     credentials: 'include',
-        //     headers: {
-        //         'Content-type': 'application/x-www-form-urlencoded'
-        //     },
-        //     body: formdata
-        // })
-        // const data = res.json()
-        // log({ data })
-        // if (res.status !== 200) {
-        //     throw new Error(res);
-        // }
-        // return res
-        // log({ e })
-        // log('click btnSave')
     })
 
-    // 3
+    // form-services
 
-    // const formClientBtnSave = document.getElementById('form-client-btn-save')
-    //
-    // btnSave.addEventListener('click', (e) => {
-    //     log({formClientBtnSave})
-    //
-    // })
+    const formServicesBtnSave = document.getElementById('form-services-btn-save')
 
-    // const toggleType =(el => {
-    //     if (el.getAttribute('type') === 'password') {
-    //         el.setAttribute('type', 'text');
-    //         // log(el.getAttribute('type'))
-    //     } else if (el.getAttribute('type') === 'text') {
-    //         el.setAttribute('type', 'password');
-    //         // log(el.getAttribute('type'))
-    //     }
-    // })
-    // document.addEventListener('click', (event) => {
-    //     // event.preventDefault();
-    //     if (event.target.dataset['click']) toggleType(document.getElementById('pass'));
-    //     if (event.target.dataset['upload']) {
-    //         // event.stopPropagation()
-    //         log('upload')
-    //     };
-    //
-    //     // if (event.target.dataset['click_glyphicon']) {
-    //     //     const parentEl = event.target.parentElement;
-    //     //
-    //     //     if (parentEl) {
-    //     //         parentEl.innerHTML = parentEl.getAttribute('data-name');
-    //     //         const hashVideo = parentEl.getAttribute('data-video');
-    //     //         removeClassList(buttons, 'btn-video-active');
-    //     //         parentEl.classList.add('btn-video-active');
-    //     //         removeVideoContent();
-    //     //         showVideo(hashVideo, parentEl);
-    //     //     }
-    //     // }
-    // });
+    formServicesBtnSave.addEventListener('click', (e) => {
+        log({ formServicesBtnSave })
+
+        const servicesName = document.getElementById('form-services-name').value
+        const servicesPriceFrom = document.getElementById('form-services-price-from').value
+        const servicesPriceTo = document.getElementById('form-services-price-to').value
+
+        const data = {
+            servicesName: servicesName,
+            servicesPriceFrom: servicesPriceFrom,
+            servicesPriceTo: servicesPriceTo
+        }
+
+        console.log({ data })
+
+        postData('/crm/services/insert', data)
+            .then((data) => {
+                console.log({ data }); // JSON data parsed by `response.json()` call
+            })
+            .catch(err => log({ err }));
+
+    })
 })
 
 document.addEventListener("DOMContentLoaded", ready);

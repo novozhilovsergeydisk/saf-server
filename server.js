@@ -21,7 +21,7 @@ console.log('script start');
 const dotenv = require('dotenv')
 dotenv.config()
 
-// const { Pool } = require('pg');
+const { Pool } = require('pg');
 // const pool = new Pool();
 //
 // pool.query('SELECT NOW()', (err, res) => {
@@ -92,19 +92,18 @@ const {MIME_TYPES} = require('./constants.js')
 const {app, _static} = require('./src/app.js')
 const {handler} = require('./src/handler.js')
 
-const nativeTest = require('./src/test.js')
-
-const ui = () => {log('ui')}
-
-// nativeTest()
-log(typeof nativeTest)
-log({ nativeTest })
+// const nativeTest = require('./src/test.js')
+// log(typeof nativeTest)
 
 //
 
 const staticRoutes = ['/css' + '/*', '/fonts/*', '/iwebfonts/*', '/img/*',  '/js/*', '/robots/robots.txt', '/favicon.ico']
 
 _static(staticRoutes, router)
+
+// GET routes function declaration
+
+
 
 function get(router) {
     router.on('GET', '/reports/annual', (req, res) => {
@@ -125,7 +124,7 @@ function get(router) {
         // log({ res })
         // const render = tmpl.process({ data: {} }, 'forms/user/index.html')
         // log({ render })
-        json(res, '/patients/total')
+        app.json(res, '/patients/total')
     })
 
     router.on('GET', '/patients/active', (req, res) => {
@@ -139,8 +138,62 @@ function get(router) {
 
     //
 
-    router.on('GET', '/crm/clients/insert', (req, res) => {
-        const render = tmpl.process({ data: {} }, 'crm/forms/index.html')
+    router.on('GET', '/crm/records/select', (req, res) => {
+        const pool = new Pool()
+        const sql = `SELECT * FROM crm.records`
+
+        const result = pool.query(sql)
+        result.then(data => {
+            pool.end()
+            const response = {status: 'success', data: data.rows, error: null}
+            log({ response })
+            app.json(res, response)
+        }).catch(err => {
+            const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+            log({ err })
+            app.json(res, responseError)
+        })
+        // app.plain(res, '/crm/clients/select')
+    })
+
+    router.on('GET', '/crm/services/select', (req, res) => {
+        const pool = new Pool()
+        const sql = `SELECT * FROM crm.services`
+
+        const result = pool.query(sql)
+        result.then(data => {
+            pool.end()
+            const response = {status: 'success', data: data.rows, error: null}
+            log({ response })
+            app.json(res, response)
+        }).catch(err => {
+            const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+            log({ err })
+            app.json(res, responseError)
+        })
+        // app.plain(res, '/crm/clients/select')
+    })
+
+    router.on('GET', '/crm/clients/select', (req, res) => {
+        const pool = new Pool()
+        const sql = `SELECT * FROM crm.clients`
+
+        const result = pool.query(sql)
+        result.then(data => {
+            pool.end()
+            const response = {status: 'success', data: data.rows, error: null}
+            log({ response })
+            app.json(res, response)
+        }).catch(err => {
+            const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+            log({ err })
+            app.json(res, responseError)
+        })
+        // app.plain(res, '/crm/clients/select')
+    })
+
+    router.on('GET', '/crm/ui', (req, res) => {
+        const render = tmpl.process({ data: {} }, 'crm/ui/index.html')
         app.html(res, render)
     })
 
@@ -170,6 +223,12 @@ function get(router) {
     })
 }
 
+// END GET routes function declaration
+
+//
+
+// POST routes function declaration
+
 function post(router) {
     router.on('POST', '/form/user/add', (req, res) => {
         const data = 'test' // {name: 'postRoutes'}
@@ -184,73 +243,13 @@ function post(router) {
     })
 }
 
+// END POST routes function declaration
+
 post(router)
 
 get(router)
 
 //
-
-// function Handler() {
-//     if (!(this instanceof Handler)) {
-//         return new Handler()
-//     }
-// }
-//
-// Handler.prototype.patients = function patients(req, res) {
-//     res.end('patients')
-// }
-//
-// Handler.prototype.doctors = function doctors(req, res) {
-//     res.end('doctors')
-// }
-//
-// Handler.prototype.getPatientMonthly = function (req, res, params) {
-//     log({params})
-//     let body = null;
-//     let bodyArr = [];
-//     req.on('data', chunk => {
-//         // log({ chunk })
-//         bodyArr.push(chunk)
-//     })
-//     req.on('end', async () => {
-//         // log({ chunk })
-//         body = Buffer.concat(bodyArr).toString() // bufferConcat(bodyArr) // bufferConcat
-//         // log({ bodyArr })
-//         // log({ body })
-//         // return body
-//         json(res, body)
-//         // res.end('/form/data/*')
-//     })
-//     // log({ data })
-//     // dump(data._events.end)
-//     // res.end('/form/data')
-// }
-//
-// Handler.prototype.get = function () {
-//     router.on('GET', '/patients', handler.patients)
-//     router.on('GET', '/doctors', handler.doctors)
-//     router.on('GET', '/patients/monthly', (req, res) => {
-//         const render = tmpl.process({data: {}}, 'forms/user/index.html')
-//         app.html(res, render)
-//     })
-//     router.on('GET', '/form/user', (req, res) => {
-//         const patients = reportsController.monthlyReports(2022, 5)
-//         const render = tmpl.process({data: {title: '/form/user', patients: patients}}, 'forms/user/index.html')
-//         app.html(res, render)
-//     })
-// }
-//
-// Handler.prototype.post = function () {
-//     router.on('POST', '/patients/monthly', (req, res) => {
-//         handler.getPatientMonthly(req, res)
-//     })
-// }
-//
-// const handler = new Handler()
-//
-// handler.get()
-//
-// handler.post()
 
 handler.get(router)
 handler.post(router)
