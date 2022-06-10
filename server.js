@@ -2,6 +2,12 @@
 
 console.log('script start');
 
+// const client = require('./test.js')
+//
+// client({foo: 'test'})
+//
+// console.log({ client })
+
 // setTimeout(function () {
 //     console.log('setTimeout');
 // }, 0);
@@ -74,22 +80,21 @@ const { Pool } = require('pg');
 const http = require('http')
 // const path = require('path')
 
-//
-
+const {app, _static} = require('./src/app.js')
 const {hash, generateToken, log} = require('./server/helpers.js')
 const reportsController = require('./server/controllers/patients/index.js')
 const router = require('find-my-way')({
     defaultRoute: (req, res) => {
-        res.statusCode = 404
-        const render = tmpl.process({}, '404/index.html')
-        res.end(render)
+        app.plain(res, '404 - Not found', 404)
+        // res.statusCode = 404
+        // // const render = tmpl.process({}, '404/index.html')
+        // res.end(render)
     },
     maxParamLength: 500
 })
 // const {getContent} = require('./server/controllers/main/index.js')
 const {tmpl} = require('./server/lib/Renderer/index.js')
 const {MIME_TYPES} = require('./constants.js')
-const {app, _static} = require('./src/app.js')
 const {handler} = require('./src/handler.js')
 
 // const nativeTest = require('./src/test.js')
@@ -128,13 +133,22 @@ function get(router) {
     })
 
     router.on('GET', '/patients/active', (req, res) => {
-        send(res, {'patients-active': '/patients/active'})
+        res.send(res, JSON.stringify({data: '/patients/active'}))
     })
 
     router.on('GET', '/', (req, res) => {
+        // const buf = Buffer.from([1, 2, 3, 4])
+        //
+        // const uint32array = new Uint32Array(buf)
+        //
+        // console.log(typeof buf)
+        //
+        // console.log(typeof uint32array)
+
         res.setHeader('Content-Type', MIME_TYPES.plain)
-        res.end('{"message":"/"}')
+        res.end("{message: / }")
     })
+
 
     //
 
@@ -156,44 +170,29 @@ function get(router) {
         // app.plain(res, '/crm/clients/select')
     })
 
-    router.on('GET', '/crm/services/select', (req, res) => {
-        const pool = new Pool()
+    router.on('GET', '/crm/services/select', async (req, res) => {
         const sql = `SELECT * FROM crm.services`
-
-        const result = pool.query(sql)
-        result.then(data => {
-            pool.end()
-            const response = {status: 'success', data: data.rows, error: null}
-            log({ response })
-            app.json(res, response)
-        }).catch(err => {
-            const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
-            log({ err })
-            app.json(res, responseError)
-        })
-        // app.plain(res, '/crm/clients/select')
+        const result = await handler.query(sql)
+        log({ 'result.data': result.data })
+        res.end('crm/clients/select')
     })
 
-    router.on('GET', '/crm/clients/select', (req, res) => {
-        const pool = new Pool()
-        const sql = `SELECT * FROM crm.clients`
+    router.on('GET', '/crm/clients/select', async (req, res) => {
+        const result = await handler.getClients()
+        log({ 'result.data': result.data })
+        res.end('crm/clients/select')
 
-        const result = pool.query(sql)
-        result.then(data => {
-            pool.end()
-            const response = {status: 'success', data: data.rows, error: null}
-            log({ response })
-            app.json(res, response)
-        }).catch(err => {
-            const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
-            log({ err })
-            app.json(res, responseError)
-        })
-        // app.plain(res, '/crm/clients/select')
     })
 
-    router.on('GET', '/crm/ui', (req, res) => {
-        const render = tmpl.process({ data: {} }, 'crm/ui/index.html')
+    router.on('GET', '/crm/ui', async (req, res) => {
+        let result = null
+        result = await handler.getClients()
+        const clients = result.data
+        const sql = `SELECT * FROM crm.services`
+        result = await handler.query(sql)
+        const services = result.data
+        log({ services })
+        const render = tmpl.process({ data: {clients: clients, services: services} }, 'crm/ui/index.html')
         app.html(res, render)
     })
 

@@ -24,6 +24,7 @@ CREATE TABLE crm.clients (
 	"name" VARCHAR(30) NOT NULL,
 	phone VARCHAR(30) NOT NULL,
 	email VARCHAR(100) DEFAULT NULL::character varying,
+	active BOOLEAN DEFAULT true,
 	CONSTRAINT clients_phone_key UNIQUE (phone),
 	CONSTRAINT clients_pkey PRIMARY KEY (id)
 );
@@ -33,6 +34,7 @@ CREATE TABLE crm.scheduleclients (
 	id SERIAL NOT NULL,
 	client_id INT NOT NULL,
 	__date__ TIMESTAMP WITH TIME ZONE NOT null,
+	active BOOLEAN DEFAULT true,
 	CONSTRAINT schdulepatient_pkey PRIMARY KEY (id),
    	CONSTRAINT fk_clients
   		FOREIGN KEY(client_id)
@@ -48,8 +50,11 @@ CREATE TYPE status AS ENUM ('wait', 'init', 'not_init')
 CREATE TABLE crm.services (
 	id SERIAL NOT NULL,
 	"name" VARCHAR(50) NOT NULL,
+	price_from NUMERIC(12,2) NOT NULL,
+	price_to NUMERIC(12,2) NOT NULL,
 	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
 	updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
+	active BOOLEAN DEFAULT true,
 	CONSTRAINT services_pkey PRIMARY KEY (id),
 	CONSTRAINT services_name_key UNIQUE (name)
 );
@@ -60,6 +65,7 @@ CREATE TABLE crm.records (
 	client_id INT NOT NULL,
 	service_id INT NOT NULL,
 	__date__ TIMESTAMP WITH TIME ZONE NOT NULL,
+	active BOOLEAN DEFAULT true,
 	CONSTRAINT records_pkey PRIMARY KEY (id),
    	CONSTRAINT fk_clients
   		FOREIGN KEY(client_id)
@@ -77,6 +83,7 @@ CREATE TABLE crm.breeds (
 	id SERIAL NOT NULL,
 	animals_category_id INT,
 	"name" VARCHAR(50) NOT NULL,
+	active BOOLEAN DEFAULT true,
 	CONSTRAINT breeds_pkey PRIMARY KEY (id),
 	CONSTRAINT breeds_name_key UNIQUE (name)
 );
@@ -86,6 +93,7 @@ CREATE TABLE crm.animals_category (
 	id SERIAL NOT NULL,
 	parent_id INT DEFAULT NULL,
 	"name" VARCHAR(50) NOT NULL,
+	active BOOLEAN DEFAULT true,
 	CONSTRAINT animals_category_pkey PRIMARY KEY (id),
 	CONSTRAINT animals_category_name_key UNIQUE (name)
 );
@@ -94,6 +102,7 @@ CREATE TABLE crm.animals_category (
 CREATE TABLE crm.roles (
 	id SERIAL NOT NULL,
 	"name" VARCHAR(50) NOT NULL,
+	active BOOLEAN DEFAULT true,
 	CONSTRAINT roles_pkey PRIMARY KEY (id),
 	CONSTRAINT roles_name_key UNIQUE (name)
 );
@@ -105,6 +114,7 @@ CREATE TABLE crm.users (
 	phone VARCHAR(30) DEFAULT NULL,
 	email VARCHAR(50) NOT NULL,
 	token VARCHAR(50) NOT NULL,
+	active BOOLEAN DEFAULT true,
 	created_at TIMESTAMP WITH TIME ZONE NOT NULL,
 	updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
 	CONSTRAINT users_email_key UNIQUE (email),
@@ -118,6 +128,7 @@ CREATE TABLE crm.recordspay (
 	record_id INT NOT NULL,
 	__date__ TIMESTAMP WITH TIME ZONE NOT NULL,
 	__sum__ NUMERIC(12,2) NOT NULL,
+	active BOOLEAN DEFAULT true,
 	CONSTRAINT recordspay_pkey PRIMARY KEY (id),
    	CONSTRAINT fk_records
   		FOREIGN KEY(record_id)
@@ -145,6 +156,7 @@ ORDER BY
     tablename
 ;
 
+/*
 SELECT * FROM crm.clients
 ORDER BY id desc
 ;
@@ -172,7 +184,7 @@ SELECT '12.34'::float8::numeric
 
 SELECT '12.34'::money
 ;
-
+*/
 
 
 

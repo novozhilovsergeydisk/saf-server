@@ -16,11 +16,13 @@ App.prototype.html = function (res, data, status) {
     res.statusCode = status || 200
     res.end(data.toString())
 }
+
 App.prototype.json = function (res, data, status) {
     res.setHeader('Content-Type', MIME_TYPES.json)
     res.statusCode = status || 200
     res.end(JSON.stringify(data))
 }
+
 App.prototype.plain = function (res, data, status) {
     res.setHeader('Content-Type', MIME_TYPES.plain)
     res.statusCode = status || 200
@@ -31,11 +33,13 @@ App.prototype.send = function (res, data, mimeType, status) {
     res.statusCode = status || 200
     res.end(data.toString())
 }
+
 App.prototype.getMimeType = function (req, mimeType) {
     const fileExt = path.extname(req.url).substring(1)
     mimeType = mimeType || MIME_TYPES[fileExt] || MIME_TYPES.html
     return mimeType
 }
+
 App.prototype.pipe = function (req, res, stream, mimeType) {
     const fileExt = path.extname(req.url).substring(1)
     mimeType = mimeType || MIME_TYPES[fileExt] || MIME_TYPES.html
@@ -43,35 +47,47 @@ App.prototype.pipe = function (req, res, stream, mimeType) {
     res.statusCode = 200
     stream.pipe(res)
 }
-App.prototype.error = function (req, res, status, mimeType, err) {
-    res.setHeader('Content-Type', mimeType || MIME_TYPES.plain)
+
+App.prototype.error = function (res, status, mimeType, err) {
+    res.setHeader('Content-Type', mimeType || MIME_TYPES.json)
     res.statusCode = status || 404
     res.end(err || 'UNKNOWN ERROR')
 }
-App.prototype.error404 = function (req, res, err) {
+
+App.prototype.error404 = function (res, err) {
     res.setHeader('Content-Type', 'text/plain')
     res.statusCode = 404
     res.end(err || '404 - Not Found')
 }
-App.prototype.error405 = function (req, res, err) {
+
+App.prototype.error405 = function (res, err) {
     res.setHeader('Content-Type', MIME_TYPES.plain)
     res.statusCode = 405
     res.end(err || '405 - Method Not Allowed')
 }
-App.prototype.error500 = function (req, res, err) {
+
+App.prototype.error500 = function (res, err) {
     res.setHeader('Content-Type', MIME_TYPES.plain)
     res.statusCode = 500
     res.end(err || '500 - Internal Server Error')
 }
+
+App.prototype.error520 = function (res, err) {
+    res.setHeader('Content-Type', MIME_TYPES.plain)
+    res.statusCode = 520
+    res.end(err || '520 - Unknown Error')
+}
+
 App.prototype.resolveresource = function (req, res) {
     const url = removeLastSymbol('/', req.url)
     const stats = statPath(__STATIC(req.url))
 
+    // console.log({ res })
+
     if (!stats) {
-        // log({ url })
-        // log({ stats })
-        // log('----------------------')
-        this.error404(req, res)
+        res.setHeader('Content-type', 'text/plain')
+        res.statusCode = 404
+        res.end('404 - Not found')
     } else {
         const stream = fs.createReadStream(__STATIC(url))
 
@@ -81,49 +97,12 @@ App.prototype.resolveresource = function (req, res) {
         } else {
             this.error404(req, res)
         }
-
-        // log({ stream })
-
-        // res.setHeader('Content-Type', MIME_TYPES.html)
-        // res.statusCode = 200
-        // res.end('App.prototype.resolveresource')
     }
-
-    // try {
-    //     const isFile = stats.isFile()
-    //     log({ url })
-    //     log({ isFile })
-    //     log('-----------------------')
-    // } catch(err) {
-    //     log({ err })
-    //     log('-----------------------')
-    // }
 
     // if(stats && stats.isFile()) {
     //     log('is file')
     //     data = await fs.createReadStream(__STATIC(url));
     // }
-
-    // res.setHeader('Content-Type', MIME_TYPES.html)
-    // res.statusCode = 200
-    // res.end('App.prototype.resolveresource')
-
-    // console.log({ res })
-
-    // getContent(req.url).then(stream => {
-    //     log({ stream })
-    //     console.log({ res })
-    //     if (stream !== null) {
-    //         const mimeType = this.getMimeType(req)
-    //         this.pipe(req, res, stream, mimeType)
-    //     } else {
-    //         this.error405(res)
-    //     }
-    // }).catch(err => {
-    //     this.error500(res, err)
-    //
-    //     this.console.log({ err })
-    // })
 }
 
 const isObject = (data => {

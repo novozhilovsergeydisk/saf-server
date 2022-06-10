@@ -1,4 +1,51 @@
+'use strict'
 
+const Ajv = require("ajv").default
+const ajv = new Ajv({allErrors: true})
+require("ajv-errors")(ajv /*, {singleError: true} */)
+const {log} = require('../server/helpers.js')
+
+// const fio = 'Новжилов'
+// const phone = '+7 916 346-54-07'
+//
+// log({ fio })
+//
+// const schema = {
+//     type: "object",
+//     required: ["fio", "phone"],
+//     allOf: [
+//         {
+//             properties: {
+//                 fio: {type: "string", minLength: 4},
+//                 phone: {type: "string", minLength: 10},
+//             },
+//             additionalProperties: false,
+//         },
+//     ],
+//     errorMessage: {
+//         properties: {
+//             fio: "Имя должно содержать не менее 4 символов",
+//             phone: "Поле телефон должно содержать не менее 10 символов",
+//         },
+//     },
+// }
+//
+// try {
+//     const validate = ajv.compile(schema)
+//     const validation = validate({fio: fio, phone: phone})
+//     log({ validation })
+//     if (validation) {
+//         const response = {status: 'success', data: {foo: 'test'}, error: null}
+//         log({ response })
+//     } else {
+//         const error = validate.errors[0].message
+//         const response = {status: 'failed', data: null, error: {message: 'Ошибка валидации 1', info: error}}
+//         log({ response })
+//     }
+// } catch(err) {
+//     const response = {status: 'failed', data: null, error: {message: 'Ошибка при валидации данных 2', info: err}}
+//     log({ response })
+// }
 
 const { Pool } = require('pg')
 const pool = new Pool()
@@ -6,12 +53,11 @@ const pool = new Pool()
 const {app} = require('../src/app.js')
 const reportsController = require('../server/controllers/patients/index.js')
 const {tmpl} = require('../server/lib/Renderer/index.js')
-const {log} = require('../server/helpers.js')
+// const {log} = require('../server/helpers.js')
 
-const Ajv = require("ajv").default
-const ajv = new Ajv({allErrors: true})
-// Ajv option allErrors is required
-require("ajv-errors")(ajv /*, {singleError: true} */)
+// const Ajv = require("ajv").default
+// const ajv = new Ajv({allErrors: true})
+// require("ajv-errors")(ajv /*, {singleError: true} */)
 
 function Handler() {
     if (!(this instanceof Handler)) {
@@ -21,41 +67,222 @@ function Handler() {
 
 // Events handlers
 
-Handler.prototype.serviceInsert = async function(res, bodyArr) {
-    const body = Buffer.concat(bodyArr).toString()
-    const data = { servicesName, servicesPriceFrom, servicesPriceTo } = JSON.parse(body)
+Handler.prototype.getPatients = async function() {
+    const pool = new Pool()
+    const sql = `SELECT * FROM account WHERE pat = true`
+    const result = pool.query(sql)
+    return result.then(data => {
+        pool.end()
+        log(data.rows)
+        const response = {status: 'success', data: data.rows, error: null}
+        log({ response })
+        return response
+    }).catch(err => {
+        const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+        log({ err })
+        return response
+    })
+}
 
-    log({ data })
+Handler.prototype.select = async function(sql) {
+    const pool = new Pool()
+    const result = pool.query(sql)
+    return result.then(data => {
+        pool.end()
+        const rows = data.rows
+        const response = {status: 'success', data: rows, error: null}
+        log({ response })
+        return response
+    }).catch(err => {
+        const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+        log({ err })
+        return response
+    })
+}
+
+Handler.prototype.query = async function(sql) {
+    const pool = new Pool()
+    const result = pool.query(sql)
+    return result.then(data => {
+        pool.end()
+        const rows = data.rows
+        const response = {status: 'success', data: rows, error: null}
+        log({ response })
+        return response
+    }).catch(err => {
+        const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+        log({ err })
+        return response
+    })
+}
+
+Handler.prototype.getClients = async function() {
+    const pool = new Pool()
+    const sql = `SELECT * FROM crm.clients`
+    const result = pool.query(sql)
+    return result.then(data => {
+        pool.end()
+        log(data.rows)
+        const response = {status: 'success', data: data.rows, error: null}
+        log({ response })
+        return response
+    }).catch(err => {
+        const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+        log({ err })
+        return response
+    })
+}
+
+Handler.prototype.save = function (req, res, fn) {
+    let bodyArr = [];
+    req.on('data', chunk => {
+        bodyArr.push(chunk)
+    })
+    return req.on('end', async () => {
+        fn(res, bodyArr)
+    })
+}
+
+Handler.prototype.recordsPayInsert = async function(res, bodyArr) {
+    let parsingData = null, validate = null
+    let validation = false
+    let servicesName = '', servicesPriceFrom = '', servicesPriceTo = ''
+    const body = Buffer.concat(bodyArr).toString()
+
+    try {
+        log({ body })
+        parsingData = JSON.parse(body)
+        log({ parsingData })
+    } catch(err) {
+        const response = {status: 'failed', data: null, error: {message: 'Ошибка при обработке данных', info: err}}
+        log({ response })
+        app.json(res, response, 500)
+        return
+    }
+
+    // log({ data })
 
     const schema = {
         type: 'object',
-        required: ['servicesName'],
+        required: ['servicesName', 'servicesPriceFrom', 'servicesPriceTo'],
         allOf: [
             {
                 properties: {
                     servicesName: {type: 'string', minLength: 4},
+                    servicesPriceFrom: {type: 'integer', minimum: 50},
+                    servicesPriceTo: {type: 'integer', minimum: 50}
                 },
                 additionalProperties: false,
             },
         ],
         errorMessage: {
             properties: {
-                servicesName: 'Название услуги должно содержать не менее 4 символов'
+                servicesName: 'Название услуги должно содержать не менее 4 символов',
+                servicesPriceFrom: 'servicesPriceFrom',
+                servicesPriceTo: 'servicesPriceTo'
             },
         },
     }
 
-    const validate = ajv.compile(schema)
-    const validation = validate({servicesName: servicesName})
+    try {
+        validate = ajv.compile(schema)
+        servicesName = parsingData.servicesName
+        servicesPriceFrom = parsingData.servicesPriceFrom
+        servicesPriceTo = parsingData.servicesPriceTo
+        validation = validate({servicesName: servicesName, servicesPriceFrom: Number(servicesPriceFrom), servicesPriceTo: Number(servicesPriceTo)})
+    } catch(err) {
+        const response = {status: 'failed', data: null, error: {message: 'Ошибка при валидации данных', info: err}}
+        log({ response })
+        app.json(res, response, 500)
+        return
+    }
 
     log({ validation })
 
     if (validation) {
         const id = 'crm.clients_id_seq'
-        // const sql = 'SELECT NOW()'
-        const sql = `INSERT INTO crm.services VALUES(nextval('${id}'), $1, now(), now()) RETURNING id`
+        const sql = `INSERT INTO crm.services VALUES(nextval('${id}'), $1, $2, $3, now(), now()) RETURNING id`
 
-        const result = pool.query(sql, [servicesName])
+        const result = pool.query(sql, [servicesName, servicesPriceFrom, servicesPriceTo])
+        result.then(data => {
+            // pool.end()
+            const response = {status: 'success', data: data.rows[0], error: null}
+            log({ response })
+            app.json(res, response)
+        }).catch(err => {
+            const response = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+            log({ response })
+            app.json(res, response)
+        })
+    } else {
+        const error = validate.errors[0].message
+        const response = {status: 'failed', data: null, error: {message: 'Ошибка валидации', info: error}}
+        log({ response })
+        app.json(res, response)
+    }
+}
+
+Handler.prototype.serviceInsert = async function(res, bodyArr) {
+    let parsingData = null, validate = null
+    let validation = false
+    let servicesName = '', servicesPriceFrom = '', servicesPriceTo = ''
+    const body = Buffer.concat(bodyArr).toString()
+
+    try {
+        log({ body })
+        parsingData = JSON.parse(body)
+        log({ parsingData })
+    } catch(err) {
+        const response = {status: 'failed', data: null, error: {message: 'Ошибка при обработке данных', info: err}}
+        log({ response })
+        app.json(res, response, 500)
+        return
+    }
+
+    // log({ data })
+
+    const schema = {
+        type: 'object',
+        required: ['servicesName', 'servicesPriceFrom', 'servicesPriceTo'],
+        allOf: [
+            {
+                properties: {
+                    servicesName: {type: 'string', minLength: 4},
+                    servicesPriceFrom: {type: 'integer', minimum: 50},
+                    servicesPriceTo: {type: 'integer', minimum: 50}
+                },
+                additionalProperties: false,
+            },
+        ],
+        errorMessage: {
+            properties: {
+                servicesName: 'Название услуги должно содержать не менее 4 символов',
+                servicesPriceFrom: 'servicesPriceFrom',
+                servicesPriceTo: 'servicesPriceTo'
+            },
+        },
+    }
+
+    try {
+        validate = ajv.compile(schema)
+        servicesName = parsingData.servicesName
+        servicesPriceFrom = parsingData.servicesPriceFrom
+        servicesPriceTo = parsingData.servicesPriceTo
+        validation = validate({servicesName: servicesName, servicesPriceFrom: Number(servicesPriceFrom), servicesPriceTo: Number(servicesPriceTo)})
+    } catch(err) {
+        const response = {status: 'failed', data: null, error: {message: 'Ошибка при валидации данных', info: err}}
+        log({ response })
+        app.json(res, response, 500)
+        return
+    }
+
+    log({ validation })
+
+    if (validation) {
+        const id = 'crm.clients_id_seq'
+        const sql = `INSERT INTO crm.services VALUES(nextval('${id}'), $1, $2, $3, now(), now()) RETURNING id`
+
+        const result = pool.query(sql, [servicesName, servicesPriceFrom, servicesPriceTo])
         result.then(data => {
             // pool.end()
             const response = {status: 'success', data: data.rows[0], error: null}
@@ -76,8 +303,23 @@ Handler.prototype.serviceInsert = async function(res, bodyArr) {
 
 Handler.prototype.clientInsert = async function(res, bodyArr) {
     // log('Handler.prototype.onCrmClientInsert')
+    let parsingData = null
+    let validate = null
+    let validation = false
+    let fio = '', phone = '', email = ''
     const body = Buffer.concat(bodyArr).toString()
-    const { fio, phone, email } = JSON.parse(body)
+
+    try {
+        parsingData = JSON.parse(body)
+        log({ parsingData })
+        // const { fio, phone, email } = JSON.parse(body)
+        // log({ fio })
+    } catch(err) {
+        const response = {status: 'failed', data: null, error: {message: 'Ошибка при обработке данных', info: err}}
+        log({ response })
+        app.json(res, response, 500)
+        return
+    }
 
     const schema = {
         type: "object",
@@ -87,6 +329,7 @@ Handler.prototype.clientInsert = async function(res, bodyArr) {
                 properties: {
                     fio: {type: "string", minLength: 4},
                     phone: {type: "string", minLength: 10},
+                    email: {type: 'string'}
                 },
                 additionalProperties: false,
             },
@@ -95,12 +338,26 @@ Handler.prototype.clientInsert = async function(res, bodyArr) {
             properties: {
                 fio: "Имя должно содержать не менее 4 символов",
                 phone: "Поле телефон должно содержать не менее 10 символов",
+                email: 'Поле email должно быть строковым'
             },
         },
     }
 
-    const validate = ajv.compile(schema)
-    const validation = validate({fio: fio, phone: phone})
+    try {
+        validate = ajv.compile(schema)
+        fio = parsingData.fio
+        phone = parsingData.phone
+        email = parsingData.email
+        validation = validate({fio: fio, phone: phone, email: email})
+    } catch(err) {
+        const response = {status: 'failed', data: null, error: {message: 'Ошибка при валидации данных', info: err}}
+        log({ response })
+        app.json(res, response, 500)
+        return
+    }
+
+    // const validate = ajv.compile(schema)
+    // const validation = validate({fio: fio, phone: phone})
 
     log({ validation })
 
@@ -108,8 +365,9 @@ Handler.prototype.clientInsert = async function(res, bodyArr) {
         const id = 'crm.clients_id_seq'
         // const sql = 'SELECT NOW()'
         const sql = `INSERT INTO crm.clients VALUES(nextval('${id}'), $1, $2, $3) RETURNING id`
-
-        const result = pool.query(sql, [fio, phone, email])
+        const dataInsert = [fio, phone, email]
+        log({ dataInsert })
+        const result = pool.query(sql, dataInsert)
         result.then(data => {
             // pool.end()
             const response = {status: 'success', data: data.rows[0], error: null}
@@ -130,7 +388,7 @@ Handler.prototype.clientInsert = async function(res, bodyArr) {
 
 // Handler's crud methods
 
-Handler.prototype.save = function (req, res, fn) {
+Handler.prototype.store = function (req, res, fn) {
     let bodyArr = [];
     req.on('data', chunk => {
         bodyArr.push(chunk)
@@ -243,7 +501,7 @@ Handler.prototype.put = function (router) {
 
 Handler.prototype.post = function (router) {
     router.on('POST', '/crm/records/insert', (req, res) => {
-        handler.save(req, res, handler.clientInsert)
+        handler.save(req, res, handler.serviceInsert)
     })
 
     router.on('POST', '/crm/services/insert', (req, res) => {

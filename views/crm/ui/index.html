@@ -20,6 +20,11 @@
 
 <div id="content" class="wrapper justify-space-around">
     <div class="wrapper-item">
+
+        {% if data.clients %}
+            <h1>patients</h1>
+        {% endif %}
+
         <!-- form-client -->
         <h5>Клиент</h5>
         <form id="form-client" method="post" enctype="application/x-www-form-urlencoded">
@@ -98,10 +103,10 @@
             <input id="form-records-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
 
             <div class="form-group">
-                <label for="clients">Клиент</label>
+                <label for="form-records-clients">Клиент</label>
                 <div class="flex direction-row">
-                    <select id="clients" class="form-control">
-                        {% for client in clients %}
+                    <select id="form-records-clients" class="form-control">
+                        {% for client in data.clients %}
                         <option value="{{ client.id }}">{{ client.name }}</option>
                         {% endfor %}
                     </select>
@@ -109,10 +114,10 @@
             </div>
 
             <div class="form-group">
-                <label for="services-list">Услуга</label>
+                <label for="form-records-services-list">Услуга</label>
                 <div class="flex direction-row">
-                    <select id="services-list" class="form-control">
-                        {% for service in services %}
+                    <select id="form-records-services-list" class="form-control">
+                        {% for service in data.services %}
                         <option value="{{ service.id }}">{{ service.name }}</option>
                         {% endfor %}
                     </select>
@@ -120,23 +125,23 @@
             </div>
 
             <div class="form-group">
-                <label for="date">Дата</label>
+                <label for="form-records-date">Дата</label>
                 <div class="">
-                    <input id="date" name="date" class="form-control" type="date">
+                    <input id="form-records-date" class="form-control" type="date">
                 </div>
-                <span id="error-date" class="error display-none"></span>
+                <span id="form-records-date-error" class="error display-none"></span>
             </div>
 
             <div class="form-group">
-                <label for="time">Время</label>
+                <label for="form-records-time">Время</label>
                 <div class="">
-                    <input id="time" name="time" class="form-control" type="time">
+                    <input id="form-records-time" class="form-control" type="time">
                 </div>
-                <span id="error-time" class="error display-none">error</span>
+                <span id="form-records-time-error" class="error display-none">error</span>
             </div>
 
             <div class="form-group">
-                <input id="btn-save-form-records" class="form-btn form-btn-main" type="button" value="Добавить" />
+                <input id="form-records-btn-save" class="form-btn form-btn-main" type="button" value="Добавить" />
             </div>
         </form>
     </div>
@@ -156,10 +161,10 @@
             </div>
 
             <div class="form-group">
-                <label for="records-list">Записи клиентов</label>
+                <label for="form-client-records-list">Записи клиентов</label>
                 <div class="flex direction-row">
-                    <select id="records-list" class="form-control">
-                        {% for record in records %}
+                    <select id="form-client-records-list" class="form-control">
+                        {% for record in data.records %}
                         <option value="{{ record.id }}">{{ record.name }}</option>
                         {% endfor %}
                     </select>

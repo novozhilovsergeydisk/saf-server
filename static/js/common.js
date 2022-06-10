@@ -129,8 +129,6 @@ const ready = (() => {
             // })
 
             log({ upload })
-
-            // log({ btnUpload })
         })
     }
 
@@ -145,19 +143,19 @@ const ready = (() => {
         const email = document.getElementById('form-client-email').value
         const phone = document.getElementById('form-client-phone').value
 
-        const data = {
+        const formData = {
             fio: fio,
             email: email,
             phone: phone
         }
 
-        console.log({ data })
+        console.log({ formData })
 
-        postData('/crm/clients/insert', data)
-            .then((data) => {
-                console.log({ data });
+        postData('/crm/clients/insert', formData)
+            .then((serverData) => {
+                console.log({ serverData });
             })
-            .catch(err => log({ err }));;
+            .catch(err => log({ err }))
 
     })
 
@@ -172,22 +170,77 @@ const ready = (() => {
         const servicesPriceFrom = document.getElementById('form-services-price-from').value
         const servicesPriceTo = document.getElementById('form-services-price-to').value
 
-        const data = {
+        const formData = {
             servicesName: servicesName,
             servicesPriceFrom: servicesPriceFrom,
             servicesPriceTo: servicesPriceTo
         }
 
-        console.log({ data })
+        console.log({ formData })
 
-        postData('/crm/services/insert', data)
-            .then((data) => {
-                console.log({ data }); // JSON data parsed by `response.json()` call
+        postData('/crm/services/insert', formData)
+            .then((serverData) => {
+                console.log({ serverData }); // JSON data parsed by `response.json()` call
             })
-            .catch(err => log({ err }));
+            .catch(err => log({ err }))
+
+    })
+
+    // form-records
+
+    const formRecordsBtnSave = document.getElementById('form-records-btn-save')
+
+    formRecordsBtnSave.addEventListener('click', (e) => {
+        log({ formServicesBtnSave })
+
+        const recordsClients = document.getElementById('form-records-clients').value
+        const recordsServicesList = document.getElementById('form-records-services-list').value
+        const recordsDate = document.getElementById('form-records-date').value
+        const recordsTime = document.getElementById('form-records-time').value
+
+        const formData = {
+            recordsClients: recordsClients,
+            recordsServicesList: recordsServicesList,
+            recordsDate: recordsDate,
+            recordsTime: recordsTime
+        }
+
+        console.log({ formData })
+
+        postData('/crm/records/insert', formData)
+            .then((serverData) => {
+                console.log({ serverData })
+            })
+            .catch(err => log({ err }))
+
+    })
+
+    // form-clients-pay
+
+    const formClientPayBtnSave = document.getElementById('form-client-pay-btn-save')
+
+    formClientPayBtnSave.addEventListener('click', (e) => {
+        log({ formServicesBtnSave })
+
+        const clientPaySum = document.getElementById('form-client-pay-sum').value
+        const clientRecordsList = document.getElementById('form-client-records-list').value
+
+
+        const formData = {
+            clientPaySum: clientPaySum,
+            clientRecordsList: clientRecordsList
+        }
+
+        console.log({ formData })
+
+        postData('/crm/records/insert', formData)
+            .then((serverData) => {
+                console.log({ serverData })
+            })
+            .catch(err => log({ err }))
 
     })
 })
 
-document.addEventListener("DOMContentLoaded", ready);
+document.addEventListener("DOMContentLoaded", ready)
 
