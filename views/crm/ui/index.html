@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="/css/utility.css">
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/form.css">
+<link rel="stylesheet" href="/css/table.css">
 {% endblock %}
 
 {% block js %}
@@ -17,164 +18,188 @@
 {% endblock %}
 
 {% block content %}
+<div class="wrapper">
+    {% if data.clients %}
+    <h1>Тестовый режим</h1>
+    {% endif %}
+</div>
 
-<div id="content" class="wrapper justify-space-around">
+<div class="wrapper justify-space-around">
+    <!-- form-client -->   
+    <form id="form-client" method="post" enctype="application/x-www-form-urlencoded" class="wrapper-item">
+        <h2>Клиент (справочник)</h2>
+        <input id="form-client-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+
+        <div class="form-group">
+            <label for="form-client-fio">ФИО *</label>
+            <div class="">
+                <input id="form-client-fio" class="form-control" autocomplete="name">
+            </div>
+            <span id="form-client-fio-error" class="error display-none__"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="form-client-phone">Телефон *</label>
+            <div class="">
+                <input id="form-client-phone" class="form-control" type="tel">
+            </div>
+            <span id="form-client-phone-error" class="error display-none__"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="form-client-email">e-mail</label>
+            <div class="">
+                <input id="form-client-email" class="form-control" type="email">
+            </div>
+            <span id="form-client-email-error" class="error display-none__"></span>
+        </div>
+
+        <div class="form-group">
+            <span id="form-client-error" class="error"></span>
+            <input id="form-client-btn-save" class="form-btn form-btn-main mt-5" type="button" value="Добавить" />
+        </div>
+    </form>
+
+    <!-- form-services -->
+    <form id="form-services" method="post" enctype="application/x-www-form-urlencoded" class="wrapper-item">
+        <h2>Услуга (справочник)</h2>
+        <input id="form-services-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+
+        <div class="form-group">
+            <label for="form-services-name">Название</label>
+            <div class="">
+                <input id="form-services-name" class="form-control" autocomplete="name">
+            </div>
+            <span id="form-services-name-error" class="error display-none">error</span>
+        </div>
+
+        <div class="form-group">
+            <label for="form-services-price-from">Цена от</label>
+            <div class="">
+                <input id="form-services-price-from" class="form-control" type="name">
+            </div>
+            <span id="form-services-price-from-error" class="error display-none"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="form-services-price-to">Цена до</label>
+            <div class="">
+                <input id="form-services-price-to" class="form-control" type="name">
+            </div>
+            <span id="form-services-price-to-error" class="error display-none"></span>
+        </div>
+
+        <div class="form-group">
+            <span id="form-services-error" class="error"></span>
+            <input id="form-services-btn-save" class="form-btn form-btn-main mt-5" type="button" value="Добавить" />
+        </div>
+    </form>
+
+    <!-- form-records -->
+    <form id="form-records" method="post" enctype="application/x-www-form-urlencoded" class="wrapper-item">
+        <h2>Запись клиента</h2>
+        <input id="form-records-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+        
+        <div class="form-group">
+            <label for="form-records-clients-list">Клиент</label>
+            <div class="flex direction-row">
+                <select id="form-records-clients-list" class="form-control">
+                    {% for client in data.clients %}
+                    <option value="{{ client.id }}">{{ client.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="form-records-services-list">Услуга</label>
+            <div class="flex direction-row">
+                <select id="form-records-services-list" class="form-control">
+                    {% for service in data.services %}
+                    <option value="{{ service.id }}">{{ service.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="form-records-date">Дата</label>
+            <div class="">
+                <input id="form-records-date" class="form-control" type="date">
+            </div>
+            <span id="form-records-date-error" class="error display-none"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="form-records-time">Время</label>
+            <div class="">
+                <input id="form-records-time" class="form-control" type="time">
+            </div>
+            <span id="form-records-time-error" class="error display-none">error</span>
+        </div>
+
+        <div class="form-group">
+            <input id="form-records-btn-save" class="form-btn form-btn-main" type="button" value="Добавить" />
+        </div>
+    </form>
+</div>
+
+<div class="wrapper">
+<!-- form-client-pay -->
+    <form id="form-clientpay" method="post" enctype="application/x-www-form-urlencoded" class="wrapper-item">
+        <h2>Оплата услуги</h2>
+        <input id="form-clientpay-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+
+        <div class="form-group">
+            <label for="form-clientpay-sum">Сумма оплаты</label>
+            <div class="">
+                <input id="form-clientpay-sum" class="form-control" autocomplete="name">
+            </div>
+            <span id="form-client-pay-sum-error" class="error display-none">error</span>
+        </div>
+
+        <div class="form-group">
+            <label for="form-clientpay-records-list">Записи клиентов</label>
+            <div class="flex direction-row">
+                <select id="form-clientpay-records-list" class="form-control">
+                    {% for record in data.records %}
+                    <option value="{{ record.id }}">Клиент {{ record.client_name }} ( {{ record.service_name }} ) записан на {{ record.__date__ }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input id="form-clientpay-btn-save" class="form-btn form-btn-main" type="button" value="Оплатить" />
+        </div>
+    </form>
+</div>
+
+<div class="wrapper">
     <div class="wrapper-item">
+        <h2 class="center mb-10">Оплаченные услуги</h2>
 
-        {% if data.clients %}
-            <h1>patients</h1>
-        {% endif %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Клиент</th>
+                <th>Услуга</th>
+                <th>Сумма</th>
+                <th>Дата</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for record in data.recordspay %}
+            <tr>
+                <td>{{ record.client_name }}</td>
+                <td>{{ record.service_name }}</td>
+                <td>{{ record.__sum__ }}</td>
+                <td>{{ record.__date__ }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
 
-        <!-- form-client -->
-        <h5>Клиент</h5>
-        <form id="form-client" method="post" enctype="application/x-www-form-urlencoded">
-            <input id="form-client-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
-
-            <div class="form-group">
-                <label for="form-client-fio">ФИО</label>
-                <div class="">
-                    <input id="form-client-fio" class="form-control" autocomplete="name">
-                </div>
-                <span id="form-client-fio-error" class="error display-none">error</span>
-            </div>
-
-            <div class="form-group">
-                <label for="form-client-email">e-mail</label>
-                <div class="">
-                    <input id="form-client-email" class="form-control" type="email">
-                </div>
-                <span id="form-client-email-error" class="error display-none"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="form-client-phone">Телефон</label>
-                <div class="">
-                    <input id="form-client-phone" class="form-control" type="tel">
-                </div>
-                <span id="form-client-phone-error" class="error display-none"></span>
-            </div>
-
-            <div class="form-group">
-                <input id="form-client-btn-save" class="form-btn form-btn-main" type="button" value="Добавить" />
-            </div>
-        </form>
-    </div>
-
-    <div class="wrapper-item">
-        <!-- form-services -->
-        <h5>Услуга</h5>
-        <form id="form-services" method="post" enctype="application/x-www-form-urlencoded">
-            <input id="form-services-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
-
-            <div class="form-group">
-                <label for="form-services-name">Название</label>
-                <div class="">
-                    <input id="form-services-name" class="form-control" autocomplete="name">
-                </div>
-                <span id="form-services-name-error" class="error display-none">error</span>
-            </div>
-
-            <div class="form-group">
-                <label for="form-services-price-from">Цена от</label>
-                <div class="">
-                    <input id="form-services-price-from" class="form-control" type="name">
-                </div>
-                <span id="form-services-price-from-error" class="error display-none"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="form-services-price-to">Цена до</label>
-                <div class="">
-                    <input id="form-services-price-to" class="form-control" type="name">
-                </div>
-                <span id="form-services-price-to-error" class="error display-none"></span>
-            </div>
-
-            <div class="form-group">
-                <input id="form-services-btn-save" class="form-btn form-btn-main" type="button" value="Добавить" />
-            </div>
-        </form>
-    </div>
-
-    <div class="wrapper-item">
-        <!-- form-records -->
-        <h5>Запись</h5>
-        <form id="form-records" method="post" enctype="application/x-www-form-urlencoded">
-            <input id="form-records-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
-
-            <div class="form-group">
-                <label for="form-records-clients">Клиент</label>
-                <div class="flex direction-row">
-                    <select id="form-records-clients" class="form-control">
-                        {% for client in data.clients %}
-                        <option value="{{ client.id }}">{{ client.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="form-records-services-list">Услуга</label>
-                <div class="flex direction-row">
-                    <select id="form-records-services-list" class="form-control">
-                        {% for service in data.services %}
-                        <option value="{{ service.id }}">{{ service.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="form-records-date">Дата</label>
-                <div class="">
-                    <input id="form-records-date" class="form-control" type="date">
-                </div>
-                <span id="form-records-date-error" class="error display-none"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="form-records-time">Время</label>
-                <div class="">
-                    <input id="form-records-time" class="form-control" type="time">
-                </div>
-                <span id="form-records-time-error" class="error display-none">error</span>
-            </div>
-
-            <div class="form-group">
-                <input id="form-records-btn-save" class="form-btn form-btn-main" type="button" value="Добавить" />
-            </div>
-        </form>
-    </div>
-
-    <div class="wrapper-item">
-        <!-- form-client-pay -->
-        <h5>Оплата</h5>
-        <form id="form-client-pay" method="post" enctype="application/x-www-form-urlencoded">
-            <input id="form-client-pay-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
-
-            <div class="form-group">
-                <label for="form-client-pay-sum">Сумма оплаты</label>
-                <div class="">
-                    <input id="form-client-pay-sum" class="form-control" autocomplete="name">
-                </div>
-                <span id="form-client-pay-sum-error" class="error display-none">error</span>
-            </div>
-
-            <div class="form-group">
-                <label for="form-client-records-list">Записи клиентов</label>
-                <div class="flex direction-row">
-                    <select id="form-client-records-list" class="form-control">
-                        {% for record in data.records %}
-                        <option value="{{ record.id }}">{{ record.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <input id="form-client-pay-btn-save" class="form-btn form-btn-main" type="button" value="Оплатить" />
-            </div>
-        </form>
+        </table>
     </div>
 </div>
 

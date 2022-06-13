@@ -73,6 +73,12 @@ function upload(file) {
 
 const ready = (() => {
     log('ready');
+    const domainName = 'localhost';
+    const post = 3000;
+
+    function reload(domainName, port) {
+        window.location.href = `http://${domainName}:${port}/crm/ui`;
+    }
 
     async function postData(url = '', data = {}) {
         // Default options are marked with *
@@ -132,6 +138,12 @@ const ready = (() => {
         })
     }
 
+    //
+
+    const formClientError = document.getElementById('form-client-error')
+    const formServicesError = document.getElementById('form-services-error')
+    const formRecordsError = document.getElementById('form-records-error')
+    const formClientError = document.getElementById('form-recordspay-error')
     // form-client
 
     const formClientBtnSave = document.getElementById('form-client-btn-save')
@@ -153,10 +165,16 @@ const ready = (() => {
 
         postData('/crm/clients/insert', formData)
             .then((serverData) => {
-                console.log({ serverData });
+                if (serverData.status === 'success') {
+                    reload(domainName, post)
+                    console.log('reload');
+                } else {
+                    formClientError.innerHTML = 'Заполните обязательные поля ФИО и Телефон'
+                    console.log({ serverData });
+                }
+
             })
             .catch(err => log({ err }))
-
     })
 
     // form-services
@@ -180,10 +198,14 @@ const ready = (() => {
 
         postData('/crm/services/insert', formData)
             .then((serverData) => {
-                console.log({ serverData }); // JSON data parsed by `response.json()` call
+                if (serverData.status === 'success') {
+                    reload(domainName, post)
+                    console.log('reload');
+                } else {
+                    console.log({ serverData });
+                }
             })
             .catch(err => log({ err }))
-
     })
 
     // form-records
@@ -191,15 +213,15 @@ const ready = (() => {
     const formRecordsBtnSave = document.getElementById('form-records-btn-save')
 
     formRecordsBtnSave.addEventListener('click', (e) => {
-        log({ formServicesBtnSave })
+        log({ 'select': document.getElementById('form-records-clients-list') })
 
-        const recordsClients = document.getElementById('form-records-clients').value
+        const recordsClientsList = document.getElementById('form-records-clients-list').value
         const recordsServicesList = document.getElementById('form-records-services-list').value
         const recordsDate = document.getElementById('form-records-date').value
         const recordsTime = document.getElementById('form-records-time').value
 
         const formData = {
-            recordsClients: recordsClients,
+            recordsClientsList: recordsClientsList,
             recordsServicesList: recordsServicesList,
             recordsDate: recordsDate,
             recordsTime: recordsTime
@@ -209,33 +231,42 @@ const ready = (() => {
 
         postData('/crm/records/insert', formData)
             .then((serverData) => {
-                console.log({ serverData })
+                if (serverData.status === 'success') {
+                    reload(domainName, post)
+                    console.log('reload');
+                } else {
+                    console.log({ serverData });
+                }
             })
             .catch(err => log({ err }))
-
     })
 
-    // form-clients-pay
+    // form-recordspay
 
-    const formClientPayBtnSave = document.getElementById('form-client-pay-btn-save')
+    const formRecordspayBtnSave = document.getElementById('form-clientpay-btn-save')
 
-    formClientPayBtnSave.addEventListener('click', (e) => {
-        log({ formServicesBtnSave })
+    formRecordspayBtnSave.addEventListener('click', (e) => {
+        log({ formRecordspayBtnSave })
 
-        const clientPaySum = document.getElementById('form-client-pay-sum').value
-        const clientRecordsList = document.getElementById('form-client-records-list').value
+        const clientpaySum = document.getElementById('form-clientpay-sum').value
+        const clientpayRecordsList = document.getElementById('form-clientpay-records-list').value
 
 
         const formData = {
-            clientPaySum: clientPaySum,
-            clientRecordsList: clientRecordsList
+            clientpaySum: clientpaySum,
+            clientpayRecordsList: clientpayRecordsList
         }
 
         console.log({ formData })
 
-        postData('/crm/records/insert', formData)
+        postData('/crm/recordspay/insert', formData)
             .then((serverData) => {
-                console.log({ serverData })
+                if (serverData.status === 'success') {
+                    reload(domainName, post)
+                    console.log('reload');
+                } else {
+                    console.log({ serverData });
+                }
             })
             .catch(err => log({ err }))
 

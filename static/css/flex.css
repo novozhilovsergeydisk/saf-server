@@ -2,11 +2,22 @@
     display: flex;
     flex-wrap: wrap;
     padding: 10px;
+    border-bottom: 1px solid #cccccc;
+    justify-content: center;
+}
+
+.test {
+    /*align-items: center;*/
+    /*justify-content: space-between;*/
+    border: 1px solid red;
+    margin-bottom: 0px;
+    /*text-align: center;*/
 }
 
 .wrapper-item {
-    flex-grow: 1;
+    /*flex-grow: 1;*/
     padding: 5px;
+    margin-bottom: 10px;
 }
 
 .flex {

@@ -12,7 +12,7 @@ input {outline: none}
     background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
-    width: 200px;
+    width: 275px;
 }
 
 .form-btn-main {
@@ -52,7 +52,7 @@ input {outline: none}
 
 .form-control {
     height: 32px;
-    width: 200px;
+    width: 275px;
     padding: 5px 10px;
     line-height: 1.4;
     color: #555;

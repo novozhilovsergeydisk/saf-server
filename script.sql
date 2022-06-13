@@ -67,6 +67,7 @@ CREATE TABLE crm.records (
 	__date__ TIMESTAMP WITH TIME ZONE NOT NULL,
 	active BOOLEAN DEFAULT true,
 	CONSTRAINT records_pkey PRIMARY KEY (id),
+	CONSTRAINT records_key UNIQUE (client_id, service_id, __date__),
    	CONSTRAINT fk_clients
   		FOREIGN KEY(client_id)
 	  		REFERENCES crm.clients(id)
@@ -130,6 +131,7 @@ CREATE TABLE crm.recordspay (
 	__sum__ NUMERIC(12,2) NOT NULL,
 	active BOOLEAN DEFAULT true,
 	CONSTRAINT recordspay_pkey PRIMARY KEY (id),
+	CONSTRAINT recordspay_record_id UNIQUE (record_id),
    	CONSTRAINT fk_records
   		FOREIGN KEY(record_id)
 	  		REFERENCES crm.records(id)
@@ -162,6 +164,7 @@ ORDER BY id desc
 ;
 
 SELECT * FROM crm.records;
+SELECT * FROM crm.recordspay;
 SELECT * FROM crm.scheduleclients;
 SELECT * FROM crm.clients;
 SELECT * FROM crm.breeds;
@@ -169,6 +172,12 @@ SELECT * FROM crm.animals_category;
 SELECT * FROM crm.services;
 SELECT * FROM crm.roles;
 SELECT * FROM crm.users;
+
+SELECT rp.id, rp.__date__, rp.__sum__, c.name client_name, s.name service_name FROM crm.recordspay rp 
+JOIN crm.records r on r.id = rp.record_id
+JOIN crm.clients c on c.id = r.client_id
+JOIN crm.services s on s.id = r.service_id
+;
 
 SELECT '12.34'::float8::numeric::money
 ;

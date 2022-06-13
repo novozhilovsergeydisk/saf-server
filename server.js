@@ -152,6 +152,13 @@ function get(router) {
 
     //
 
+    router.on('GET', '/crm/recordspay/select', async (req, res) => {
+        const sql = `SELECT * FROM crm.services`
+        const result = await handler.query(sql)
+        log({ 'result.data': result.data })
+        res.end('crm/clients/select')
+    })
+
     router.on('GET', '/crm/records/select', (req, res) => {
         const pool = new Pool()
         const sql = `SELECT * FROM crm.records`
@@ -185,14 +192,35 @@ function get(router) {
     })
 
     router.on('GET', '/crm/ui', async (req, res) => {
-        let result = null
-        result = await handler.getClients()
+        let result, sql
+
+        sql = `SELECT * FROM crm.clients`
+        result = await handler.query(sql)
         const clients = result.data
-        const sql = `SELECT * FROM crm.services`
+
+        sql = `SELECT * FROM crm.services`
         result = await handler.query(sql)
         const services = result.data
-        log({ services })
-        const render = tmpl.process({ data: {clients: clients, services: services} }, 'crm/ui/index.html')
+
+        sql = `
+            SELECT r.id, r.__date__, c.name client_name, s.name service_name FROM crm.records r 
+            JOIN crm.clients c on c.id = r.client_id
+            JOIN crm.services s on s.id = r.service_id
+        `
+        result = await handler.query(sql)
+        const records = result.data
+
+        sql = `
+            SELECT rp.id, rp.__date__, rp.__sum__, c.name client_name, s.name service_name FROM crm.recordspay rp 
+            JOIN crm.records r on r.id = rp.record_id
+            JOIN crm.clients c on c.id = r.client_id
+            JOIN crm.services s on s.id = r.service_id
+        ;`
+
+        result = await handler.query(sql)
+        const recordspay = result.data
+
+        const render = tmpl.process({ data: {clients: clients, services: services, records: records, recordspay: recordspay} }, 'crm/ui/index.html')
         app.html(res, render)
     })
 
