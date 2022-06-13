@@ -143,7 +143,7 @@ const ready = (() => {
     const formClientError = document.getElementById('form-client-error')
     const formServicesError = document.getElementById('form-services-error')
     const formRecordsError = document.getElementById('form-records-error')
-    const formClientError = document.getElementById('form-recordspay-error')
+    const formRecordpayError = document.getElementById('form-recordspay-error')
     // form-client
 
     const formClientBtnSave = document.getElementById('form-client-btn-save')
