@@ -31,31 +31,40 @@ const {log} = require('./server/helpers.js');
 
       const db = connectPg();
 
-      for (let i = 1; i <= day; i++) {
-          if (i < 10) {
-              _date_ = `${year}-${month}-0${i}`;
-          } else {
-              _date_ = `${year}-${month}-${i}`;
-          }
+      sql = `SELECT id, name, email, is_pat patient, activate_time FROM account WHERE is_pat = true AND is_doc IS NULL AND is_adm IS NULL AND is_sup IS null ORDER BY activate_time DESC`
+      console.log({ sql })
+      result = await db.query(sql);
+      rows = result.rows;
+      log({ rows })
+      log('---------------------')
 
-          sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '${_date_} 00:00:00' AND datetime < '${_date_} 23:59:59' AND uri LIKE '%pat%'`
-          // console.log({ sql })
-          result = await db.query(sql);
-          rows = result.rows;
-          _count_ = Number(rows[0].count)
-          sum += _count_
-          // log(`${_date_} - ` + _count_);
-          // log('---------------------')
-      }
+      // for (let i = 1; i <= day; i++) {
+      //     if (i < 10) {
+      //         _date_ = `${year}-${month}-0${i}`;
+      //     } else {
+      //         _date_ = `${year}-${month}-${i}`;
+      //     }
+      //
+      //     sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '${_date_} 00:00:00' AND datetime < '${_date_} 23:59:59' AND uri LIKE '%pat%'`
+      //     //sql = `SELECT count(*) FROM account WHERE is_pat = true`
+      //     // console.log({ sql })
+      //     result = await db.query(sql);
+      //     rows = result.rows;
+      //     _count_ = Number(rows[0].count)
+      //     sum += _count_
+      //     // log(`${_date_} - ` + _count_);
+      //     log({ rows })
+      //     log('---------------------')
+      // }
 
-      log('2022 январь  - 13662 заходов пациентов в разделы https://трансплант.net/pat')
-      log('2022 февраль - 11990 заходов пациентов в разделы https://трансплант.net/pat')
-      log('2022 март    - 11705 заходов пациентов в разделы https://трансплант.net/pat')
-      log('2022 апрель  - 11003 заходов пациентов в разделы https://трансплант.net/pat')
-      log('2022 май     - 10723 заходов пациентов в разделы https://трансплант.net/pat')
-      log('2022 июнь    - 3800  заходов пациентов в разделы https://трансплант.net/pat')
-
-      log('124409 всего заходов за 2022')
+      // log('2022 январь  - 13662 заходов пациентов в разделы https://трансплант.net/pat')
+      // log('2022 февраль - 11990 заходов пациентов в разделы https://трансплант.net/pat')
+      // log('2022 март    - 11705 заходов пациентов в разделы https://трансплант.net/pat')
+      // log('2022 апрель  - 11003 заходов пациентов в разделы https://трансплант.net/pat')
+      // log('2022 май     - 10723 заходов пациентов в разделы https://трансплант.net/pat')
+      // log('2022 июнь    - 3800  заходов пациентов в разделы https://трансплант.net/pat')
+      //
+      // log('124409 всего заходов за 2022')
 
     // sql = 'SELECT * FROM account LIMIT 3'; // 'select now()'
     // sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '2022-06-01 00:00:00' AND datetime < '2022-06-07 23:59:59' AND (uri = '/' OR uri LIKE '%info%' OR uri LIKE '%usr%' OR uri LIKE '%pat%' OR uri LIKE '%doc%' OR uri LIKE '%adm%' OR uri LIKE '%sup%')`

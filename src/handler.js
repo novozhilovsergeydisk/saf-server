@@ -103,21 +103,31 @@ Handler.prototype.select = async function (sql) {
 }
 
 Handler.prototype.query = async function (sql) {
-    const pool = new Pool()
-    const result = pool.query(sql)
-    return result.then(data => {
-        pool.end()
-        const rows = data.rows
-        const response = { status: 'success', data: rows, error: null }
-        // log({ response })
-        log(response.data)
-        log('------------')
+    let response
+    const validSql = handler.isString(sql)
+    if (validSql === false) {
+        response = { status: 'failed', data: null, error: { message: 'sql запрос должен быть строкой', info: null } }
+        log({ response })
         return response
-    }).catch(err => {
-        const responseError = { status: 'failed', data: null, error: { message: 'Ошибка сервера БД', info: err } }
-        log({ err })
+    }
+    try {
+        const pool = new Pool()
+        const result = pool.query(sql)
+        return result.then(data => {
+            pool.end()
+            const rows = data.rows
+            response = { status: 'success', data: rows, error: null }
+            return response
+        }).catch(err => {
+            response = { status: 'failed', data: null, error: { message: 'Ошибка сервера БД', info: err } }
+            log({ err })
+            return response
+        })
+    } catch(error) {
+        response = { status: 'failed', data: null, error: { message: 'Ошибка сервера БД', info: error } }
+        log({ error })
         return response
-    })
+    }
 }
 
 Handler.prototype.getClients = async function () {
@@ -582,6 +592,18 @@ Handler.prototype.post = function (router) {
         const data = handler.getPatientMonthly(req, res)
         data.then(data => log(data.body)).catch(err => log({ err }))
     })
+}
+
+Handler.prototype.isFunction = function (fn) {
+    return ((typeof fn) === 'function')
+}
+
+Handler.prototype.isNumber = function (data) {
+    return ((typeof data) === 'number')
+}
+
+Handler.prototype.isString = function (data) {
+    return ((typeof data) === 'string')
 }
 
 const handler = new Handler()
