@@ -73,8 +73,8 @@ function upload(file) {
 
 const ready = (() => {
     log('ready');
-    const domainName = 'localhost';
-    const post = 3000;
+    const domainName = 'http://crm.salon-groom.ru';
+    const post = 80;
 
     function reload(domainName, port) {
         window.location.href = `http://${domainName}:${port}/crm/ui`;
