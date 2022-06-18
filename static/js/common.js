@@ -73,7 +73,7 @@ function upload(file) {
 
 const ready = (() => {
     log('ready');
-    const domainName = 'http://crm.salon-groom.ru';
+    const domainName = 'crm.salon-groom.ru';
     const post = 80;
 
     function reload(domainName, port) {
