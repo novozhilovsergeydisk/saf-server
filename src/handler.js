@@ -48,6 +48,7 @@ const { log } = require('../server/helpers.js')
 // }
 
 const { Pool } = require('pg')
+const { query } = require('../server/lib/DB/index.js')
 // const pool = new Pool()
 
 const { app } = require('../src/app.js')
@@ -104,28 +105,40 @@ Handler.prototype.select = async function (sql) {
 
 Handler.prototype.query = async function (sql) {
     let response
-    const validSql = handler.isString(sql)
-    if (validSql === false) {
-        response = { status: 'failed', data: null, error: { message: 'sql запрос должен быть строкой', info: null } }
-        log({ response })
-        return response
+    let error
+
+    const getError = () => {
+        return error
     }
+
+    const setError = (err) => {
+        error = err
+    }
+
+    const validSql = handler.isString(sql)
+    // if (validSql === false) {
+    //     response = { status: 'failed', error: { message: 'sql запрос должен быть строкой', info: null } }
+    //     log({ response })
+    //     return response
+    // }
     try {
         const pool = new Pool()
         const result = pool.query(sql)
         return result.then(data => {
             pool.end()
             const rows = data.rows
-            response = { status: 'success', data: rows, error: null }
+            response = { status: 'success', data: rows }
             return response
-        }).catch(err => {
-            response = { status: 'failed', data: null, error: { message: 'Ошибка сервера БД', info: err } }
-            log({ err })
+        }).catch(error => {
+            setError(error)
+            response = { status: 'failed', error: { message: 'Ошибка запроса к серверу БД', info: error } }
+            log(error)
             return response
         })
     } catch(error) {
-        response = { status: 'failed', data: null, error: { message: 'Ошибка сервера БД', info: error } }
-        log({ error })
+        setError(error)
+        response = { status: 'failed', error: { message: 'Ошибка сервера БД', info: error } }
+        log(error)
         return response
     }
 }
@@ -141,13 +154,22 @@ Handler.prototype.getClients = async function () {
         // log({ response })
         return response
     }).catch(err => {
-        const responseError = { status: 'failed', data: null, error: { message: 'Ошибка сервера БД', info: err } }
+        const responseError = { status: 'failed', error: { message: 'Ошибка сервера БД', info: err } }
         log({ err })
         return response
     })
 }
 
-// insert
+// inser
+//
+
+Handler.prototype.log = function (response) {
+    log({ response })
+}
+
+Handler.prototype.detail = function (res) {
+    log({ 'info': res.error.info })
+}
 
 Handler.prototype.recordPayInsert = async function (res, bodyArr) {
     const pool = new Pool()
@@ -214,9 +236,9 @@ Handler.prototype.recordPayInsert = async function (res, bodyArr) {
             log({ response })
             app.json(res, response)
         }).catch(err => {
-            const response = { status: 'failed', data: null, error: { message: 'Ошибка сервера БД', info: err } }
-            log({ response })
-            log({ 'detail': response.error.info.detail })
+            const response = { status: 'failed', data: null, error: { message: 'Ошибка сервера БД @', info: err } }
+            // log({ response })
+            handler.detail(response)
             app.json(res, response)
         })
     } else {
@@ -449,20 +471,23 @@ Handler.prototype.clientInsert = async function (res, bodyArr) {
         const result = pool.query(sql, dataInsert)
         result.then(data => {
             pool.end()
-            log({ data })
+            // log({ data })
             const response = { status: 'success', data: data.rows[0], error: null }
             app.json(res, response)
         }).catch(err => {
-            const response = { status: 'failed', data: null, error: { message: 'Ошибка сервера БД', info: err } }
-            log({ response })
-            log({ 'detail': response.error.info.detail })
+            const response = { status: 'failed', error: { message: 'Ошибка сервера БД', info: err } }
+            handler.log(response)
+            handler.detail(response)
+
+
+
             app.json(res, response)
         })
     } else {
         const error = validate.errors[0].message
-        const response = { status: 'failed', data: null, error: { message: 'Ошибка валидации', info: error } }
+        const response = { status: 'failed', error: { message: 'Ошибка валидации', info: error } }
         log({ response })
-        log({ 'detail': response.error.info.detail })
+        handler.detail(response)
         app.json(res, response)
     }
 }
@@ -481,6 +506,23 @@ Handler.prototype.store = function (req, res, fn) {
 
 // END Handler's crud methods
 
+Handler.prototype.admin = function (req, res) {
+    const sql = `SELECT * FROM crm.clients`;
+
+    const result = query(sql);
+
+    return result.then(data => {
+        log(data.rows)
+        const response = { status: 'success', data: data.rows }
+        log({ response })
+    }).catch(error => {
+        const responseError = { status: 'failed', error: { message: 'Ошибка сервера БД', info: err } }
+        log({ error })
+    })
+
+    const render = tmpl.process({ data: null }, 'admin2/template/index.html')
+    app.html(res, render)
+}
 
 Handler.prototype.patients = function patients(req, res) {
     res.end('patients')
@@ -530,9 +572,10 @@ Handler.prototype.clientAdd = function (req) {
     })
 }
 
-// HTTP methods
+// routes
 
 Handler.prototype.get = function (router) {
+    router.on('GET', '/admin__', handler.admin)
     router.on('GET', '/patients', handler.patients)
     router.on('GET', '/doctors', handler.doctors)
     router.on('GET', '/patients/monthly', (req, res) => {

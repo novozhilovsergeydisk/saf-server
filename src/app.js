@@ -2,13 +2,46 @@
 
 const path = require('path')
 const fs = require('fs')
+const { Pool } = require('pg')
+const router = require('find-my-way')({
+    defaultRoute: (req, res) => {
+        // app.plain(res, '404 - Not found', 404)
+        res.statusCode = 404
+        // const render = tmpl.process({}, '404/index.html')
+        res.end('404 not found')
+    },
+    maxParamLength: 500
+})
 
 const {MIME_TYPES} = require('../constants.js')
 // const {getContent} = require('../server/controllers/main/index.js')
 const {statPath, __STATIC, removeLastSymbol} = require('../server/helpers.js')
 
 function App() {
+}
 
+App.prototype.router = router;
+
+App.prototype.query = async function (sql) {
+    let response
+    try {
+        const pool = new Pool()
+        const result = pool.query(sql)
+        return result.then(data => {
+            pool.end()
+            const rows = data.rows
+            response = { status: 'success', data: rows }
+            return response
+        }).catch(error => {
+            response = { status: 'failed', error: { message: 'Ошибка запроса к серверу БД', info: error } }
+            console.log(error)
+            return response
+        })
+    } catch(error) {
+        response = { status: 'failed', error: { message: 'Ошибка сервера БД', info: error } }
+        log(error)
+        return response
+    }
 }
 
 App.prototype.html = function (res, data, status) {
@@ -24,10 +57,11 @@ App.prototype.json = function (res, data, status) {
 }
 
 App.prototype.plain = function (res, data, status) {
-    res.setHeader('Content-Type', MIME_TYPES.plain)
+    // res.setHeader('Content-Type', MIME_TYPES.plain)
     res.statusCode = status || 200
     res.end(data.toString())
 }
+
 App.prototype.send = function (res, data, mimeType, status) {
     res.setHeader('Content-Type', mimeType || MIME_TYPES.json)
     res.statusCode = status || 200

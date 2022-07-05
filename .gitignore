@@ -3,5 +3,6 @@
 .env
 node_modules/
 test/
-
-
+views/corona/
+static/css/rickshaw.js
+admin-2/

@@ -73,11 +73,13 @@ function upload(file) {
 
 const ready = (() => {
     log('ready');
-    const domainName = 'crm.salon-groom.ru';
-    const post = 80;
+    const domainName = 'localhost'; // 'crm.salon-groom.ru'
+    const port = 3000; // 80
 
-    function reload(domainName, port) {
-        window.location.href = `http://${domainName}:${port}/crm/ui`;
+    function reload(domainName) {
+        const href = `http://${domainName}:${port}/ui`;
+        log({ href })
+        window.location.href = href;
     }
 
     async function postData(url = '', data = {}) {
@@ -166,7 +168,7 @@ const ready = (() => {
         postData('/crm/clients/insert', formData)
             .then((serverData) => {
                 if (serverData.status === 'success') {
-                    reload(domainName, post)
+                    // reload(domainName, post)
                     console.log('reload');
                 } else {
                     formClientError.innerHTML = 'Заполните обязательные поля ФИО и Телефон'
@@ -199,7 +201,7 @@ const ready = (() => {
         postData('/crm/services/insert', formData)
             .then((serverData) => {
                 if (serverData.status === 'success') {
-                    reload(domainName, post)
+                    reload(domainName)
                     console.log('reload');
                 } else {
                     console.log({ serverData });
@@ -232,7 +234,7 @@ const ready = (() => {
         postData('/crm/records/insert', formData)
             .then((serverData) => {
                 if (serverData.status === 'success') {
-                    reload(domainName, post)
+                    reload(domainName)
                     console.log('reload');
                 } else {
                     console.log({ serverData });
@@ -262,7 +264,7 @@ const ready = (() => {
         postData('/crm/recordspay/insert', formData)
             .then((serverData) => {
                 if (serverData.status === 'success') {
-                    reload(domainName, post)
+                    reload(domainName)
                     console.log('reload');
                 } else {
                     console.log({ serverData });

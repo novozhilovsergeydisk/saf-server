@@ -1,6 +1,7 @@
 'use strict';
 
 const { Pool } = require('pg');
+const {__pool__} = require('../../lib/DB/index.js');
 const { log, start, end } = require('../../helpers');
 
 const where = (conditions) => {

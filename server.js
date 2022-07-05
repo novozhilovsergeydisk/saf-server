@@ -2,38 +2,25 @@
 
 console.log('script start');
 
-// const client = require('./test.js')
-//
-// client({foo: 'test'})
-//
-// console.log({ client })
+// pattern singleton
 
-// setTimeout(function () {
-//     console.log('setTimeout');
-// }, 0);
+const singleton = {foo: 'bar'} // (instance => () => instance)({foo: 'bar'})
+
+console.assert(singleton === singleton)
+console.log('instances are equal')
+
+// const singleton = (instance => () => instance)({foo: 'bar'})
 //
-// Promise.resolve()
-//     .then(function () {
-//         console.log('promise_1');
-//     })
-//     .then(function () {
-//         console.log('promise_2');
-//     });
+// console.log({ singleton })
+// console.log({ 'singleton()': singleton({mini: 'go'}) })
 //
-// console.log('script end');
-//
-// console.log('--------------------------')
+// console.assert(singleton() === singleton())
+// console.log('instances are equal')
+
+// End pattern singleton
 
 const dotenv = require('dotenv')
 dotenv.config()
-
-const { Pool } = require('pg');
-// const pool = new Pool();
-//
-// pool.query('SELECT NOW()', (err, res) => {
-//     console.log(err, res)
-//     pool.end()
-// })
 
 /*
   Char codes:
@@ -60,12 +47,6 @@ const { Pool } = require('pg');
     '~': 126 - ~
 */
 
-// const boundary = 'boundary=----WebKitFormBoundaryjc28wXBdOH4E1Ngm';
-//
-// const match = boundary.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
-//
-// //console.log({ 'match': match })
-
 // ******* Common server 1
 
 // const server = require('./server/http-server');
@@ -79,36 +60,103 @@ const { Pool } = require('pg');
 
 const http = require('http')
 // const path = require('path')
+// const {app__} = require('./app.js');
 
 const {app, _static} = require('./src/app.js')
 const {hash, generateToken, log} = require('./server/helpers.js')
 const reportsController = require('./server/controllers/patients/index.js')
-const router = require('find-my-way')({
-    defaultRoute: (req, res) => {
-        app.plain(res, '404 - Not found', 404)
-        // res.statusCode = 404
-        // // const render = tmpl.process({}, '404/index.html')
-        // res.end(render)
-    },
-    maxParamLength: 500
-})
-// const {getContent} = require('./server/controllers/main/index.js')
 const {tmpl} = require('./server/lib/Renderer/index.js')
 const {MIME_TYPES} = require('./constants.js')
 const {handler} = require('./src/handler.js')
 
-// const nativeTest = require('./src/test.js')
-// log(typeof nativeTest)
+const staticRoutes = [
+    '/css/*',
+    '/fonts/*',
+    '/iwebfonts/*',
+    '/img/*',
+    '/js/*',
+    '/robots/robots.txt',
+    '/favicon.ico',
+    '/images/*',
+    '/vendors/*',
+    '/js-admin/*'
+]
 
-//
+// routes
 
-const staticRoutes = ['/css' + '/*', '/fonts/*', '/iwebfonts/*', '/img/*',  '/js/*', '/robots/robots.txt', '/favicon.ico']
+app.router.on('GET', '/admin', async (req, res) => {
+    let result, sql
 
-_static(staticRoutes, router)
+    sql = `SELECT * FROM crm.clients`
+    result = await app.query(sql)
+    const clients = result.data
+
+    sql = `SELECT * FROM crm.services`
+    result = await handler.query(sql)
+    const services = result.data
+
+    sql = `
+            SELECT r.id, r.__date__, c.name client_name, s.name service_name FROM crm.records r 
+            JOIN crm.clients c on c.id = r.client_id
+            JOIN crm.services s on s.id = r.service_id
+        `
+    result = await handler.query(sql)
+    const records = result.data
+
+    sql = `
+            SELECT rp.id, rp.__date__, rp.__sum__, c.name client_name, s.name service_name FROM crm.recordspay rp 
+            JOIN crm.records r on r.id = rp.record_id
+            JOIN crm.clients c on c.id = r.client_id
+            JOIN crm.services s on s.id = r.service_id
+        ;`
+
+    result = await handler.query(sql)
+    const recordspay = result.data
+    const index = 'admin/index.html'
+    const render = tmpl.process({ data: {clients: clients, services: services, records: records, recordspay: recordspay} }, index)
+
+    // app.plain(res, 'admin')
+
+    res.setHeader('Content-Type', MIME_TYPES.html)
+    res.statusCode = 200
+    res.end(render.toString())
+
+    // app.html(res, render)
+})
+
+app.router.on('GET', '/records/select', async (req, res) => {
+    const sql = `SELECT * FROM crm.records`
+
+    const result = await app.query(sql)
+
+    log({ result })
+    log( result.data)
+    log('------------')
+
+    app.json(res, result.data)
+
+    // app.plain(res,'/crm/records/select')
+
+    // result.then(data => {
+    //     // pool.end()
+    //
+    //     const result = data.data;
+    //
+    //     log({ result })
+    //
+    //     const response = {status: 'success', data: result, error: null}
+    //     log({ response })
+    //     app.json(res, response)
+    // }).catch(err => {
+    //     const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+    //     log({ err })
+    //     app.json(res, responseError)
+    // })
+})
+
+_static(staticRoutes, app.router)
 
 // GET routes function declaration
-
-
 
 function get(router) {
     router.on('GET', '/reports/annual', (req, res) => {
@@ -150,32 +198,51 @@ function get(router) {
     })
 
 
+    // crm
+
+    app.router.on('GET', '/recordspay/select', async (req, res) => {
+        const sql = `SELECT * FROM crm.recordspay`
+        const result = await app.query(sql)
+        log({ result })
+        res.end('/recordspay/select')
+    })
+
+    // const appRouter = app.router;
     //
+    // log({ appRouter })
+    //
+    // log({ router })
 
-    router.on('GET', '/crm/recordspay/select', async (req, res) => {
-        const sql = `SELECT * FROM crm.services`
-        const result = await handler.query(sql)
-        log({ 'result.data': result.data })
-        res.end('crm/clients/select')
-    })
-
-    router.on('GET', '/crm/records/select', (req, res) => {
-        const pool = new Pool()
-        const sql = `SELECT * FROM crm.records`
-
-        const result = pool.query(sql)
-        result.then(data => {
-            pool.end()
-            const response = {status: 'success', data: data.rows, error: null}
-            log({ response })
-            app.json(res, response)
-        }).catch(err => {
-            const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
-            log({ err })
-            app.json(res, responseError)
-        })
-        // app.plain(res, '/crm/clients/select')
-    })
+    // router.on('GET', '/crm/records/select', async (req, res) => {
+    //     // const pool = new Pool()
+    //     const sql = `SELECT * FROM crm.records`
+    //
+    //     const result = await app.query(sql)
+    //
+    //     log({ result })
+    //     log( result.data)
+    //     log('------------')
+    //
+    //     app.plain(res, '/crm/clients/select')
+    //
+    //     // app.plain(res,'/crm/records/select')
+    //
+    //     // result.then(data => {
+    //     //     // pool.end()
+    //     //
+    //     //     const result = data.data;
+    //     //
+    //     //     log({ result })
+    //     //
+    //     //     const response = {status: 'success', data: result, error: null}
+    //     //     log({ response })
+    //     //     app.json(res, response)
+    //     // }).catch(err => {
+    //     //     const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+    //     //     log({ err })
+    //     //     app.json(res, responseError)
+    //     // })
+    // })
 
     router.on('GET', '/crm/services/select', async (req, res) => {
         const sql = `SELECT * FROM crm.services`
@@ -191,7 +258,7 @@ function get(router) {
 
     })
 
-    router.on('GET', '/crm/ui', async (req, res) => {
+    router.on('GET', '/ui', async (req, res) => {
         let result, sql
 
         sql = `SELECT * FROM crm.clients`
@@ -224,7 +291,7 @@ function get(router) {
         app.html(res, render)
     })
 
-    //
+    // End crm
 
     const store = {foo: 'bar'}
     router.on('GET', '/reports', ['foo', 'bar'], (req, res) => {
@@ -252,8 +319,6 @@ function get(router) {
 
 // END GET routes function declaration
 
-//
-
 // POST routes function declaration
 
 function post(router) {
@@ -272,19 +337,18 @@ function post(router) {
 
 // END POST routes function declaration
 
-post(router)
-
-get(router)
+post(app.router)
+get(app.router)
 
 //
 
-handler.get(router)
-handler.post(router)
+handler.get(app.router)
+handler.post(app.router)
 
 //
 
 const server = http.createServer((req, res) => {
-    router.lookup(req, res)
+    app.router.lookup(req, res)
 })
 
 server.listen(process.env.HTTP_PORT, err => {
