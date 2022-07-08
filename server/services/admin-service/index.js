@@ -56,10 +56,10 @@ class AdminService {
         const arrRes = [];
 
         for (const day of days) {
-            const sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '${year}-${month}-${day} 00:00:00' AND datetime < '${year}-${month}-30 23:59:59' AND uri LIKE '%pat%'`;
+            const sql = `SELECT count(*) FROM sitelog s WHERE 1=1 AND datetime > '${year}-${month}-${day} 00:00:00' AND datetime < '${year}-${month}-${day}  23:59:59' AND uri LIKE '%pat%'`;
             const res = await query(sql, []);
-            arrRes.push({day: day, res: res});
-            log({ res })
+            arrRes.push({day: day, res: Number(res[0].count), sql: sql});
+            // log({ res })
         }
 
         // arrRes.forEach(year => {
@@ -79,7 +79,7 @@ class AdminService {
 
 
 
-        // log({ arrRes })
+        log({ arrRes })
 
         return arrRes;
     }

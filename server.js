@@ -1,13 +1,19 @@
-'use strict'
+'use strict';
 
 console.log('script start');
 
 // pattern singleton
 
-const singleton = {foo: 'bar'} // (instance => () => instance)({foo: 'bar'})
+const singleton = {foo: 'bar'}; // (instance => () => instance)({foo: 'bar'})
 
-console.assert(singleton === singleton)
-console.log('instances are equal')
+console.assert(singleton === singleton);
+console.log('instances are equal');
+
+const buf = Buffer.from([1, 2, 3, 4]);
+
+const uint32array = new Uint32Array(buf);
+
+console.log({ uint32array });
 
 // const singleton = (instance => () => instance)({foo: 'bar'})
 //
@@ -19,8 +25,8 @@ console.log('instances are equal')
 
 // End pattern singleton
 
-const dotenv = require('dotenv')
-dotenv.config()
+const dotenv = require('dotenv');
+dotenv.config();
 
 /*
   Char codes:
@@ -58,16 +64,16 @@ dotenv.config()
 
 // ******* Common server 2
 
-const http = require('http')
+const http = require('http');
 // const path = require('path')
 // const {app__} = require('./app.js');
 
-const {app, _static} = require('./src/app.js')
-const {hash, generateToken, log} = require('./server/helpers.js')
-const reportsController = require('./server/controllers/patients/index.js')
-const {tmpl} = require('./server/lib/Renderer/index.js')
-const {MIME_TYPES} = require('./constants.js')
-const {handler} = require('./src/handler.js')
+const {app, _static} = require('./src/app.js');
+const {hash, generateToken, log} = require('./server/helpers.js');
+const reportsController = require('./server/controllers/patients/index.js');
+const {tmpl} = require('./server/lib/Renderer/index.js');
+const {MIME_TYPES} = require('./constants.js');
+const {handler} = require('./src/handler.js');
 
 const staticRoutes = [
     '/css/*',
@@ -80,28 +86,78 @@ const staticRoutes = [
     '/images/*',
     '/vendors/*',
     '/js-admin/*'
-]
+];
+
+const json = function (res, data, status) {
+    res.setHeader('Content-Type', MIME_TYPES.json)
+    res.statusCode = status || 200
+    res.end(JSON.stringify(data))
+}
+
+const html = function (res, data, status) {
+    res.setHeader('Content-Type', MIME_TYPES.html)
+    res.statusCode = status || 200
+    res.end(data.toString())
+}
+
+const textPlain = function (res, data, status) {
+    res.setHeader('Content-Type', MIME_TYPES.plain)
+    res.statusCode = status || 200
+    res.end(data.toString())
+}
+
+
 
 // routes
 
+app.router.on('GET', '/account/select', async (req, res) => {
+    const sql = `SELECT * FROM account`;
+
+    const result = await app.query(sql);
+
+    log(typeof result)
+    log(result.data)
+    log('------------')
+
+    json(res, result.data);
+
+    // app.plain(res,'/crm/records/select')
+
+    // result.then(data => {
+    //     // pool.end()
+    //
+    //     const result = data.data;
+    //
+    //     log({ result })
+    //
+    //     const response = {status: 'success', data: result, error: null}
+    //     log({ response })
+    //     app.json(res, response)
+    // }).catch(err => {
+    //     const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
+    //     log({ err })
+    //     app.json(res, responseError)
+    // })
+})
+
 app.router.on('GET', '/admin', async (req, res) => {
-    let result, sql
+    let result, sql;
 
-    sql = `SELECT * FROM crm.clients`
-    result = await app.query(sql)
-    const clients = result.data
+    sql = `SELECT * FROM crm.clients`;
+    result = await app.query(sql);
+    const clients = result.data;
 
-    sql = `SELECT * FROM crm.services`
-    result = await handler.query(sql)
-    const services = result.data
+    sql = `SELECT * FROM crm.services`;
+    result = await handler.query(sql);
+    const services = result.data;
 
     sql = `
             SELECT r.id, r.__date__, c.name client_name, s.name service_name FROM crm.records r 
             JOIN crm.clients c on c.id = r.client_id
             JOIN crm.services s on s.id = r.service_id
-        `
-    result = await handler.query(sql)
-    const records = result.data
+        `;
+    result = await handler.query(sql);
+    const records = result.data;
 
     sql = `
             SELECT rp.id, rp.__date__, rp.__sum__, c.name client_name, s.name service_name FROM crm.recordspay rp 
@@ -110,30 +166,30 @@ app.router.on('GET', '/admin', async (req, res) => {
             JOIN crm.services s on s.id = r.service_id
         ;`
 
-    result = await handler.query(sql)
-    const recordspay = result.data
-    const index = 'admin/index.html'
-    const render = tmpl.process({ data: {clients: clients, services: services, records: records, recordspay: recordspay} }, index)
+    result = await handler.query(sql);
+    const recordspay = result.data;
+    const index = 'admin/index.html';
+    const render = tmpl.process({ data: {clients: clients, services: services, records: records, recordspay: recordspay} }, index);
 
     // app.plain(res, 'admin')
 
-    res.setHeader('Content-Type', MIME_TYPES.html)
-    res.statusCode = 200
-    res.end(render.toString())
+    res.setHeader('Content-Type', MIME_TYPES.html);
+    res.statusCode = 200;
+    res.end(render.toString());
 
     // app.html(res, render)
-})
+});
 
 app.router.on('GET', '/records/select', async (req, res) => {
-    const sql = `SELECT * FROM crm.records`
+    const sql = `SELECT * FROM crm.records`;
 
-    const result = await app.query(sql)
+    const result = await app.query(sql);
 
     log({ result })
     log( result.data)
     log('------------')
 
-    app.json(res, result.data)
+    app.json(res, result.data);
 
     // app.plain(res,'/crm/records/select')
 
@@ -160,24 +216,22 @@ _static(staticRoutes, app.router)
 
 function get(router) {
     router.on('GET', '/reports/annual', (req, res) => {
-        app.html(res, 'reports/annual')
+        textPlain(res, 'reports/annual')
     })
 
-    router.on('GET', '/reports/monthly/:year/:month', (req, res, params) => {
+    router.on('GET', '/reports/monthly/:year/:month', async (req, res, params) => {
         log({params})
-        const data = reportsController.monthlyReports(2022, 5)
+        const data = await reportsController.monthlyReports(params.year, params.month)
 
-        log({ data })
+        // log({ data })
+        //
+        // const render = tmpl.process({data: data}, 'reports/monthly/index.html')
 
-        const render = tmpl.process({data: data}, 'reports/monthly/index.html')
-        app.html(res, render)
+        textPlain(res, data)
     })
 
     router.on('GET', '/patients/total', (req, res) => {
-        // log({ res })
-        // const render = tmpl.process({ data: {} }, 'forms/user/index.html')
-        // log({ render })
-        app.json(res, '/patients/total')
+        json(res, '/patients/total')
     })
 
     router.on('GET', '/patients/active', (req, res) => {
@@ -185,14 +239,6 @@ function get(router) {
     })
 
     router.on('GET', '/', (req, res) => {
-        // const buf = Buffer.from([1, 2, 3, 4])
-        //
-        // const uint32array = new Uint32Array(buf)
-        //
-        // console.log(typeof buf)
-        //
-        // console.log(typeof uint32array)
-
         res.setHeader('Content-Type', MIME_TYPES.plain)
         res.end("{message: / }")
     })
@@ -317,9 +363,9 @@ function get(router) {
     })
 }
 
-// END GET routes function declaration
+// END GET routes declaration
 
-// POST routes function declaration
+// POST routes declaration
 
 function post(router) {
     router.on('POST', '/form/user/add', (req, res) => {
@@ -335,7 +381,7 @@ function post(router) {
     })
 }
 
-// END POST routes function declaration
+// END POST routes declaration
 
 post(app.router)
 get(app.router)

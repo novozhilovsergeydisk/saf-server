@@ -116,8 +116,6 @@ App.prototype.resolveresource = function (req, res) {
     const url = removeLastSymbol('/', req.url)
     const stats = statPath(__STATIC(req.url))
 
-    // console.log({ res })
-
     if (!stats) {
         res.setHeader('Content-type', 'text/plain')
         res.statusCode = 404

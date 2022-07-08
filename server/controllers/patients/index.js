@@ -36,10 +36,10 @@ class reportsControllers {
     }
 
     async monthlyReports(year, month) {
-        const data = await adminService.monthlyReports(year, month);
-        const render = tmpl.process({ reports: data }, 'reports/monthly/index.html');
+        const __data__ = await adminService.monthlyReports(year, month);
+        const render = tmpl.process({ reports: __data__ }, 'reports/monthly/index.html');
         return render;
-    }
+}
 
     async clinics(client) {
         const data = await adminService.clinics();

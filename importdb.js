@@ -1,43 +1,44 @@
-'use strict'
+'use strict';
 
-console.log('script start')
+console.log('script start');
 
-const dotenv = require('dotenv')
-dotenv.config()
+const dotenv = require('dotenv');
+dotenv.config();
 
-const {log} = require('./server/helpers.js')
-const {handler} = require('./src/handler.js')
+const {log} = require('./server/helpers.js');
+const {handler} = require('./src/handler.js');
 // const { Pool } = require('pg')
 
-let sql
+let sql;
+let dataArray = [];
+let result;
 
-sql = 'SELECT id, name, email, is_pat patient, activate_time FROM account WHERE is_pat = true AND is_doc IS NULL AND is_adm IS NULL AND is_sup IS NULL ORDER BY activate_time DESC'
-sql = 'SELECT NOW()'
-sql = 'SELECT * FROM current_catalog'
-sql = 'DROP TABLE IF EXISTS crm.scheduleclients'
-sql = 'DROP table IF EXISTS crm.recordspay;DROP table IF EXISTS crm.records;'
+// sql = 'SELECT NOW()';
+sql = 'SELECT id, name, email, is_pat patient, activate_time FROM account WHERE is_pat = true AND is_doc IS NULL AND is_adm IS NULL AND is_sup IS NULL ORDER BY activate_time DESC';
+sql = 'SELECT * FROM current_catalog';
 
 async function resolve(fn, ...arg) {
-    let response
+    let response;
     try {
-        const args = Array.prototype.slice.call(arguments)
+        const args = Array.prototype.slice.call(arguments);
 
         log({ args })
         log(args.length)
 
         if (args.length < 2) {
-            response = { message: 'Неверное количество аргументов, должно быть минимум два параметра', info: null }
+            response = { status: 'failed', error: { message: 'Неверное число аргументов, должно быть минимум два параметра' } };
             log({ response })
-            return response
+            // return response;
         } else {
-            response = isFunction(fn) ? await fn(...arg) : { status: 'failed', data: null, error: { message: 'Первый параметр не является функцией', info: null } }
+            response = isFunction(fn) ? { status: 'success', data: await fn(...arg) } : { status: 'failed', error: { message: 'Первый параметр не является функцией' } };
             log(response.data)
-            return response
+            // return response;
         }
+        return response;
     } catch (err) {
-        response = { status: 'failed', data: null, error: { message: 'Ошибка при вызове функции', info: err } }
+        response = { status: 'failed', error: { message: 'Ошибка при вызове функции', info: err } };
         log({ response })
-        return response
+        return response;
     }
 }
 
@@ -50,9 +51,15 @@ async function resolve(fn, ...arg) {
 // const res = handler.query(sql)
 // resolve(res, log)
 
-resolve(handler.query, sql)
 
-// git add . && git commit -m "Modify files" && git push && clear
+result = resolve(handler.query, sql);
+// dataArray.push(result);
+//
+// sql = 'SELECT NOW()';
+// result = resolve(handler.query, sql);
+// dataArray.push(result);
+
+log({ dataArray })
 
 // const result = resolve(res)
 // log({ result })
@@ -76,6 +83,7 @@ resolve(handler.query, sql)
 //     console.log({ rows })
 //     pool.end()
 // })
+
 function isFunction(fn) {
     return ((typeof fn) === 'function')
 }
@@ -83,11 +91,10 @@ function isFunction(fn) {
 function isNumber(data) {
     return ((typeof data) === 'number')
 }
-
 function isString(data) {
     return ((typeof fn) === 'string')
 }
-//
+
 // function cout(data) {
 //     console.log({ data })
 // }
