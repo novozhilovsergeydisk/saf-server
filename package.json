@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon -e js,mjs,json,css,html,txt,sql server.js",
     "start": "node server.js",
-    "redix": "nodemon test/redix-tree.js"
+    "redix": "nodemon test/redix-tree.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "@faker-js/faker": "^6.3.1",
     "@types/node": "^18.0.0",
     "eslint": "^8.8.0",
+    "jest": "^28.1.2",
     "nodemon": "^2.0.15"
   },
   "dependencies": {
