@@ -106,7 +106,30 @@ const textPlain = function (res, data, status) {
     res.end(data.toString())
 }
 
+async function resolve(fn, ...arg) {
+    let response;
+    try {
+        const args = Array.prototype.slice.call(arguments);
 
+        log({ args })
+        log(args.length)
+
+        if (args.length < 2) {
+            response = { status: 'failed', error: { message: 'Неверное число аргументов, должно быть минимум два параметра' } };
+            log({ response })
+            // return response;
+        } else {
+            response = isFunction(fn) ? { status: 'success', data: await fn(...arg) } : { status: 'failed', error: { message: 'Первый параметр не является функцией' } };
+            log(response.data)
+            // return response;
+        }
+        return response;
+    } catch (err) {
+        response = { status: 'failed', error: { message: 'Ошибка при вызове функции', info: err } };
+        log({ response })
+        return response;
+    }
+}
 
 // routes
 
@@ -138,9 +161,49 @@ app.router.on('GET', '/account/select', async (req, res) => {
     //     log({ err })
     //     app.json(res, responseError)
     // })
-})
+});
 
 app.router.on('GET', '/admin', async (req, res) => {
+    let result, sql;
+
+    sql = `SELECT * FROM crm.clients`;
+    result = await app.query(sql);
+    const clients = result.data;
+
+    sql = `SELECT * FROM crm.services`;
+    result = await handler.query(sql);
+    const services = result.data;
+
+    sql = `
+            SELECT r.id, r.__date__, c.name client_name, s.name service_name FROM crm.records r 
+            JOIN crm.clients c on c.id = r.client_id
+            JOIN crm.services s on s.id = r.service_id
+        `;
+    result = await handler.query(sql);
+    const records = result.data;
+
+    sql = `
+            SELECT rp.id, rp.__date__, rp.__sum__, c.name client_name, s.name service_name FROM crm.recordspay rp 
+            JOIN crm.records r on r.id = rp.record_id
+            JOIN crm.clients c on c.id = r.client_id
+            JOIN crm.services s on s.id = r.service_id
+        ;`
+
+    result = await handler.query(sql);
+    const recordspay = result.data;
+    const index = 'admin/index.html';
+    const render = tmpl.process({ data: {clients: clients, services: services, records: records, recordspay: recordspay} }, index);
+
+    // app.plain(res, 'admin')
+
+    res.setHeader('Content-Type', MIME_TYPES.html);
+    res.statusCode = 200;
+    res.end(render.toString());
+
+    // app.html(res, render)
+});
+
+app.router.on('GET', '/admin/clients', async (req, res) => {
     let result, sql;
 
     sql = `SELECT * FROM crm.clients`;
@@ -208,9 +271,9 @@ app.router.on('GET', '/records/select', async (req, res) => {
     //     log({ err })
     //     app.json(res, responseError)
     // })
-})
+});
 
-_static(staticRoutes, app.router)
+_static(staticRoutes, app.router);
 
 // GET routes function declaration
 
@@ -383,13 +446,13 @@ function post(router) {
 
 // END POST routes declaration
 
-post(app.router)
-get(app.router)
+post(app.router);
+get(app.router);
 
 //
 
-handler.get(app.router)
-handler.post(app.router)
+handler.get(app.router);
+handler.post(app.router);
 
 //
 

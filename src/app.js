@@ -10,7 +10,8 @@ const router = require('find-my-way')({
         // const render = tmpl.process({}, '404/index.html')
         res.end('404 not found')
     },
-    maxParamLength: 500
+    maxParamLength: 500,
+    ignoreTrailingSlash: false
 })
 
 const {MIME_TYPES} = require('../constants.js')
