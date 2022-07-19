@@ -2,18 +2,15 @@
 
 console.log('script start');
 
-// pattern singleton
+// Pattern singleton
+// const singleton = {foo: 'bar'}; // (instance => () => instance)({foo: 'bar'})
+// console.assert(singleton === singleton);
+// console.log('instances are equal');
+// End - Pattern singleton
 
-const singleton = {foo: 'bar'}; // (instance => () => instance)({foo: 'bar'})
-
-console.assert(singleton === singleton);
-console.log('instances are equal');
-
-const buf = Buffer.from([1, 2, 3, 4]);
-
-const uint32array = new Uint32Array(buf);
-
-console.log({ uint32array });
+// const buf = Buffer.from([1, 2, 3, 4]);
+// const uint32array = new Uint32Array(buf);
+// console.log({ uint32array });
 
 // const singleton = (instance => () => instance)({foo: 'bar'})
 //
@@ -23,10 +20,10 @@ console.log({ uint32array });
 // console.assert(singleton() === singleton())
 // console.log('instances are equal')
 
-// End pattern singleton
-
 const dotenv = require('dotenv');
 dotenv.config();
+
+console.log(process.env.HTTP_ADDRESS);
 
 /*
   Char codes:
@@ -67,26 +64,13 @@ dotenv.config();
 const http = require('http');
 // const path = require('path')
 // const {app__} = require('./app.js');
-
-const {app, _static} = require('./src/app.js');
+const {app, __static__} = require('./src/app.js');
 const {hash, generateToken, log} = require('./server/helpers.js');
 const reportsController = require('./server/controllers/patients/index.js');
 const {tmpl} = require('./server/lib/Renderer/index.js');
 const {MIME_TYPES} = require('./constants.js');
 const {handler} = require('./src/handler.js');
-
-const staticRoutes = [
-    '/css/*',
-    '/fonts/*',
-    '/iwebfonts/*',
-    '/img/*',
-    '/js/*',
-    '/robots/robots.txt',
-    '/favicon.ico',
-    '/images/*',
-    '/vendors/*',
-    '/js-admin/*'
-];
+const { Pool } = require('pg');
 
 const json = function (res, data, status) {
     res.setHeader('Content-Type', MIME_TYPES.json)
@@ -110,60 +94,56 @@ async function resolve(fn, ...arg) {
     let response;
     try {
         const args = Array.prototype.slice.call(arguments);
-
-        log({ args })
-        log(args.length)
-
         if (args.length < 2) {
             response = { status: 'failed', error: { message: 'Неверное число аргументов, должно быть минимум два параметра' } };
-            log({ response })
-            // return response;
         } else {
             response = isFunction(fn) ? { status: 'success', data: await fn(...arg) } : { status: 'failed', error: { message: 'Первый параметр не является функцией' } };
-            log(response.data)
-            // return response;
+            log({ response });
         }
+        log({ 'args.length': args.length });
+        log({ args });
+        log({ response });
         return response;
     } catch (err) {
         response = { status: 'failed', error: { message: 'Ошибка при вызове функции', info: err } };
-        log({ response })
+        log({ response });
+        return response;
+    }
+}
+
+async function query (sql) {
+    let response
+    try {
+        const pool = new Pool();
+        const result = pool.query(sql);
+        return result.then(data => {
+            pool.end();
+            const rows = data.rows;
+            response = { status: 'success', data: rows };
+            return response;
+        }).catch(error => {
+            response = { status: 'failed', error: { message: 'Ошибка запроса к серверу БД', info: error } };
+            console.log(error);
+            return response;
+        })
+    } catch(error) {
+        response = { status: 'failed', error: { message: 'Ошибка сервера БД', info: error } };
+        log(error);
         return response;
     }
 }
 
 // routes
 
-app.router.on('GET', '/account/select', async (req, res) => {
+const router = app.router;
+
+router.on('GET', '/account/select', async (req, res) => {
     const sql = `SELECT * FROM account`;
-
     const result = await app.query(sql);
-
-    log(typeof result)
-    log(result.data)
-    log('------------')
-
     json(res, result.data);
-
-    // app.plain(res,'/crm/records/select')
-
-    // result.then(data => {
-    //     // pool.end()
-    //
-    //     const result = data.data;
-    //
-    //     log({ result })
-    //
-    //     const response = {status: 'success', data: result, error: null}
-    //     log({ response })
-    //     app.json(res, response)
-    // }).catch(err => {
-    //     const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
-    //     log({ err })
-    //     app.json(res, responseError)
-    // })
 });
 
-app.router.on('GET', '/admin', async (req, res) => {
+router.on('GET', '/admin', async (req, res) => {
     let result, sql;
 
     sql = `SELECT * FROM crm.clients`;
@@ -203,79 +183,48 @@ app.router.on('GET', '/admin', async (req, res) => {
     // app.html(res, render)
 });
 
-app.router.on('GET', '/admin/clients', async (req, res) => {
+router.on('GET', '/admin/clients', async (req, res) => {
     let result, sql;
 
     sql = `SELECT * FROM crm.clients`;
-    result = await app.query(sql);
+    result = await query(sql);
     const clients = result.data;
 
-    sql = `SELECT * FROM crm.services`;
-    result = await handler.query(sql);
-    const services = result.data;
+    log({ clients })
 
-    sql = `
-            SELECT r.id, r.__date__, c.name client_name, s.name service_name FROM crm.records r 
-            JOIN crm.clients c on c.id = r.client_id
-            JOIN crm.services s on s.id = r.service_id
-        `;
-    result = await handler.query(sql);
-    const records = result.data;
-
-    sql = `
-            SELECT rp.id, rp.__date__, rp.__sum__, c.name client_name, s.name service_name FROM crm.recordspay rp 
-            JOIN crm.records r on r.id = rp.record_id
-            JOIN crm.clients c on c.id = r.client_id
-            JOIN crm.services s on s.id = r.service_id
-        ;`
-
-    result = await handler.query(sql);
-    const recordspay = result.data;
-    const index = 'admin/index.html';
-    const render = tmpl.process({ data: {clients: clients, services: services, records: records, recordspay: recordspay} }, index);
+    const index = 'admin/clients/index.html';
+    const data = { data: {http_address: process.env.HTTP_ADDRESS, clients: clients} };
+    const render = tmpl.process(data, index);
 
     // app.plain(res, 'admin')
 
-    res.setHeader('Content-Type', MIME_TYPES.html);
-    res.statusCode = 200;
-    res.end(render.toString());
+    // res.setHeader('Content-Type', MIME_TYPES.html);
+    // res.statusCode = 200;
+    // res.end(render.toString());
 
-    // app.html(res, render)
+    html(res, render)
 });
 
-app.router.on('GET', '/records/select', async (req, res) => {
+router.on('GET', '/records/select', async (req, res) => {
     const sql = `SELECT * FROM crm.records`;
-
     const result = await app.query(sql);
-
-    log({ result })
-    log( result.data)
-    log('------------')
-
     app.json(res, result.data);
-
-    // app.plain(res,'/crm/records/select')
-
-    // result.then(data => {
-    //     // pool.end()
-    //
-    //     const result = data.data;
-    //
-    //     log({ result })
-    //
-    //     const response = {status: 'success', data: result, error: null}
-    //     log({ response })
-    //     app.json(res, response)
-    // }).catch(err => {
-    //     const responseError = {status: 'failed', data: null, error: {message: 'Ошибка сервера БД', info: err}}
-    //     log({ err })
-    //     app.json(res, responseError)
-    // })
 });
 
-_static(staticRoutes, app.router);
+const staticRoutes = [
+    '/css/*',
+    '/fonts/*',
+    '/iwebfonts/*',
+    '/img/*',
+    '/js/*',
+    '/robots/robots.txt',
+    '/favicon.ico',
+    '/images/*',
+    '/vendors/*',
+    '/js-admin/*'
+];
 
-// GET routes function declaration
+__static__(staticRoutes, router);
 
 function get(router) {
     router.on('GET', '/reports/annual', (req, res) => {
@@ -309,14 +258,14 @@ function get(router) {
 
     // crm
 
-    app.router.on('GET', '/recordspay/select', async (req, res) => {
+    router.on('GET', '/recordspay/select', async (req, res) => {
         const sql = `SELECT * FROM crm.recordspay`
         const result = await app.query(sql)
         log({ result })
         res.end('/recordspay/select')
     })
 
-    // const appRouter = app.router;
+    // const appRouter = router;
     //
     // log({ appRouter })
     //
@@ -426,10 +375,6 @@ function get(router) {
     })
 }
 
-// END GET routes declaration
-
-// POST routes declaration
-
 function post(router) {
     router.on('POST', '/form/user/add', (req, res) => {
         const data = 'test' // {name: 'postRoutes'}
@@ -444,20 +389,18 @@ function post(router) {
     })
 }
 
-// END POST routes declaration
-
-post(app.router);
-get(app.router);
+post(router);
+get(router);
 
 //
 
-handler.get(app.router);
-handler.post(app.router);
+handler.get(router);
+handler.post(router);
 
 //
 
 const server = http.createServer((req, res) => {
-    app.router.lookup(req, res)
+    router.lookup(req, res)
 })
 
 server.listen(process.env.HTTP_PORT, err => {

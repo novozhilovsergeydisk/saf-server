@@ -146,7 +146,7 @@ const isString = (data => {
     return ((typeof url) === 'string') ? true : false
 })
 
-const _static = ((urls, router) => {
+const __static__ = ((urls, router) => {
     if (isObject(urls)) {
         urls.forEach(url => {
             router.on('GET', url, (req, res) => {
@@ -164,7 +164,7 @@ const _static = ((urls, router) => {
 })
 
 const app = new App()
-module.exports = {app, _static}
+module.exports = {app, __static__}
 
 
 // 1xx: Informational (информационные):
