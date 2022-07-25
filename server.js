@@ -221,10 +221,21 @@ const staticRoutes = [
     '/favicon.ico',
     '/images/*',
     '/vendors/*',
-    '/js-admin/*'
+    '/js-admin/*',
+    '/nephrocenter/*'
 ];
 
 __static__(staticRoutes, router);
+
+function nephrocenter(router) {
+    router.on('GET', '/nephrocenter/patient', (req, res) => {
+        const template = 'nephrocenter/patient/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+
+        // textPlain(res, 'nephrocenter/patient')
+    });
+}
 
 function get(router) {
     router.on('GET', '/reports/annual', (req, res) => {
@@ -391,6 +402,7 @@ function post(router) {
 
 post(router);
 get(router);
+nephrocenter(router);
 
 //
 

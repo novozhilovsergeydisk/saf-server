@@ -1,0 +1,97 @@
+:root {
+    --color-white: #000000;
+    --color-1: #005a90;
+    --color-2: #029fb0;
+    --color-black: #ffffff;
+    --color-rgb: 13, 92, 113;
+    --color-orange: #eb9316;
+    --container-width: 1920px;
+    --container-height: 5375px;
+    --container-left: 330px;
+    --container-right: 330px;
+    --container-width: 1920px;
+    --content-width: 64%;
+    --margin-center: 0 auto;
+    --font-name: GothamPro;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-bold: 700;
+
+}
+
+@charset "utf-8";
+
+* {
+    font-family: 'Gotham Pro';
+}
+
+.logo {
+    /*height: 50%;*/
+    /*margin-top: 16px;*/
+    /*margin-bottom: 22px;*/
+    width: 25%;
+}
+
+.logo-img {
+    /*height: 50%;*/
+    /*margin-top: 16px;*/
+    /*margin-bottom: 22px;*/
+    width: 90%;
+}
+
+.nav {
+    width: 75%;
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: 500;
+    color: #029fb0;
+}
+
+.nav > ul {
+    list-style-type: none;
+
+}
+
+.nav > ul > li {
+    display: flex;
+    align-items: center;
+    padding: 2px 7px 2px 7px;
+    /*border: 1px solid red;*/
+}
+
+.wrapper {
+    margin: 0 auto;
+    max-width: var(--container-width);
+    max-heigh: var(--container-height);
+}
+
+.header {
+    width: 100%;
+    /*height: 88px;*/
+}
+
+.content {
+    margin: 0 auto;
+    width: var(--content-width);
+}
+
+.banner {
+    background-color: var(--color-2);
+    height: 550px;
+}
+
+.banner-text {
+    width: 50%;
+}
+
+.banner-picture {
+    width: 50%;
+}
+
+.banner-picture > img {
+    height: 550px;
+}
+
+
+
+

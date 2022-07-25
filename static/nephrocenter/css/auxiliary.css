@@ -1,0 +1,170 @@
+/************ Custom css ************/
+
+.absolute {position:absolute;}
+.relative {position:relative;}
+.position-absolute {position:absolute;}
+.position-relative {position:relative;}
+.listtype-none {list-style-type:none;}
+.clear-both {clear:both;}
+.no-border {border:0;}
+.textdecoration-none {text-decoration:none;}
+.smaller {font-size: smaller}
+
+/************ text-align ************/
+.text-center, .center {text-align: center;}
+
+/************ display ************/
+.display-block {display: block;}
+.display-none {display: none;}
+
+/************ min-height ************/
+.minhight-10 {min-height: 10px;}
+.minhight-11 {min-height: 11px;}
+.minhight-12 {min-height: 12px;}
+.minhight-13 {min-height: 13px;}
+.minhight-14 {min-height: 14px;}
+.minhight-15 {min-height: 15px;}
+.minhight-16 {min-height: 16px;}
+.minhight-17 {min-height: 17px;}
+.minhight-18 {min-height: 18px;}
+.minhight-19 {min-height: 19px;}
+.minhight-20 {min-height: 20px;}
+
+/************ font-weight ************/
+.weight-700 {font-weight: 700;}
+.weight-500 {font-weight: 500;}
+.weight-400 {font-weight: 400;}
+.weight-300 {font-weight: 300;}
+
+/************ width in percent ************/
+.width10-percent{width: 10%;}
+.width20-percent{width: 20%;}
+.width30-percent{width: 30%;}
+.width40-percent{width: 40%;}
+.width50-percent{width: 50%;}
+.width60-percent{width: 60%;}
+.width70-percent{width: 70%;}
+.width80-percent{width: 80%;}
+.width90-percent{width: 90%;}
+.width100-percent{width: 100%;}
+
+/************ width ************/
+.width-10{width: 10px;}
+.width-20{width: 20px;}
+.width-30{width: 30px;}
+.width-40{width: 40px;}
+.width-50{width: 50px;}
+.width-60{width: 60px;}
+.width-70{width: 70px;}
+.width-80{width: 80px;}
+.width-90{width: 90px;}
+.width-100{width: 100px;}
+.width-200{width: 200px;}
+.width-300{width: 300px;}
+.width-400{width: 400px;}
+.width-500{width: 500px;}
+.width-600{width: 600px;}
+.width-700{width: 700px;}
+.width-800{width: 800px;}
+.width-900{width: 900px;}
+.width-1000{width: 1000px;}
+
+/************ max-width ************/
+.maxwidth-100{max-width:100px;}
+.maxwidth-200{max-width:200px;}
+.maxwidth-300{max-width:300px;}
+.maxwidth-400{max-width:400px;}
+.maxwidth-500{max-width:500px;}
+
+/************ min-width ************/
+.minwidth-100{min-width:100px;}
+.minwidth-200{min-width:200px;}
+.minwidth-300{min-width:300px;}
+.minwidth-400{min-width:400px;}
+.minwidth-500{min-width:500px;}
+
+/************ height ************/
+.height-10{height:10px;}
+.height-20{height:20px;}
+.height-30{height:30px;}
+.height-40{height:40px;}
+.height-50{height:50px;}
+.height-60{height:60px;}
+.height-70{height:70px;}
+.height-80{height:80px;}
+.height-90{height:90px;}
+
+.height-100{height:100px;}
+.height-200{height:200px;}
+.height-300{height:300px;}
+.height-400{height:400px;}
+.height-500{height:500px;}
+
+/************ border ************/
+.border-none{border:none;}
+.border-green{border:1px solid green;}
+.border-red{border:1px solid red;}
+.border-blue{border:1px solid blue;}
+.border-yellow{border:1px solid yellow;}
+.border-brown{border:1px solid brown;}
+
+/************ margin ************/
+.margin-auto{margin:0 auto;}
+.mg-1{margin:1px}
+.mg-2{margin:2px}
+.mg-3{margin:3px}
+.mg-4{margin:4px}
+.mg-5{margin:5px}
+.mg-6{margin:6px}
+.mg-7{margin:7px}
+.mg-8{margin:8px}
+.mg-9{margin:9px}
+.m-10{margin:10px}
+.m-20{margin:20px}
+.m-30{margin:30px}
+.m-40{margin:40px}
+.m-50{margin:50px}
+.m-60{margin:60px}
+.m-70{margin:70px}
+.m-80{margin:80px}
+.m-90{margin:90px}
+.m-100{margin:100px}
+
+/************ margin-top ************/
+.mtop-10{margin-top:10px;}
+.mtop-20{margin-top:20px;}
+.mtop-30{margin-top:30px;}
+.mtop-40{margin-top:40px;}
+.mtop-50{margin-top:50px;}
+
+/************ margin-top ************/
+.mleft-10{margin-left:10px;}
+
+/************ margin-right ************/
+.mright-10{margin-right:10px;}
+.mright-20{margin-right:20px;}
+
+/************ margin-bottom ************/
+.mbottom-10{margin-bottom:10px;}
+.mbottom-20{margin-bottom:20px;}
+
+/************ color ************/
+.color-red{color:red;}
+.color-green{color:green;}
+.color-inherit{color:inherit;}
+
+/************ background-color ************/
+.bgcolor-white{background-color:white;}
+.bgcolor-blk{background-color:#000000;}
+.bgcolor-orange{background-color:#f0ad4e;}
+
+/******* block display css *******/
+.inline-block{display:inline-block;}
+.none-display{display:none;}
+
+/******* border-radius *******/
+.semi-circle{border-radius:50%;}
+.circle{border-radius:100%;}
+
+
+
