@@ -1,0 +1,10 @@
+.absolute{position:absolute;}
+.relative{position:relative;}
+.r10p{padding-right:10%;}
+/************ border ************/
+.border-none{border:none;}
+.border-green{border:1px solid green;}
+.border-red{border:1px solid red;}
+.border-blue{border:1px solid blue;}
+.border-yellow{border:1px solid yellow;}
+.border-brown{border:1px solid brown;}

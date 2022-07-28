@@ -9,6 +9,8 @@
 .no-border {border:0;}
 .textdecoration-none {text-decoration:none;}
 .smaller {font-size: smaller}
+.larger {font-size: larger}
+.large {font-size: large}
 
 /************ text-align ************/
 .text-center, .center {text-align: center;}
@@ -35,6 +37,10 @@
 .weight-500 {font-weight: 500;}
 .weight-400 {font-weight: 400;}
 .weight-300 {font-weight: 300;}
+
+/************ padding-right in percent ************/
+.r5p{padding-right: 5%;}
+.r10p{padding-right: 10%;}
 
 /************ width in percent ************/
 .width10-percent{width: 10%;}
