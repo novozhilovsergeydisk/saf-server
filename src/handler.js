@@ -554,22 +554,77 @@ Handler.prototype.getPatientMonthly = function (req, res) {
     })
 }
 
-Handler.prototype.clientAdd = function (req) {
-    let bodyArr = [];
-    req.on('data', chunk => {
-        bodyArr.push(chunk)
-    })
-    return req.on('end', async () => {
-        const body = Buffer.concat(bodyArr).toString()
+Handler.prototype.clientAdd = function (req, res) {
+    // let bodyArr = [];
+    // req.on('data', chunk => {
+    //     bodyArr.push(chunk)
+    // })
+    // return req.on('end', async () => {
+    //     const body = Buffer.concat(bodyArr).toString()
+    //
+    //     const { fio, email, phone } = JSON.parse(body)
+    //     // log({ 'fio': fio })
+    //     // log({ 'email': email })
+    //     // log({ 'phone': phone })
+    //     // log({ 'body': body })
+    //     // log({ 'JSON.parse(body)': JSON.parse(body) })
+    //     // log('---------------------------------------------')
+    // })
 
-        const { fio, email, phone } = JSON.parse(body)
-        // log({ 'fio': fio })
-        // log({ 'email': email })
-        // log({ 'phone': phone })
-        // log({ 'body': body })
-        // log({ 'JSON.parse(body)': JSON.parse(body) })
-        // log('---------------------------------------------')
-    })
+    let parsingData, validate, validation, recordsClientsList, recordsServicesList, recordsDate, recordsTime, validateData
+
+    const body = Buffer.concat(bodyArr).toString()
+
+    try {
+        log({ body })
+        parsingData = JSON.parse(body)
+        log({ parsingData })
+    } catch (err) {
+        const response = { status: 'failed', data: null, error: { message: 'Ошибка при обработке данных', info: err } }
+        log({ response })
+        app.json(res, response, 500)
+        return
+    }
+
+    const schema = {
+        type: 'object',
+        required: ['recordsClientsList', 'recordsServicesList', 'recordsDate', 'recordsTime'],
+        allOf: [
+            {
+                properties: {
+                    recordsClientsList: { type: 'integer', minimum: 1 },
+                    recordsServicesList: { type: "integer", minimum: 1 },
+                    recordsDate: { type: "string", minLength: 10 },
+                    recordsTime: { type: "string", minLength: 5 }
+                },
+                additionalProperties: false,
+            },
+        ],
+        errorMessage: {
+            properties: {
+                recordsClientsList: 'Выберите значение из списка',
+                recordsServicesList: 'Выберите значение из списка',
+                recordsDate: 'Выберите дату приема',
+                recordsTime: 'Установите время приема'
+            },
+        },
+    }
+
+    try {
+        validate = ajv.compile(schema)
+        recordsClientsList = parsingData.recordsClientsList
+        recordsServicesList = parsingData.recordsServicesList
+        recordsDate = parsingData.recordsDate
+        recordsTime = parsingData.recordsTime
+        validateData = {recordsClientsList: parseInt(recordsClientsList), recordsServicesList: Number(recordsServicesList), recordsDate: String(recordsDate), recordsTime: String(recordsTime)}
+        log({ validateData })
+        validation = validate(validateData)
+    } catch (err) {
+        const response = { status: 'failed', data: null, error: { message: 'Ошибка при валидации данных', info: err } }
+        log({ response })
+        app.json(res, response, 500)
+        return
+    }
 }
 
 // routes
@@ -648,6 +703,8 @@ Handler.prototype.isNumber = function (data) {
 Handler.prototype.isString = function (data) {
     return ((typeof data) === 'string')
 }
+
+// crm
 
 const handler = new Handler()
 

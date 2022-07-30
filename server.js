@@ -2,6 +2,8 @@
 
 console.log('script start');
 
+const testData = {stack: 'overflow'};
+
 // Pattern singleton
 // const singleton = {foo: 'bar'}; // (instance => () => instance)({foo: 'bar'})
 // console.assert(singleton === singleton);
@@ -71,32 +73,31 @@ const {tmpl} = require('./server/lib/Renderer/index.js');
 const {MIME_TYPES} = require('./constants.js');
 const {handler} = require('./src/handler.js');
 const { Pool } = require('pg');
+const Ajv = require("ajv").default
+const ajv = new Ajv({ allErrors: true })
+require("ajv-errors")(ajv /*, {singleError: true} */)
 
-const store = function (req, res, fn = null) {
-    let bodyArr = [];
+// functions
+
+const store = function (req, res, fn) {
+    let bodyArr = [], parsingData = null;
     req.on('data', chunk => {
         bodyArr.push(chunk)
     })
     return req.on('end', async () => {
-        const body = Buffer.concat(bodyArr).toString();
-        let parsingData;
+        log({ bodyArr })
+        const body = Buffer.concat(bodyArr).toString()
         try {
-            // log({ body })
-            parsingData = await JSON.parse(body)
-            log({ parsingData })
-            return parsingData;
-            // json(res, parsingData)
+            parsingData = JSON.parse(body)
         } catch (err) {
-            const response = { status: 'failed', error: { message: 'Ошибка при обработке данных', detail: err } }
-            log({ response })
-            // json(res, response, 500)
-            return
+            parsingData = { status: 'failed', error: { message: 'Ошибка при обработке данных', detail: err } }
         }
-
-        console.log({ bodyArr })
+        log({ body })
+        log({ parsingData })
+        fn(res, parsingData)
         // fn(res, bodyArr)
     })
-};
+}
 
 const json = function (res, data, status) {
     res.setHeader('Content-Type', MIME_TYPES.json);
@@ -158,6 +159,66 @@ async function query (sql) {
         return response;
     }
 }
+
+// handlers
+
+function HandlerPost() {
+    if (!(this instanceof HandlerPost)) {
+        return new HandlerPost()
+    }
+}
+
+HandlerPost.prototype.clientAdd = function (res, data) {
+    // json(res, { data: data });
+    //
+    // return;
+
+    // let validate, validation;
+
+    let response;
+
+    const schema = {
+        type: 'object',
+        required: ['fio', 'phone', 'email'],
+        allOf: [
+            {
+                properties: {
+                    fio: { type: "string", minLength: 2 },
+                    phone: { type: "string", minLength: 8 },
+                    email: { type: "string", minLength: 6 },
+                },
+                additionalProperties: false,
+            },
+        ],
+        errorMessage: {
+            properties: {
+                fio: 'Минимум 2 символа',
+                phone: 'Минимум 8 символов',
+                email: 'Минимум 6 символов',
+            },
+        },
+    }
+
+    try {
+        const validate = ajv.compile(schema);
+        const validation = validate(data);
+        // log({ validation })
+
+        if (validation) {
+            response = data;
+        } else {
+            response = { status: 'failed', error: { message: 'Ошибка при валидации данных' } };
+        }
+        json(res, { response });
+    } catch (err) {
+        response = { status: 'failed', error: { message: 'Ошибка при обработке данных' } };
+        json(res, { response });
+    }
+
+    // json(res, { response });
+}
+
+const handlerPost = new HandlerPost();
 
 // routes
 
@@ -416,21 +477,15 @@ function postRoutes(router) {
     router.on('POST', '/admin/client/add', (req, res) => {
         console.log('/admin/client/add');
 
+        store(req, res, handlerPost.clientAdd);
 
+        // result.then(data => console.log({ data })).catch(err => console.log({ err }));
 
-        store(req, res);
-
-        // log({ render })
+        // log({ result })
 
         // res.end(render);
 
-        json(res, {foo: 'bar'});
-    });
-
-    router.on('POST', '/patients/total', (req, res) => {
-        const data = '/patients/total'; // {name: 'postRoutes'}
-        // log({ data })
-        send(res, data);
+        // json(res, {foo: 'bar'});
     });
 }
 

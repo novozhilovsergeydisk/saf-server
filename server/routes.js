@@ -38,8 +38,8 @@ class Route {
         // log(this.client.http_method)
         // log(this.client.url)
         // log(this.routing)
-        // log({ route })
-        // log('--------------')
+        log({ 'this.client.url': this.client.url });
+        log('--------------')
 
         let isRoute = false;
         if (!route) {
