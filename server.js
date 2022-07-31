@@ -72,10 +72,12 @@ const reportsController = require('./server/controllers/patients/index.js');
 const {tmpl} = require('./server/lib/Renderer/index.js');
 const {MIME_TYPES} = require('./constants.js');
 const {handler} = require('./src/handler.js');
+const client = require('./server/controllers/client/index.js');
 const { Pool } = require('pg');
 const Ajv = require("ajv").default
 const ajv = new Ajv({ allErrors: true })
 require("ajv-errors")(ajv /*, {singleError: true} */)
+
 
 // functions
 
@@ -89,12 +91,13 @@ const store = function (req, res, fn) {
         const body = Buffer.concat(bodyArr).toString()
         try {
             parsingData = JSON.parse(body)
-        } catch (err) {
+        } catch (err)
+        {
             parsingData = { status: 'failed', error: { message: 'Ошибка при обработке данных', detail: err } }
         }
         log({ body })
         log({ parsingData })
-        fn(res, parsingData)
+        fn(req, res, parsingData)
         // fn(res, bodyArr)
     })
 }
@@ -477,7 +480,7 @@ function postRoutes(router) {
     router.on('POST', '/admin/client/add', (req, res) => {
         console.log('/admin/client/add');
 
-        store(req, res, handlerPost.clientAdd);
+        store(req, res, client.clientAdd);
 
         // result.then(data => console.log({ data })).catch(err => console.log({ err }));
 
