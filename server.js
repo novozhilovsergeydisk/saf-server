@@ -318,6 +318,12 @@ const staticRoutes = [
 __static__(staticRoutes, router);
 
 function nephrocenterRoutes(router) {
+    router.on('GET', '/nephrocenter/prevention', (req, res) => {
+        const template = 'nephrocenter/prevention/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
+
     router.on('GET', '/nephrocenter/patient', (req, res) => {
         const template = 'nephrocenter/patient/index.html';
         const render = tmpl.process({}, template);

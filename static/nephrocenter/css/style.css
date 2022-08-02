@@ -28,17 +28,38 @@
     font-family: 'Gotham Pro';
 }
 
+ul {
+    text-decoration: none;
+    list-style-type: none;
+    cursor: pointer;
+}
+
 .logo {
     display: flex;
-    width: 25%;
+    flex-basis: 25%;
+    /*min-width: 350px;*/
 }
 
 .logo-img {
-    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo > div > img {
+    /*object-fit: cover;*/
+    /*display: flex;*/
+    /*flex-basis: 50%;*/
+    width: 100%;
+    min-width: 200px;
+
+    /*height: 100%;*/
+
+    /*width: 90%;*/
 }
 
 .nav {
-    width: 75%;
+    flex-basis: 75%;
     font-size: 16px;
     line-height: 1.2;
     font-weight: 500;
@@ -46,7 +67,7 @@
 }
 
 .nav > ul {
-    list-style-type: none;
+    justify-content: end;
 }
 
 .nav > ul > li {
@@ -68,7 +89,18 @@
 
 .header {
     width: 100%;
+    z-index: 1;
     /*height: 88px;*/
+}
+
+.header:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*background-color: #0d5c71;*/
 }
 
 .padding {
@@ -79,6 +111,7 @@
     border-left: 1px dotted saddlebrown;
     border-right: 1px dotted saddlebrown;
     border-bottom: 1px dotted saddlebrown;
+
     display: flex;
     justify-content: center;
     /*align-items: center;*/
@@ -370,6 +403,64 @@ h2 {
 .support-flex > div > img {
     margin: auto 0 30px;
 }
+
+.menu-left {
+    flex-basis: 23%;
+}
+
+.content-right {
+    flex-basis: 77%;
+}
+
+.content-right > img {
+    /*height: 100%;*/
+    /*width: auto;*/
+}
+
+.menu-left > ul {
+    font-family: 'Gotham Pro';
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #029fb0;
+}
+
+.video-youtube {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+
+    /*height: auto;*/
+    /*width: 100%;*/
+}
+
+.header__burger {
+    display: none;;
+}
+
+.header__burger.active:before {
+
+}
+
+.header__burger.active:after {
+
+}
+
+.header-logo__menu {
+    display: none;
+    font-family: 'Gotham Pro';
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #029fb0;
+}
+
+.content-logo__burger {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
 
 
 .footer {
