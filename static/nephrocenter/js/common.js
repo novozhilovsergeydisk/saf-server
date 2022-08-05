@@ -1,5 +1,7 @@
 const btnBurger = document.getElementById('btn-burger');
 
-btnBurger.addEventListener()
+btnBurger.addEventListener('click', event => {
+    console.log({ btnBurger });
+})
 
-console.log({ btnBurger });
+

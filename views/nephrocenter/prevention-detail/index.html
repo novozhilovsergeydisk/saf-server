@@ -9,7 +9,7 @@
     <meta name="description" content="Шаблон для пациента">
 
     <link rel="icon" href="/img/favicon.ico">
-    <!--<link rel="stylesheet" href="/nephrocenter/css/normalize.css">-->
+    <link rel="stylesheet" href="/nephrocenter/css/normalize.css">
     <link rel="stylesheet" href="/nephrocenter/css/flex.css">
     <link rel="stylesheet" href="/nephrocenter/css/style.css">
     <link rel="stylesheet" href="/nephrocenter/css/fonts.css">
@@ -20,6 +20,7 @@
 </head>
 <body>
 <div class="wrapper">
+
     <div class="inner">
         <div class="header">
             <div class="content">
@@ -36,26 +37,26 @@
 
                     <div class="header-logo__menu">
                         <ul class='flex'>
-                            <li><a href="#">Профилактика 2</a></li>
-                            <li><a href="#">Заболевания</a></li>
-                            <li><a href="#">Диализ</a></li>
-                            <li><a href="#">Трансплантация</a></li>
-                            <li><a href="#">Питание и ЛФК</a></li>
-                            <li><a href="#"></a><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">вход<br> для врача</span></li>
-                            <li><a href="#"><img src="/nephrocenter/images/exit.png" alt="exit"></a></li>
+                            <li><a href='#'>Профилактика</a></li>
+                            <li><a href='#'>Заболевания</a></li>
+                            <li><a href='#'>Диализ</a></li>
+                            <li><a href='#'>Трансплантация</a></li>
+                            <li><a href='#'>Питание и ЛФК</a></li>
+                            <li><a href='#'><img src='/nephrocenter/images/doctor-entry.png' alt='doctor-entry'> <span class='smaller'>вход<br> для врача</span></a></li>
+                            <li><a href='#'><img src='/nephrocenter/images/exit.png' alt='exit'></a></li>
                         </ul>
                     </div>
                 </div>
 
-                <div id="nav" class="nav">
-                    <ul id="nav-ul" class="flex">
-                        <li><a href="#">Профилактика</a></li>
-                        <li><a href="#">Заболевания</a></li>
-                        <li><a href="#">Диализ</a></li>
-                        <li><a href="#">Трансплантация</a></li>
-                        <li><a href="#">Питание и ЛФК</a></li>
-                        <li><a href="#" class="flex"><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">ВХОД ДЛЯ ВРАЧА</span></a></li>
-                        <li><a href="#" class="flex"><img src="/nephrocenter/images/exit.png" alt="exit"> <span class="smaller">ЛИЧНЫЙ КАБИНЕТ</span></a></li>
+                <div id='nav' class='nav'>
+                    <ul class='flex'>
+                        <li><a href='#'>Профилактика</a></li>
+                        <li><a href='#'>Заболевания</a></li>
+                        <li><a href='#'>Диализ</a></li>
+                        <li><a href='#'>Трансплантация</a></li>
+                        <li><a href='#'>Питание и ЛФК</a></li>
+                        <li><a href='#'><img src='/nephrocenter/images/doctor-entry.png' alt='doctor-entry'> <span class='smaller'>вход<br> для врача</span></a></li>
+                        <li><a href='#'><img src='/nephrocenter/images/exit.png' alt='exit'></a></li>
                     </ul>
                 </div>
 
@@ -64,12 +65,13 @@
                         <li><a href="#">Профилактика</a></li>
                         <li><a href="#">Заболевания</a></li>
                         <li><a href="#">Диализ</a></li>
+
+                    </ul>
+                    <ul class="flex">
                         <li><a href="#">Трансплантация</a></li>
                         <li><a href="#">Питание и ЛФК</a></li>
-                    </ul>
-                    <ul id="nav-ul-mobile" class="flex">
-                        <li><a href="#" class="flex"><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">ВХОД ДЛЯ ВРАЧА</span></a></li>
-                        <li><a href="#" class="flex"><img src="/nephrocenter/images/exit.png" alt="exit"> <span class="smaller">ЛИЧНЫЙ КАБИНЕТ</span></a></li>
+                        <li><a href="#"></a><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">вход для врача</span></li>
+                        <li><a href="#"><img src="/nephrocenter/images/exit.png" alt="exit"></a></li>
                     </ul>
                 </div>
             </div>
@@ -101,10 +103,12 @@
                     </ul>
                 </div>
 
-                <div class="content-detail">
+                <div id="content-detail" class="content-detail">
                     <img src="/nephrocenter/images/video-youtube.png" class="video-youtube" alt="video-youtube">
 
-
+                    <div class="">
+                        <h1>content-right-detail</h1>
+                    </div>
                 </div>
             </div>
         </div>
@@ -158,7 +162,7 @@
         </div>
     </div>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
         <div class="content flex-col">
             <div id="footer-flex" class="footer-flex">
                 <div class="flex-basis-25 text-14">
@@ -197,15 +201,15 @@
             <div id="footer-copyright" class="footer-flex">
                 <div class="flex-basis-75">
 
-                        <div class="text-14">© 2022, ТелеНефроЦентр. Все права защищены.</div>
+                    <div class="text-14">© 2022, ТелеНефроЦентр. Все права защищены.</div>
 
                 </div>
 
                 <div class="flex-basis-25">
 
-                        <img src="/nephrocenter/images/svg/skype.svg" alt="skype">
+                    <img src="/nephrocenter/images/svg/skype.svg" alt="skype">
 
-                        <img src="/nephrocenter/images/svg/telegram.svg" alt="telegram">
+                    <img src="/nephrocenter/images/svg/telegram.svg" alt="telegram">
 
                 </div>
             </div>
@@ -220,3 +224,4 @@
 </script>
 </body>
 </html>
+

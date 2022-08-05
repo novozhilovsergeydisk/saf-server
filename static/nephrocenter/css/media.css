@@ -3,17 +3,31 @@
         width: 90%;
     }
     .logo {
-
         margin-top: 20px;
     }
     .logo > div {
         flex-basis: 50%;
     }
-    .nav {
+
+    #nav {
         display: none;
     }
+    #nav-mobile {
+        display: none !important;
+    }
+
+    .support-flex {
+        flex-direction: column;
+        align-items: start;
+        top: 5pt;
+    }
+
+    .support-flex > div > div {
+        margin-top: 8pt;
+    }
+
     .header-logo__menu {
-        display: block;
+        /*display: block;*/
         position: fixed;
         left: 0;
         top: 7%;
@@ -55,22 +69,103 @@
         left: 0;
         top: 8px;
     }
+
+    #footer-flex {
+        display: flex;
+        flex-direction: column;
+        /*justify-content: start;*/
+        align-items: start;
+    }
+    #footer-flex > div {
+        flex-basis: 100%;
+        margin-top: 10px;
+    }
 }
 
-@media (max-width: 1400px) {
-    .content {
+@media (max-width: 1215px) {
+    #nav {
+        display: none;
+    }
+
+    #nav-mobile {
+        display: block;
+    }
+
+    /*.nav > ul {*/
+        /*justify-content: start;*/
+    /*}*/
+
+    /*a {*/
+        /*align-items: center;*/
+    /*}*/
+
+    /*#nav {*/
+        /*display: none;*/
+    /*}*/
+
+    /*#nav-mobile {*/
+        /*display: block;*/
+    /*}*/
+}
+
+@media (max-width: 1080px) {
+    #support-flex {
+        display: none;
+    }
+
+    #support-mobile {
+        display: flex;
+        margin-bottom: 25px;
+    }
+
+    #support-mobile > div {
+        flex-basis: 50%;
+    }
+}
+
+@media (max-width: 1210px) {
+    /*#support-flex {*/
+        /*display: none;*/
+    /*}*/
+
+    /*#support-mobile {*/
+        /*display: flex;*/
+        /*margin-bottom: 25px;*/
+    /*}*/
+
+    /*#support-mobile > div {*/
+        /*flex-basis: 50%;*/
+    /*}*/
+
+}
+
+@media (max-width: 1620px) {
+    .header .content {
         flex-direction: column;
     }
 
-    .content > .logo {
-        display: flex;
+    .nav > ul {
+        justify-content: start;
     }
 
-    .content > .logo > img {
-        flex-basis: 50%;
-    }
+    /*a {*/
+        /*align-items: center;*/
+    /*}*/
 
-    /*.content > .logo > div > img {*/
-    /*flex-basis: 50%;*/
+    /*#menu-left > ul {*/
+        /*margin-top: 0px;*/
+        /*padding-top: 2px;*/
+    /*}*/
+
+    /*#menu-left > ul > li {*/
+        /*margin-top: 5px;*/
+        /*padding-bottom: 5px;*/
+        /*border: 0;*/
+    /*}*/
+
+    /*.logo-img {*/
+        /*justify-content: start;*/
+        /*width: 50%;*/
+        /*min-width: 200px;*/
     /*}*/
 }

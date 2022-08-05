@@ -317,8 +317,28 @@ const staticRoutes = [
 
 __static__(staticRoutes, router);
 
+function telerehabRoutes(router) {
+    router.on('GET', '/telerehab/main', (req, res) => {
+        const template = 'telerehab/main/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
+
+    router.on('GET', '/telerehab/organizations', (req, res) => {
+        const template = 'telerehab/organizations/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
+}
+
 function nephrocenterRoutes(router) {
-    router.on('GET', '/nephrocenter/prevention', (req, res) => {
+    router.on('GET', '/pat/tpl/prevention/detail', (req, res) => {
+        const template = 'nephrocenter/prevention-detail/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
+
+    router.on('GET', '/pat/tpl/prevention', (req, res) => {
         const template = 'nephrocenter/prevention/index.html';
         const render = tmpl.process({}, template);
         html(res, render);
@@ -501,6 +521,7 @@ function postRoutes(router) {
 postRoutes(router);
 getRoutes(router);
 nephrocenterRoutes(router);
+telerehabRoutes(router);
 
 //
 

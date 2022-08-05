@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/nephrocenter/css/style.css">
     <link rel="stylesheet" href="/nephrocenter/css/fonts.css">
     <link rel="stylesheet" href="/nephrocenter/css/custom.css">
+    <link rel="stylesheet" href="/nephrocenter/css/media.css">
 
     <meta name="yandex" content="noindex, nofollow" />
 </head>
@@ -23,18 +24,53 @@
             <div class="header">
                 <div class="content">
                     <div class="logo">
-                        <img src="/nephrocenter/images/svg/logo.svg" class="logo-img" alt="За стеклом">
+                        <div class="logo-img">
+                            <img src="/nephrocenter/images/svg/logo.svg" alt="За стеклом">
+                        </div>
+
+                        <div id="btn-burger" class="content-logo__burger">
+                            <div class="header__burger">
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <div class="header-logo__menu">
+                            <ul class='flex'>
+                                <li><a href="#">Профилактика 2</a></li>
+                                <li><a href="#">Заболевания</a></li>
+                                <li><a href="#">Диализ</a></li>
+                                <li><a href="#">Трансплантация</a></li>
+                                <li><a href="#">Питание и ЛФК</a></li>
+                                <li><a href="#"></a><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">вход<br> для врача</span></li>
+                                <li><a href="#"><img src="/nephrocenter/images/exit.png" alt="exit"></a></li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="nav">
+                    <div id="nav" class="nav">
                         <ul class="flex">
-                            <li>Профилактика</li>
-                            <li>Заболевания</li>
-                            <li>Диализ</li>
-                            <li>Трансплантация</li>
-                            <li>Питание и ЛФК</li>
-                            <li><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">вход<br> для врача</span></li>
-                            <li><img src="/nephrocenter/images/exit.png" alt="exit"></li>
+                            <li><a href="#">Профилактика</a></li>
+                            <li><a href="#">Заболевания</a></li>
+                            <li><a href="#">Диализ</a></li>
+                            <li><a href="#">Трансплантация</a></li>
+                            <li><a href="#">Питание и ЛФК</a></li>
+                            <li><a href="#"></a><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">вход для врача</span></li>
+                            <li><a href="#"><img src="/nephrocenter/images/exit.png" alt="exit"></a></li>
+                        </ul>
+                    </div>
+
+                    <div id="nav-mobile" class="nav">
+                        <ul class="flex">
+                            <li><a href="#">Профилактика 2</a></li>
+                            <li><a href="#">Заболевания</a></li>
+                            <li><a href="#">Диализ</a></li>
+
+                        </ul>
+                        <ul class="flex">
+                            <li><a href="#">Трансплантация</a></li>
+                            <li><a href="#">Питание и ЛФК</a></li>
+                            <li><a href="#"></a><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">вход для врача</span></li>
+                            <li><a href="#"><img src="/nephrocenter/images/exit.png" alt="exit"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -353,13 +389,11 @@
 
             <div class="support">
                 <div class="content flex-col">
-                    <div class="support-flex">
-                        <div>
-                            <h2 class="title-alt2">При поддержке:</h2>
-                        </div>
+                    <div id="support-title" class="support-flex">
+                        <h2 class="title-alt2">При поддержке:</h2>
                     </div>
 
-                    <div class="support-flex">
+                    <div id="support-flex" class="support-flex">
                         <div>
                             <img src="/nephrocenter/images/support1.png" alt="support">
                         </div>
@@ -376,13 +410,35 @@
                             <img src="/nephrocenter/images/support4.png" alt="support">
                         </div>
                     </div>
+
+                    <div id="support-mobile" class="support-flex">
+                        <div class="">
+                            <div>
+                                <img src="/nephrocenter/images/support1.png" alt="support">
+                            </div>
+
+                            <div>
+                                <img src="/nephrocenter/images/support2.png" alt="support">
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div>
+                                <img src="/nephrocenter/images/support3.png" alt="support">
+                            </div>
+
+                            <div>
+                                <img src="/nephrocenter/images/support4.png" alt="support">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <footer class="footer">
+        <footer id="footer" class="footer">
             <div class="content flex-col">
-                <div class="footer-flex">
+                <div id="footer-flex" class="footer-flex">
                     <div class="flex-basis-25 text-14">
                         Здоровье почек.
                         <br>Болезни почек
@@ -416,21 +472,19 @@
                     </div>
                 </div>
 
-                <div class="footer-flex">
+                <div id="footer-copyright" class="footer-flex">
                     <div class="flex-basis-75">
-                        <div>
-                            <p class="text-14">© 2022, ТелеНефроЦентр. Все права защищены.</p>
-                        </div>
+
+                        <div class="text-14">© 2022, ТелеНефроЦентр. Все права защищены.</div>
+
                     </div>
 
-                    <div class="flex flex-basis-25">
-                        <div>
-                            <img src="/nephrocenter/images/svg/skype.svg" alt="skype">
-                        </div>
+                    <div class="flex-basis-25">
 
-                        <div>
-                            <img src="/nephrocenter/images/svg/telegram.svg" alt="telegram">
-                        </div>
+                        <img src="/nephrocenter/images/svg/skype.svg" alt="skype">
+
+                        <img src="/nephrocenter/images/svg/telegram.svg" alt="telegram">
+
                     </div>
                 </div>
             </div>
