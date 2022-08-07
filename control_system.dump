@@ -1,0 +1,767 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.1
+-- Dumped by pg_dump version 14.1
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: crm; Type: SCHEMA; Schema: -; Owner: cs_admin
+--
+
+CREATE SCHEMA crm;
+
+
+ALTER SCHEMA crm OWNER TO cs_admin;
+
+--
+-- Name: status; Type: TYPE; Schema: public; Owner: cs_admin
+--
+
+CREATE TYPE public.status AS ENUM (
+    'wait',
+    'init',
+    'not_init'
+);
+
+
+ALTER TYPE public.status OWNER TO cs_admin;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: animals_category; Type: TABLE; Schema: crm; Owner: cs_admin
+--
+
+CREATE TABLE crm.animals_category (
+    id integer NOT NULL,
+    parent_id integer,
+    name character varying(50) NOT NULL,
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE crm.animals_category OWNER TO cs_admin;
+
+--
+-- Name: animals_category_id_seq; Type: SEQUENCE; Schema: crm; Owner: cs_admin
+--
+
+CREATE SEQUENCE crm.animals_category_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE crm.animals_category_id_seq OWNER TO cs_admin;
+
+--
+-- Name: animals_category_id_seq; Type: SEQUENCE OWNED BY; Schema: crm; Owner: cs_admin
+--
+
+ALTER SEQUENCE crm.animals_category_id_seq OWNED BY crm.animals_category.id;
+
+
+--
+-- Name: breeds; Type: TABLE; Schema: crm; Owner: cs_admin
+--
+
+CREATE TABLE crm.breeds (
+    id integer NOT NULL,
+    animals_category_id integer,
+    name character varying(50) NOT NULL,
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE crm.breeds OWNER TO cs_admin;
+
+--
+-- Name: breeds_id_seq; Type: SEQUENCE; Schema: crm; Owner: cs_admin
+--
+
+CREATE SEQUENCE crm.breeds_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE crm.breeds_id_seq OWNER TO cs_admin;
+
+--
+-- Name: breeds_id_seq; Type: SEQUENCE OWNED BY; Schema: crm; Owner: cs_admin
+--
+
+ALTER SEQUENCE crm.breeds_id_seq OWNED BY crm.breeds.id;
+
+
+--
+-- Name: clients; Type: TABLE; Schema: crm; Owner: cs_admin
+--
+
+CREATE TABLE crm.clients (
+    id integer NOT NULL,
+    name character varying(30) NOT NULL,
+    phone character varying(30) NOT NULL,
+    email character varying(100) DEFAULT NULL::character varying,
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE crm.clients OWNER TO cs_admin;
+
+--
+-- Name: clients_id_seq; Type: SEQUENCE; Schema: crm; Owner: cs_admin
+--
+
+CREATE SEQUENCE crm.clients_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE crm.clients_id_seq OWNER TO cs_admin;
+
+--
+-- Name: clients_id_seq; Type: SEQUENCE OWNED BY; Schema: crm; Owner: cs_admin
+--
+
+ALTER SEQUENCE crm.clients_id_seq OWNED BY crm.clients.id;
+
+
+--
+-- Name: records; Type: TABLE; Schema: crm; Owner: cs_admin
+--
+
+CREATE TABLE crm.records (
+    id integer NOT NULL,
+    client_id integer NOT NULL,
+    service_id integer NOT NULL,
+    __date__ timestamp with time zone NOT NULL,
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE crm.records OWNER TO cs_admin;
+
+--
+-- Name: records_id_seq; Type: SEQUENCE; Schema: crm; Owner: cs_admin
+--
+
+CREATE SEQUENCE crm.records_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE crm.records_id_seq OWNER TO cs_admin;
+
+--
+-- Name: records_id_seq; Type: SEQUENCE OWNED BY; Schema: crm; Owner: cs_admin
+--
+
+ALTER SEQUENCE crm.records_id_seq OWNED BY crm.records.id;
+
+
+--
+-- Name: recordspay; Type: TABLE; Schema: crm; Owner: cs_admin
+--
+
+CREATE TABLE crm.recordspay (
+    id integer NOT NULL,
+    record_id integer NOT NULL,
+    __date__ timestamp with time zone NOT NULL,
+    __sum__ numeric(12,2) NOT NULL,
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE crm.recordspay OWNER TO cs_admin;
+
+--
+-- Name: recordspay_id_seq; Type: SEQUENCE; Schema: crm; Owner: cs_admin
+--
+
+CREATE SEQUENCE crm.recordspay_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE crm.recordspay_id_seq OWNER TO cs_admin;
+
+--
+-- Name: recordspay_id_seq; Type: SEQUENCE OWNED BY; Schema: crm; Owner: cs_admin
+--
+
+ALTER SEQUENCE crm.recordspay_id_seq OWNED BY crm.recordspay.id;
+
+
+--
+-- Name: roles; Type: TABLE; Schema: crm; Owner: cs_admin
+--
+
+CREATE TABLE crm.roles (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE crm.roles OWNER TO cs_admin;
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE; Schema: crm; Owner: cs_admin
+--
+
+CREATE SEQUENCE crm.roles_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE crm.roles_id_seq OWNER TO cs_admin;
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: crm; Owner: cs_admin
+--
+
+ALTER SEQUENCE crm.roles_id_seq OWNED BY crm.roles.id;
+
+
+--
+-- Name: scheduleclients; Type: TABLE; Schema: crm; Owner: cs_admin
+--
+
+CREATE TABLE crm.scheduleclients (
+    id integer NOT NULL,
+    client_id integer NOT NULL,
+    __date__ timestamp with time zone NOT NULL,
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE crm.scheduleclients OWNER TO cs_admin;
+
+--
+-- Name: scheduleclients_id_seq; Type: SEQUENCE; Schema: crm; Owner: cs_admin
+--
+
+CREATE SEQUENCE crm.scheduleclients_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE crm.scheduleclients_id_seq OWNER TO cs_admin;
+
+--
+-- Name: scheduleclients_id_seq; Type: SEQUENCE OWNED BY; Schema: crm; Owner: cs_admin
+--
+
+ALTER SEQUENCE crm.scheduleclients_id_seq OWNED BY crm.scheduleclients.id;
+
+
+--
+-- Name: services; Type: TABLE; Schema: crm; Owner: cs_admin
+--
+
+CREATE TABLE crm.services (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    price_from numeric(12,2) NOT NULL,
+    price_to numeric(12,2) NOT NULL,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    active boolean DEFAULT true
+);
+
+
+ALTER TABLE crm.services OWNER TO cs_admin;
+
+--
+-- Name: services_id_seq; Type: SEQUENCE; Schema: crm; Owner: cs_admin
+--
+
+CREATE SEQUENCE crm.services_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE crm.services_id_seq OWNER TO cs_admin;
+
+--
+-- Name: services_id_seq; Type: SEQUENCE OWNED BY; Schema: crm; Owner: cs_admin
+--
+
+ALTER SEQUENCE crm.services_id_seq OWNED BY crm.services.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: crm; Owner: cs_admin
+--
+
+CREATE TABLE crm.users (
+    id integer NOT NULL,
+    name character varying(30) NOT NULL,
+    phone character varying(30) DEFAULT NULL::character varying,
+    email character varying(50) NOT NULL,
+    token character varying(50) NOT NULL,
+    active boolean DEFAULT true,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE crm.users OWNER TO cs_admin;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: crm; Owner: cs_admin
+--
+
+CREATE SEQUENCE crm.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE crm.users_id_seq OWNER TO cs_admin;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: crm; Owner: cs_admin
+--
+
+ALTER SEQUENCE crm.users_id_seq OWNED BY crm.users.id;
+
+
+--
+-- Name: animals_category id; Type: DEFAULT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.animals_category ALTER COLUMN id SET DEFAULT nextval('crm.animals_category_id_seq'::regclass);
+
+
+--
+-- Name: breeds id; Type: DEFAULT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.breeds ALTER COLUMN id SET DEFAULT nextval('crm.breeds_id_seq'::regclass);
+
+
+--
+-- Name: clients id; Type: DEFAULT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.clients ALTER COLUMN id SET DEFAULT nextval('crm.clients_id_seq'::regclass);
+
+
+--
+-- Name: records id; Type: DEFAULT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.records ALTER COLUMN id SET DEFAULT nextval('crm.records_id_seq'::regclass);
+
+
+--
+-- Name: recordspay id; Type: DEFAULT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.recordspay ALTER COLUMN id SET DEFAULT nextval('crm.recordspay_id_seq'::regclass);
+
+
+--
+-- Name: roles id; Type: DEFAULT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.roles ALTER COLUMN id SET DEFAULT nextval('crm.roles_id_seq'::regclass);
+
+
+--
+-- Name: scheduleclients id; Type: DEFAULT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.scheduleclients ALTER COLUMN id SET DEFAULT nextval('crm.scheduleclients_id_seq'::regclass);
+
+
+--
+-- Name: services id; Type: DEFAULT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.services ALTER COLUMN id SET DEFAULT nextval('crm.services_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.users ALTER COLUMN id SET DEFAULT nextval('crm.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: animals_category; Type: TABLE DATA; Schema: crm; Owner: cs_admin
+--
+
+COPY crm.animals_category (id, parent_id, name, active) FROM stdin;
+\.
+
+
+--
+-- Data for Name: breeds; Type: TABLE DATA; Schema: crm; Owner: cs_admin
+--
+
+COPY crm.breeds (id, animals_category_id, name, active) FROM stdin;
+\.
+
+
+--
+-- Data for Name: clients; Type: TABLE DATA; Schema: crm; Owner: cs_admin
+--
+
+COPY crm.clients (id, name, phone, email, active) FROM stdin;
+1	Сергей Юрьевич Новожилов	+79163465407	sergionov@mail.ru	t
+3	Елена Юрьеввна Варлахова	+79267232872	pets-doctor@mail.ru	t
+7	Андрей Смирнов	+74993743068	pets-patient@mail.ru	t
+16	Сергей Юрьевич Новожилов	+79163465408	sergionov@mail.ru	t
+\.
+
+
+--
+-- Data for Name: records; Type: TABLE DATA; Schema: crm; Owner: cs_admin
+--
+
+COPY crm.records (id, client_id, service_id, __date__, active) FROM stdin;
+1	1	5	2022-07-01 10:15:00+03	t
+2	3	4	2022-07-01 10:15:00+03	t
+3	7	4	2022-07-01 10:15:00+03	t
+\.
+
+
+--
+-- Data for Name: recordspay; Type: TABLE DATA; Schema: crm; Owner: cs_admin
+--
+
+COPY crm.recordspay (id, record_id, __date__, __sum__, active) FROM stdin;
+1	1	2022-07-01 15:22:17.867284+03	1500.00	t
+2	2	2022-07-01 15:26:51.520449+03	2500.00	t
+3	3	2022-07-01 15:26:58.692025+03	3500.00	t
+\.
+
+
+--
+-- Data for Name: roles; Type: TABLE DATA; Schema: crm; Owner: cs_admin
+--
+
+COPY crm.roles (id, name, active) FROM stdin;
+\.
+
+
+--
+-- Data for Name: scheduleclients; Type: TABLE DATA; Schema: crm; Owner: cs_admin
+--
+
+COPY crm.scheduleclients (id, client_id, __date__, active) FROM stdin;
+\.
+
+
+--
+-- Data for Name: services; Type: TABLE DATA; Schema: crm; Owner: cs_admin
+--
+
+COPY crm.services (id, name, price_from, price_to, created_at, updated_at, active) FROM stdin;
+4	хостинг	100.00	500.00	2022-07-01 14:45:16.362714+03	2022-07-01 14:45:16.362714+03	t
+5	domain	1500.00	2500.00	2022-07-01 14:49:18.347428+03	2022-07-01 14:49:18.347428+03	t
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: crm; Owner: cs_admin
+--
+
+COPY crm.users (id, name, phone, email, token, active, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: animals_category_id_seq; Type: SEQUENCE SET; Schema: crm; Owner: cs_admin
+--
+
+SELECT pg_catalog.setval('crm.animals_category_id_seq', 1, false);
+
+
+--
+-- Name: breeds_id_seq; Type: SEQUENCE SET; Schema: crm; Owner: cs_admin
+--
+
+SELECT pg_catalog.setval('crm.breeds_id_seq', 1, false);
+
+
+--
+-- Name: clients_id_seq; Type: SEQUENCE SET; Schema: crm; Owner: cs_admin
+--
+
+SELECT pg_catalog.setval('crm.clients_id_seq', 17, true);
+
+
+--
+-- Name: records_id_seq; Type: SEQUENCE SET; Schema: crm; Owner: cs_admin
+--
+
+SELECT pg_catalog.setval('crm.records_id_seq', 3, true);
+
+
+--
+-- Name: recordspay_id_seq; Type: SEQUENCE SET; Schema: crm; Owner: cs_admin
+--
+
+SELECT pg_catalog.setval('crm.recordspay_id_seq', 4, true);
+
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE SET; Schema: crm; Owner: cs_admin
+--
+
+SELECT pg_catalog.setval('crm.roles_id_seq', 1, false);
+
+
+--
+-- Name: scheduleclients_id_seq; Type: SEQUENCE SET; Schema: crm; Owner: cs_admin
+--
+
+SELECT pg_catalog.setval('crm.scheduleclients_id_seq', 1, false);
+
+
+--
+-- Name: services_id_seq; Type: SEQUENCE SET; Schema: crm; Owner: cs_admin
+--
+
+SELECT pg_catalog.setval('crm.services_id_seq', 1, false);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: crm; Owner: cs_admin
+--
+
+SELECT pg_catalog.setval('crm.users_id_seq', 1, false);
+
+
+--
+-- Name: animals_category animals_category_name_key; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.animals_category
+    ADD CONSTRAINT animals_category_name_key UNIQUE (name);
+
+
+--
+-- Name: animals_category animals_category_pkey; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.animals_category
+    ADD CONSTRAINT animals_category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: breeds breeds_name_key; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.breeds
+    ADD CONSTRAINT breeds_name_key UNIQUE (name);
+
+
+--
+-- Name: breeds breeds_pkey; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.breeds
+    ADD CONSTRAINT breeds_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: clients clients_phone_key; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.clients
+    ADD CONSTRAINT clients_phone_key UNIQUE (phone);
+
+
+--
+-- Name: clients clients_pkey; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.clients
+    ADD CONSTRAINT clients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: records records_key; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.records
+    ADD CONSTRAINT records_key UNIQUE (client_id, service_id, __date__);
+
+
+--
+-- Name: records records_pkey; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.records
+    ADD CONSTRAINT records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: recordspay recordspay_pkey; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.recordspay
+    ADD CONSTRAINT recordspay_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: recordspay recordspay_record_id; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.recordspay
+    ADD CONSTRAINT recordspay_record_id UNIQUE (record_id);
+
+
+--
+-- Name: roles roles_name_key; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.roles
+    ADD CONSTRAINT roles_name_key UNIQUE (name);
+
+
+--
+-- Name: roles roles_pkey; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scheduleclients schdulepatient_pkey; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.scheduleclients
+    ADD CONSTRAINT schdulepatient_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: services services_name_key; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.services
+    ADD CONSTRAINT services_name_key UNIQUE (name);
+
+
+--
+-- Name: services services_pkey; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.services
+    ADD CONSTRAINT services_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_token_key; Type: CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.users
+    ADD CONSTRAINT users_token_key UNIQUE (token);
+
+
+--
+-- Name: scheduleclients fk_clients; Type: FK CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.scheduleclients
+    ADD CONSTRAINT fk_clients FOREIGN KEY (client_id) REFERENCES crm.clients(id) ON DELETE CASCADE;
+
+
+--
+-- Name: records fk_clients; Type: FK CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.records
+    ADD CONSTRAINT fk_clients FOREIGN KEY (client_id) REFERENCES crm.clients(id) ON DELETE CASCADE;
+
+
+--
+-- Name: recordspay fk_records; Type: FK CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.recordspay
+    ADD CONSTRAINT fk_records FOREIGN KEY (record_id) REFERENCES crm.records(id) ON DELETE CASCADE;
+
+
+--
+-- Name: records fk_services; Type: FK CONSTRAINT; Schema: crm; Owner: cs_admin
+--
+
+ALTER TABLE ONLY crm.records
+    ADD CONSTRAINT fk_services FOREIGN KEY (service_id) REFERENCES crm.services(id) ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
