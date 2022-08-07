@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'Gotham Pro';
     src: url('../fonts/GothamPro-Bold.eot');
-    src: local(../fonts/'Gotham Pro Bold'), local('GothamPro-Bold'),
+    src: local('Gotham Pro Bold'), local('GothamPro-Bold'),
     url('../fonts/GothamPro-Bold.eot?#iefix') format('embedded-opentype'),
     url('../fonts/GothamPro-Bold.woff2') format('woff2'),
     url('../fonts/GothamPro-Bold.woff') format('woff'),

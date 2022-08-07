@@ -22,6 +22,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="/css/vertical-layout-light/style.css">
     <!-- End inject:css -->
+    <link rel="stylesheet" href="/css/utility.css">
     <link rel="shortcut icon" href="/images/favicon.png" />
 </head>
 
@@ -266,43 +267,51 @@
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <!-- form-client -->
-                        <form id="form-client" method="post" enctype="application/x-www-form-urlencoded" class="wrapper-item">
-                            <h2>Клиент (справочник)</h2>
-                            <input id="form-client-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
+                <div class="row w-100 mx-0">
+                    <div class="col-lg-4 mx-auto">
+                        <div class="auth-form-light text-left py-5 px-4">
+                            <!-- form-client -->
+                            <form id="form-client" method="post" enctype="application/x-www-form-urlencoded" class="pt-3">
+                                <h4 class="card-title">Клиенты</h4>
+                                <p class="card-description">&nbsp;</p>
+                                <input id="form-client-csrf-token" type="hidden" value="a2b2332f554e11597b128a133d767b8ca431796bc0bdb84887944f940e127c22">
 
-                            <div class="form-group">
-                                <label for="form-client-fio">ФИО *</label>
-                                <div class="">
-                                    <input id="form-client-fio" class="form-control" autocomplete="name">
+                                <div class="form-group">
+                                    <label for="form-client-fio">ФИО *</label>
+                                    <div class="">
+                                        <input id="form-client-fio" class="form-control form-control-lg" placeholder="ФИО *" autocomplete="name">
+                                    </div>
+                                    <span id="form-client-fio-error" class="error display-none__"></span>
                                 </div>
-                                <span id="form-client-fio-error" class="error display-none__"></span>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="form-client-phone">Телефон *</label>
-                                <div class="">
-                                    <input id="form-client-phone" class="form-control" type="tel">
+                                <div class="form-group">
+                                    <label for="form-client-phone">Телефон *</label>
+                                    <div class="">
+                                        <input id="form-client-phone" class="form-control form-control-lg" type="tel" placeholder="Телефон *">
+                                    </div>
+                                    <span id="form-client-phone-error" class="error display-none__"></span>
                                 </div>
-                                <span id="form-client-phone-error" class="error display-none__"></span>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="form-client-email">e-mail</label>
-                                <div class="">
-                                    <input id="form-client-email" class="form-control" type="email">
+                                <div class="form-group">
+                                    <label for="form-client-email">e-mail</label>
+                                    <div class="">
+                                        <input id="form-client-email" class="form-control form-control-lg" type="email" placeholder="e-mail">
+                                    </div>
+                                    <span id="form-client-email-error" class="error display-none__"></span>
                                 </div>
-                                <span id="form-client-email-error" class="error display-none__"></span>
-                            </div>
 
-                            <div class="form-group">
-                                <span id="form-client-error" class="error"></span>
-                                <input id="form-client-btn-add" class="form-btn form-btn-main mt-5" type="button" value="Добавить" />
-                            </div>
-                        </form>
+                                <div class="form-group">
+                                    <button id="form-client-btn-add" type="submit" class="btn btn-primary me-2">Добавить</button>
+                                    <button id="form-client-btn-cancel" type="submit" class="btn btn-light">Cancel</button>
+                                </div>
+
+                                <div class="form-group">
+                                    <span id="form-client-error" class="red">error</span>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+
                 </div>
             </div>
 

@@ -18,13 +18,23 @@
     --font-medium: 500;
     --font-bold: 700;
     --bg-light: #e1f6f5;
+    --sizeindex: calc(1vw + 1vh);
+    --lineheight-title: calc(var(--sizeindex) * 1.618);
+    --lineheight-normal: calc(var(--sizeindex) * 1.1);
+}
 
+::placeholder {
+    color: #2f80ec;
 }
 
 @charset "utf-8";
 
 * {
     font-family: 'Gotham Pro';
+}
+
+html, body {
+    font-size: calc(var(--sizeindex) * .8);
 }
 
 ul {
@@ -156,8 +166,13 @@ a {
 }
 
 .banner {
-    /*display: flex;*/
+    display: flex;
+    flex-direction: row;
     background-color: var(--color-2);
+}
+
+.banner .content {
+
 }
 
 .banner-image {
@@ -169,15 +184,17 @@ a {
 
 .banner-text {
     display: flex;
-    justify-content: start;
+    /*align-items: center;*/
     flex-direction: column;
+    justify-content: start;
+    align-content: baseline;
     flex-basis: 49%;
 }
 
 .banner-text-title {
     font-family: 'Gotham Pro';
-    font-size: 49px;
-    line-height: 52px;
+    font-size: calc(var(--sizeindex) * 1.5); /*49px;*/
+    line-height: var(--lineheight-title); /*52px;*/
     font-weight: 500;
     color: #ffffff;
 }
@@ -185,7 +202,7 @@ a {
 .banner-text-content {
     font-family: 'Gotham Pro';
     font-size: 22px;
-    line-height: 30px;
+    line-height: var(--lineheight-normal);
     font-weight: 400;
     color: #ffffff;
     margin-top: -20px;

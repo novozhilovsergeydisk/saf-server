@@ -67,9 +67,9 @@ async function fetchAsync(url = '', data = [], params = {method: null, mode: nul
         const response = await fetch(url, params);
         return await response.json();
     } else {
-        console.log({ url });
-        console.log({ mime });
-        console.log({ 'JSON.stringify(data)': JSON.stringify(data) });
+        // console.log({ url });
+        // console.log({ mime });
+        // console.log({ 'JSON.stringify(data)': JSON.stringify(data) });
 
         const response = await fetch(url, {
             method: 'POST',
@@ -81,10 +81,6 @@ async function fetchAsync(url = '', data = [], params = {method: null, mode: nul
             referrerPolicy: 'no-referrer',
             body: JSON.stringify(data)
         });
-
-        // console.log({ response })
-
-        // response.then(data => console.log({ data })).catch(err => console.log({ err }));
 
         return await response.json();
 
