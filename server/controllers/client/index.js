@@ -126,7 +126,7 @@ class clientController {
                     json(res, { response });
                 } else {
                     const __result__ = result.data;
-                    const response = { status: 'success', __result__ };
+                    const response = { status: 'success', data: { message: 'Информация успешно занесена в базу данных', __result__ } };
                     json(res, { response });
                 }
 
