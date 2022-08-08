@@ -290,7 +290,7 @@ function nephrocenterRoutes(router) {
         html(res, render);
     });
 
-    router.on('GET', '/nephrocenter/patient', (req, res) => {
+    router.on('GET', '/pat/tpl/patient', (req, res) => {
         const template = 'nephrocenter/patient/index.html';
         const render = tmpl.process({}, template);
         html(res, render);
@@ -299,7 +299,7 @@ function nephrocenterRoutes(router) {
     });
 }
 
-function crmGetRoutes(router) {
+function patientRoutes(router) {
     router.on('GET', '/reports/annual', (req, res) => {
         textPlain(res, 'reports/annual');
     })
@@ -449,6 +449,7 @@ function crmGetRoutes(router) {
 
 function crmRoutes(router) {
     // GET
+
     router.on('GET', '/admin', async (req, res) => {
         let result, sql;
 
@@ -521,7 +522,7 @@ function crmRoutes(router) {
 }
 
 crmRoutes(router);
-crmGetRoutes(router);
+patientRoutes(router);
 nephrocenterRoutes(router);
 telerehabRoutes(router);
 
@@ -535,10 +536,10 @@ handler.post(router);
 const server = http.createServer((req, res) => {
     router.lookup(req, res);
 });
-
-server.listen(process.env.HTTP_PORT, err => {
+const port = process.env.HTTP_PORT;
+server.listen(port, err => {
     if (err) throw err;
-    console.log(`Server listening on: http://localhost: ${process.env.HTTP_PORT}`);
+    console.log(`Server listening on: http://localhost: ${port}`);
 });
 
 // ******* END Common server 2
