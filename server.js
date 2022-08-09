@@ -497,19 +497,45 @@ function crmRoutes(router) {
         result = await query(sql);
         const clients = result.data;
 
-        log({ clients })
+        log({ clients });
 
+        const http_address = process.env.HTTP_ADDRESS;
         const index = 'admin/clients/index.html';
-        const data = { data: {http_address: process.env.HTTP_ADDRESS, clients: clients} };
+        const data = { data: { http_address: http_address, clients: clients } };
 
-        log({ 'process.env.HTTP_ADDRESS': process.env.HTTP_ADDRESS })
+        log({ 'http_address': http_address });
 
         const render = tmpl.process(data, index);
 
-        html(res, render)
+        html(res, render);
+    });
+
+    router.on('GET', '/admin/services', async (req, res) => {
+        let result, sql;
+
+        sql = `SELECT * FROM crm.services`;
+        result = await query(sql);
+        const services = result.data;
+
+        log({ services });
+
+        const http_address = process.env.HTTP_ADDRESS;
+        const index = 'admin/services/index.html';
+        const data = { data: { http_address: http_address, services: services } };
+
+        log({ 'http_address': http_address });
+
+        const render = tmpl.process(data, index);
+
+        html(res, render);
     });
 
     // POST
+
+    router.on('POST', '/admin/services/add', (req, res) => {
+        log('crm/services/insert')
+        handler.store(req, res, handler.serviceInsert)
+    })
 
     router.on('POST', '/admin/client/add', (req, res) => {
         console.log('/admin/client/add');

@@ -19,12 +19,13 @@
 
     --sizeindex: calc(1vw + 1vh);
     --lineheight-title: calc(var(--sizeindex) * 1.618);
-    --font-size-normal: calc(var(--sizeindex) * .75);
+    --font-size-normal: calc(var(--sizeindex) * .65);
 
-    --lineheight-small: calc(var(--sizeindex) * .8);
+    --lineheight-small: calc(var(--sizeindex) * .9);
     --lineheight-normal: calc(var(--sizeindex) * 1.1);
     --lineheight-medium: calc(var(--sizeindex) * 1.2);
     --lineheight-bigger: calc(var(--sizeindex) * 1.3);
+    --lineheight-large: calc(var(--sizeindex) * 2.0);
 }
 
 ::placeholder {
@@ -36,6 +37,10 @@
 * {
     font-family: var(--font-family);
     font-size: var(--font-size-normal);
+}
+
+img {
+    margin: 5px 0 5px;
 }
 
 ul, ul > li {
@@ -50,15 +55,10 @@ a {
     cursor: pointer;
 }
 
-
-/*a:link:hover {*/
-    /*cursor: pointer !important;*/
-/*}*/
-
 .content {
-    border-left: 1px dotted saddlebrown;
-    border-right: 1px dotted saddlebrown;
-    border-bottom: 1px dotted saddlebrown;
+    /*border-left: 1px dotted saddlebrown;*/
+    /*border-right: 1px dotted saddlebrown;*/
+    /*border-bottom: 1px dotted saddlebrown;*/
 
     display: flex;
     justify-content: center;
@@ -68,6 +68,8 @@ a {
 
 .logo {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-basis: 25%;
 }
 
@@ -76,8 +78,6 @@ a {
     object-fit: fill;
     width: 100%;
     height: 100%;
-
-    /*object-fit: cover;*/
 }
 
 #nav-ul > li > a > span,
@@ -91,8 +91,8 @@ a {
 
 .nav {
     flex-basis: 75%;
-    font-size: 16px;
-    line-height: 1.2;
+    /*font-size: 16px;*/
+    /*line-height: 1.2;*/
     font-weight: 500;
     color: var(--color-2);
 }
@@ -156,7 +156,6 @@ a {
 
 .banner-text {
     display: flex;
-    /*align-items: center;*/
     flex-direction: column;
     justify-content: start;
     align-content: baseline;
@@ -165,14 +164,13 @@ a {
 
 .banner-text-title {
     font-family: 'Gotham Pro';
-    font-size: calc(var(--sizeindex) * 1.5); /*49px;*/
-    line-height: var(--lineheight-title); /*52px;*/
+    font-size: calc(var(--sizeindex) * 1.5);
+    line-height: var(--lineheight-title);
     font-weight: 500;
     color: #ffffff;
 }
 
 .banner-text-content {
-    font-family: 'Gotham Pro';
     font-size: 22px;
     line-height: var(--lineheight-normal);
     font-weight: 400;
@@ -279,6 +277,7 @@ a {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--font-medium);
     color: #030303;
 }
 
@@ -289,17 +288,17 @@ h1 {
 
 h2 {
     font-size: calc(var(--sizeindex) * 1.4);
-    padding-top: 10px;
+    padding: 10px 0 10px 2px;
 }
 
 h3 {
     font-size: calc(var(--sizeindex) * 1.2);
-    padding-top: 7px;
+    padding: 7px 0 7px 2px;
 }
 
 h4 {
     font-size: calc(var(--sizeindex) * 1.0);
-    padding-top: 5px;
+    padding: 3px;
 }
 
 
@@ -335,70 +334,17 @@ h4 {
     font-weight: var(--font-bold);
 }
 
-.text-14 {
-    font-family: 'Gotham Pro';
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 400;
-    color: #000000;
-}
-
-.text-16 {
-    font-family: 'Gotham Pro';
-    font-size: 16px;
-    line-height: 22px;
-    font-weight: 400;
-    color: #000000;
-}
-
-.text-18 {
-    font-family: 'Gotham Pro';
-    font-size: 18px;
-    line-height: 24px;
-    font-weight: 400;
-    color: #000000;
-}
-
-.text18-23 {
-    font-family: 'Gotham Pro';
-    font-size: 18px;
-    line-height: 23px;
-    font-weight: 400;
-    color: #000000;
-}
-
-.text18-23 > span {
-    font-weight: 500;
-}
-
-.text-20 {
-    font-family: 'Gotham Pro';
-    font-size: 20px;
-    line-height: 26px;
-    font-weight: 400;
-    color: #000000;
-}
-
-.text-32 {
-    font-family: 'Gotham Pro';
-    font-size: 32px;
-    line-height: 1.2;
-    font-weight: 500;
-    color: #ffffff;
-}
-
 .text-phone {
-    font-family: 'Gotham Pro';
-    font-size: 18px;
-    line-height: 23px;
-    font-weight: 500;
+    /*font-size: 18px;*/
+    line-height: var(--lineheight-medium);
+    font-weight: var(--font-medium);
     color: var(--color-2);
 }
 
 .text-contact {
-    font-family: 'Gotham Pro';
-    font-size: 14px;
-    line-height: 20px;
+    /*font-family: 'Gotham Pro';*/
+    /*font-size: 14px;*/
+    /*line-height: 20px;*/
     font-weight: 500;
     color: #000000;
 }
@@ -426,7 +372,7 @@ h4 {
     /*background-color: #005a90;*/
 }
 
-.info-flex, .support-flex, .footer-flex {
+.info-flex, .support-flex {
     display: flex;
 }
 
@@ -528,9 +474,9 @@ h4 {
 
 .header-logo__menu {
     display: none;
-    font-family: 'Gotham Pro';
-    font-size: 14px;
-    line-height: 16px;
+    /*font-family: 'Gotham Pro';*/
+    /*font-size: 14px;*/
+    /*line-height: 16px;*/
     font-weight: 500;
     color: #029fb0;
 }
@@ -555,9 +501,41 @@ h4 {
 }
 
 .footer-flex {
+    /*border: 1px solid sandybrown;*/
     display: flex;
     align-items: start;
     margin-top: 20px;
+}
+
+p {
+    line-height: calc(var(--sizeindex) * 1.2);
+}
+
+/*.footer-flex > div > p {*/
+    /*line-height: calc(var(--sizeindex) * 1.2);*/
+/*}*/
+
+#contacts {
+    /*border: 1px solid blue;*/
+    /*height: 100%;*/
+}
+
+#footer-phones {
+    /*border: 1px solid green;*/
+    margin-top: 10px;
+    /*padding: 1px;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*!*justify-content: end;*!*/
+    /*align-items: start;*/
+}
+
+#footer-phones > p {
+    /*border: 1px solid red;*/
+    display: flex;
+    flex-direction: column;
+    /*justify-content: end;*/
+    align-items: start;
 }
 
 #footer-copyright {
@@ -574,9 +552,37 @@ h4 {
     margin-right: 20px;
 }
 
-.footer-flex > div > div:hover {
-    pointer: cursor;
+.color-1 {
+    color: var(--color-1);
 }
+
+.color-2 {
+    color: var(--color-2);
+}
+
+/* Position child elements relative to this element */
+.aspect-ratio-box {
+    position: relative;
+}
+
+/* Create a pseudo element that uses padding-bottom to take up space */
+.aspect-ratio-box::after {
+    display: block;
+    content: '';
+    /* 16:9 aspect ratio */
+    padding-bottom: 56.25%;
+}
+
+/* Image is positioned absolutely relative to the parent element */
+.aspect-ratio-box img {
+    /* Image should match parent box size */
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
 
 
 

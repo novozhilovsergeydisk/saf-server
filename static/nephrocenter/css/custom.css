@@ -8,3 +8,11 @@
 .border-blue{border:1px solid blue;}
 .border-yellow{border:1px solid yellow;}
 .border-brown{border:1px solid brown;}
+
+.max-w-500 {
+    max-width: 500px;
+}
+
+.max-w-600 {
+    max-width: 600px;
+}
