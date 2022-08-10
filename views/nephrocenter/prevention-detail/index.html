@@ -13,9 +13,11 @@
     <link rel="stylesheet" href="/nephrocenter/css/flex.css">
     <link rel="stylesheet" href="/nephrocenter/css/style.css">
     <link rel="stylesheet" href="/nephrocenter/css/fonts.css">
+    <link rel="stylesheet" href="/fonts/fontawesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/nephrocenter/css/custom.css">
     <link rel="stylesheet" href="/nephrocenter/css/video.css">
     <link rel="stylesheet" href="/nephrocenter/css/media.css">
+
 
     <meta name="yandex" content="noindex, nofollow" />
 </head>
@@ -36,16 +38,33 @@
                         </div>
                     </div>
 
-                    <div class="header-logo__menu">
+                    <div id="header-logo__menu" class="header-logo__menu relative">
+                        <div id="btn-close" class="close">
+                            <i class="fa-solid fa-close color-white"></i>
+                        </div>
+
                         <ul class='flex'>
-                            <li><a href="#">Профилактика 2</a></li>
+                            <li><a href="#">Профилактика mob</a></li>
                             <li><a href="#">Заболевания</a></li>
                             <li><a href="#">Диализ</a></li>
                             <li><a href="#">Трансплантация</a></li>
                             <li><a href="#">Питание и ЛФК</a></li>
-                            <li><a href="#"></a><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">вход<br> для врача</span></li>
-                            <li><a href="#"><img src="/nephrocenter/images/exit.png" alt="exit"></a></li>
+                            <li><a href="#">Вход для врача</a></li>
+                            <li><a href="#">Личный кабинет</a></li>
                         </ul>
+
+                        <!--<ul class="max-w-50">-->
+                            <!--<li>-->
+                                <!--&lt;!&ndash;<i class="fa-solid fa-thumbs-up fa-5x"></i>&ndash;&gt;-->
+                                <!--<i class="fa-solid fa-close color-white"></i>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+
+                        <!--<div class="flex justify-center">-->
+                            <!--<i class="fa-solid fa-thumbs-up fa-5x"></i>-->
+                            <!--&lt;!&ndash;<img class="max-w-50 color-1" src="/nephrocenter/images/svg/close.svg" alt="close">&ndash;&gt;-->
+                        <!--</div>-->
+
                     </div>
                 </div>
 
@@ -56,20 +75,6 @@
                         <li><a href="#">Диализ</a></li>
                         <li><a href="#">Трансплантация</a></li>
                         <li><a href="#">Питание и ЛФК</a></li>
-                        <li><a href="#" class="flex"><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">ВХОД ДЛЯ ВРАЧА</span></a></li>
-                        <li><a href="#" class="flex"><img src="/nephrocenter/images/exit.png" alt="exit"> <span class="smaller">ЛИЧНЫЙ КАБИНЕТ</span></a></li>
-                    </ul>
-                </div>
-
-                <div id="nav-mobile" class="nav">
-                    <ul class="flex">
-                        <li><a href="#">Профилактика</a></li>
-                        <li><a href="#">Заболевания</a></li>
-                        <li><a href="#">Диализ</a></li>
-                        <li><a href="#">Трансплантация</a></li>
-                        <li><a href="#">Питание и ЛФК</a></li>
-                    </ul>
-                    <ul id="nav-ul-mobile" class="flex">
                         <li><a href="#" class="flex"><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry"> <span class="smaller">ВХОД ДЛЯ ВРАЧА</span></a></li>
                         <li><a href="#" class="flex"><img src="/nephrocenter/images/exit.png" alt="exit"> <span class="smaller">ЛИЧНЫЙ КАБИНЕТ</span></a></li>
                     </ul>
@@ -127,7 +132,7 @@
                         </div>
 
                         <div>
-                            <img src="/nephrocenter/images/video-youtube.png" class="video-youtube" alt="video-youtube">
+                            <img src="/nephrocenter/images/video-youtube.png" class="picture" alt="Структура почек">
                         </div>
 
                         <div>
@@ -139,13 +144,49 @@
                         <h2>Почему почки так важны</h2>
 
                         <div class="flex justify-center">
-                            <img src="/nephrocenter/images/nephrohelp.png" class="video-youtube max-w-600" alt="video-youtube">
+                            <img src="/nephrocenter/images/nephrohelp.png" class="picture max-w-500" alt="Почему почки так важны">
                         </div>
 
                         <div>
                             <p>Мы потребляем разное количество еды каждый день.</p>
                             <p>В наш организм поступает ежедневно разное количество воды, солей и кислот.Непрерывный процесс преобразования пищи в энергию приводит к образованию вредных, токсичных веществ.Эти факторы приводят к изменению количества жидкости, электролитов и кислот в организме. Накопление вредных токсических веществ может угрожать жизни.</p>
                             <p class="color-2">Почки выполняют чрезвычайно важную работу по очистке и удалению вредных, ядовитых, кислотных и токсичных продуктов. В то же время, почки регулируют и поддерживают объем и состав воды, электролитов и кислот.</p>
+                        </div>
+
+                        <div class="flex justify-center">
+                            <img src="/nephrocenter/images/nephrohelp.png" class="picture max-w-500" alt="функции почек">
+                        </div>
+
+                        <div>
+                            <p class="color-2">Почки фильтруют кровь, и токсичные продукты выходят с мочой.</p>
+
+                            <p>Пища, которую мы едим, содержит белок. Белок необходим для роста тела и его обновления. Но после того как белок использован организмом, от него остаются отходы. Накопление этих отходов действует на организм как яд.</p>
+
+                            <p><span class="color-2">Креатинин и мочевина</span> - два важнейших токсичных вещества, количество которых в человеческом теле может быть легко измерено. Их содержание в крови отражает сохранность функции почек. Когда функция почек начинает снижаться, количество этих веществ в биохимическом анализе крови увеличивается.</p>
+
+                            <p class="color-2">Почки регулируют баланс жидкости путем выведения излишнего количества воды с мочой, либо удерживания необходимого объема жидкости в организме.</p>
+
+                            <p>Таким образом, почки поддерживают правильный объем воды в организме.</p>
+
+                            <p class="color-2">Когда функция почек начинает угасать, они теряют способность выводить излишки жидкости. Накопление лишней жидкости в организме приводит к отекам.!!</p>
+
+                            <p>Изменение концентрации соли в крови может повлиять на чувство жажды, в то время как изменение уровня калия может оказать серьезные эффекты на ритм сердца и функционирование мышц. Поддержание нормального уровня кальция и фосфора важно для здоровья костей и зубов.</p>
+
+                            <p class="color-2">Почки играют другую важную роль в регуляции минералов и других химических веществ, таких как соль, калий, хлор, водород, кальций, фосфор, магний и бикарбонат; и поддерживают оптимальный состав жидкости в организме.</p>
+
+                            <p>Почки вырабатывают различные гормоны (ренин, ангиотензин, альдостерон, простагландин и.т.д.) и регулируют количество воды и соли в организме, что играет главную роль в кровяном давлении.</p>
+
+                            <p class="color-2">Нарушение выработки гормонов, регуляции соли и воды у пациентов с нарушенными функциями почек ведет к высокому кровяному давлению.</p>
+
+                            <p>Эритропоэтин, вырабатывающийся в почках, играет важную роль в продукции красных кровяных телец – эритроцитов.</p>
+
+                            <p class="color-2">Уменьшение выработки эритропоэтина почками ведет к уменьшению продукции эритроцитов. Появляется дефицит эритроцитов в организме, что называется анемией!</p>
+
+                            <p>Из-за низкой продукции эритропоэтина у пациентов с повреждением почек гемоглобин не выходит на должный уровень, несмотря на поддержку препаратам и железа и витаминов. Почки переводят витамин D в его активную, гормональную форму, которая важна для всасывания кальция из пищи, нормального роста костей и зубов и поддержания костей здоровыми.</p>
+
+                            <p class="color-2">Если у почек начинаются проблемы, то происходит снижение уровня активного витамина D в крови!</p>
+
+                            <p>Задержка роста может быть первым знаком проблем с почками у детей.</p>
                         </div>
                     </div>
                 </div>
@@ -251,6 +292,8 @@
         </div>
     </footer>
 </div>
+
+<script src="https://kit.fontawesome.com/c82daa0ceb.js" crossorigin="anonymous"></script>
 
 <script src="/nephrocenter/js/common.js"></script>
 
