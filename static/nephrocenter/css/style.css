@@ -19,10 +19,10 @@
 
     --sizeindex: calc(1vw + 1vh);
     --lineheight-title: calc(var(--sizeindex) * 1.618);
-    --font-size-normal: calc(var(--sizeindex) * .65);
+    --font-size-normal: calc(var(--sizeindex) * .6);
 
     --lineheight-small: calc(var(--sizeindex) * .9);
-    --lineheight-normal: calc(var(--sizeindex) * 1.1);
+    --lineheight-normal: calc(var(--sizeindex) * .9);
     --lineheight-medium: calc(var(--sizeindex) * 1.2);
     --lineheight-bigger: calc(var(--sizeindex) * 1.3);
     --lineheight-large: calc(var(--sizeindex) * 2.0);
@@ -413,13 +413,13 @@ h4 {
 }
 
 .menu-left {
-    flex-basis: 23%;
+    flex-basis: 18%;
 }
 
 .content-detail {
     display: flex;
     flex-direction: column;
-    flex-basis: 77%;
+    flex-basis: 82%;
 }
 
 .content-detail-inner {
@@ -437,14 +437,14 @@ h4 {
     line-height: var(--lineheight-small);
     font-weight: var(--font-medium);
     color: #029fb0;
-    padding-right: 5%;
+    padding-right: 10%;
     padding-top: 2%;
 }
 
 .menu-left > ul > li {
     margin-top: 10px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #c1c1c1;
+    border-bottom: 1px solid #b6b6b6;
 }
 
 .picture {
@@ -585,6 +585,7 @@ p {
     top: 0;
     right: 10%;
     padding: 7px;
+    cursor: pointer;
     /*height: 100%;*/
     /*border: 1px solid red;*/
 }

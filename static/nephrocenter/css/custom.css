@@ -45,3 +45,35 @@
 .color-white {
     color: white;
 }
+
+.border-brown {
+    border: 1px solid brown;
+}
+
+.border-green {
+    border: 1px solid green;
+}
+
+.center {
+    text-align: center;
+}
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.m-auto {
+    margin: 0 auto;
+}
+
+.w-auto {
+    width: auto;
+}

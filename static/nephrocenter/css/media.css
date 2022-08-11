@@ -1,6 +1,6 @@
 @media (max-width: 767px) {
     * {
-        font-size: calc(var(--sizeindex) * 1.2);
+        font-size: calc(var(--sizeindex) * 1.3);
     }
 
     p {
