@@ -159,6 +159,10 @@
         flex-direction: column;
     }
 
+    .nav {
+        justify-content: start;
+    }
+
     .nav > ul {
         justify-content: start;
     }
