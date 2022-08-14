@@ -1,10 +1,17 @@
+@media (min-width: 768px) {
+    p {
+        font-size: 110%;
+        line-height: 130%;
+    }
+}
+
 @media (max-width: 767px) {
     * {
-        font-size: calc(var(--sizeindex) * 1.3);
+        /*font-size: calc(var(--sizeindex) * 1.3);*/
     }
 
     p {
-        line-height: var(--lineheight-large);
+        /*line-height: var(--lineheight-large);*/
     }
 
     .content {
@@ -30,7 +37,9 @@
         cursor: pointer;
     }
 
-
+    #btn-burger {
+        justify-content: end;
+    }
 
     .nav {
         display: none;
@@ -66,11 +75,11 @@
     }
 
     .header-logo__menu > ul > li {
-        line-height: 23px;
+        line-height: 22px;
     }
 
     .header-logo__menu > ul > li > a {
-        font-size: larger;
+        /*font-size: larger;*/
         color: #ffffff;
     }
 
