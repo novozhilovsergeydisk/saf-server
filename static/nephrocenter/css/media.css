@@ -1,7 +1,7 @@
 @media (min-width: 768px) {
     p {
-        font-size: 110%;
-        line-height: 130%;
+        font-size: 130%;
+        line-height: 140%;
     }
 }
 
@@ -147,18 +147,6 @@
     }
 }
 
-/*@media (max-width: 992px) {*/
-    /** {*/
-        /*font-size: calc(var(--sizeindex) * .8);*/
-    /*}*/
-/*}*/
-
-/*@media (max-width: 1400px) {*/
-    /** {*/
-        /*font-size: calc(var(--sizeindex) * .8);*/
-    /*}*/
-/*}*/
-
 @media (max-width: 1620px) {
     .logo {
         justify-content: start;
@@ -174,6 +162,11 @@
 
     .nav > ul {
         justify-content: start;
+    }
+
+    #nav-out {
+        margin-top: -25px;
+        margin-left: -6px;
     }
 }
 
