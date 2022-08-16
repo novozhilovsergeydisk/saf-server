@@ -86,3 +86,6 @@
     font-size: 130%
 }
 
+.font-size-inherit {
+    font-size: inherit;
+}
