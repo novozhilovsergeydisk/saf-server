@@ -668,7 +668,7 @@ h4 {
 .close {
     position: absolute;
     top: 0;
-    right: 10%;
+    right: 12vw;
     padding: 7px;
     cursor: pointer;
     /*height: 100%;*/
