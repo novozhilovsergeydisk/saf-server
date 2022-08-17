@@ -62,9 +62,15 @@ img {
     margin: 5px 0 5px;
 }
 
-ul, ul > li {
-    text-decoration: none;
+ul > li {
+    /*text-decoration: none;*/
     list-style-type: none;
+}
+
+ul.list-style-square > li {
+    list-style-type: square;
+    margin-left: 30px;
+    line-height: 22px;
 }
 
 .wrapper {

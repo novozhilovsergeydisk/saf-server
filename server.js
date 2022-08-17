@@ -278,19 +278,19 @@ function telerehabRoutes(router) {
 }
 
 function nephrocenterRoutes(router) {
-    router.on('GET', '/pat/tpl/prevention/detail', (req, res) => {
+    router.on('GET', '/pat/prevention/kidneys-functions', (req, res) => {
+        const template = 'nephrocenter/pat/prevention/kidneys-functions/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
+
+    router.on('GET', '/pat/tpl/prevention/detail__', (req, res) => {
         const template = 'nephrocenter/prevention-detail/index.html';
         const render = tmpl.process({}, template);
         html(res, render);
     });
 
-    router.on('GET', '/pat/tpl/prevention', (req, res) => {
-        const template = 'nephrocenter/prevention/index.html';
-        const render = tmpl.process({}, template);
-        html(res, render);
-    });
-
-    router.on('GET', '/pat/tpl/patient', (req, res) => {
+    router.on('GET', '/pat/tpl/patient__', (req, res) => {
         const template = 'nephrocenter/patient/index.html';
         const render = tmpl.process({}, template);
         html(res, render);
