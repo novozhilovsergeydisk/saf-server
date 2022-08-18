@@ -284,6 +284,18 @@ function nephrocenterRoutes(router) {
         html(res, render);
     });
 
+    router.on('GET', '/pat/prevention/symptoms-kidney-disease', (req, res) => {
+        const template = 'nephrocenter/pat/prevention/symptoms-kidney-disease/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
+
+    router.on('GET', '/pat/prevention/diagnosis-kidney-disease', (req, res) => {
+        const template = 'nephrocenter/pat/prevention/diagnosis-kidney-disease/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
+
     router.on('GET', '/pat/tpl/prevention/detail__', (req, res) => {
         const template = 'nephrocenter/prevention-detail/index.html';
         const render = tmpl.process({}, template);
