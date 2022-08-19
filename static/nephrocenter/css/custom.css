@@ -125,3 +125,7 @@
 .list-style-circle {
     list-style-type: circle;
 }
+
+.bold {
+    font-weight: var(--font-medium);
+}

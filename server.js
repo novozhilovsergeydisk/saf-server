@@ -261,6 +261,32 @@ const staticRoutes = [
     '/nephrocenter/*'
 ];
 
+function use(url, data = {}) {
+    log({ url })
+
+    router.on('GET', url, (req, res) => {
+        const template = 'nephrocenter' + url + '/index.html';
+        const render = tmpl.process(data, template);
+
+        // log({ render });
+
+        html(res, render);
+    });
+}
+
+function route(url, data = {}) {
+    log({ url })
+
+    router.on('GET', url, (req, res) => {
+        const template = 'nephrocenter' + url + '/index.html';
+        const render = tmpl.process(data, template);
+
+        // log({ render });
+
+        html(res, render);
+    });
+}
+
 __static__(staticRoutes, router);
 
 function telerehabRoutes(router) {
@@ -278,23 +304,33 @@ function telerehabRoutes(router) {
 }
 
 function nephrocenterRoutes(router) {
-    router.on('GET', '/pat/prevention/kidneys-functions', (req, res) => {
-        const template = 'nephrocenter/pat/prevention/kidneys-functions/index.html';
-        const render = tmpl.process({}, template);
-        html(res, render);
-    });
+    route('/pat/prevention/kidneys-functions');
+    route('/pat/prevention/symptoms-kidney-disease');
+    route('/pat/prevention/diagnosis-kidney-disease', {title: 'Диагностика болезней почек'});
 
-    router.on('GET', '/pat/prevention/symptoms-kidney-disease', (req, res) => {
-        const template = 'nephrocenter/pat/prevention/symptoms-kidney-disease/index.html';
-        const render = tmpl.process({}, template);
-        html(res, render);
-    });
+    route('/pat/prevention/facts-kidney-disease');
+    route('/pat/prevention/prevention-kidney-disease');
+    route('/pat/prevention/kidneys-pregnancy');
+    route('/pat/prevention/patient-library');
 
-    router.on('GET', '/pat/prevention/diagnosis-kidney-disease', (req, res) => {
-        const template = 'nephrocenter/pat/prevention/diagnosis-kidney-disease/index.html';
-        const render = tmpl.process({}, template);
-        html(res, render);
-    });
+    // router.on('GET', '/pat/prevention/kidneys-functions', (req, res) => {
+    //     const template = 'nephrocenter/pat/prevention/kidneys-functions/index.html';
+    //     const render = tmpl.process({}, template);
+    //     html(res, render);
+    // });
+    //
+    // router.on('GET', '/pat/prevention/symptoms-kidney-disease', (req, res) => {
+    //     const template = 'nephrocenter/pat/prevention/symptoms-kidney-disease/index.html';
+    //     const render = tmpl.process({}, template);
+    //     html(res, render);
+    // });
+
+    // router.on('GET', '/pat/prevention/diagnosis-kidney-disease', (req, res) => {
+    //     const template = 'nephrocenter/pat/prevention/diagnosis-kidney-disease/index.html';
+    //     log({ template })
+    //     const render = tmpl.process({}, template);
+    //     html(res, render);
+    // });
 
     router.on('GET', '/pat/tpl/prevention/detail__', (req, res) => {
         const template = 'nephrocenter/prevention-detail/index.html';

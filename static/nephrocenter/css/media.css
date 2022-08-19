@@ -182,7 +182,7 @@
     }
 
     .header-logo__menu > ul > li {
-        line-height: 22px;
+        line-height: 24px;
     }
 
     .header-logo__menu > ul > li > a {
@@ -237,6 +237,13 @@
     #footer-flex > div {
         flex-basis: 100%;
         margin-top: 10px;
+    }
+}
+
+/* Коррекция размера шрифта для плашки меню */
+@media (max-width: 840px) {
+    #nav-ul > li > a {
+        font-size: 18px;
     }
 }
 
