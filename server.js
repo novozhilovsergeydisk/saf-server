@@ -304,6 +304,8 @@ function telerehabRoutes(router) {
 }
 
 function nephrocenterRoutes(router) {
+    route('/pat/prevention');
+
     route('/pat/prevention/kidneys-functions');
     route('/pat/prevention/symptoms-kidney-disease');
     route('/pat/prevention/diagnosis-kidney-disease', {title: 'Диагностика болезней почек'});

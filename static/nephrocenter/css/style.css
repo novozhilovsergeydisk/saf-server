@@ -3,6 +3,7 @@
     --color-blk: #000000;
     --color-1: #005a90;
     --color-2: #029fb0;
+    --color-3: #b6b6b6;
     --color-rgb: 13, 92, 113;
     --color-orange: #eb9316;
     --content: 76%;
@@ -69,6 +70,11 @@ ul > li {
 
 ul.list-style-square > li {
     list-style-type: square;
+    margin-left: 30px;
+    line-height: 22px;
+}
+
+ol > li {
     margin-left: 30px;
     line-height: 22px;
 }
@@ -512,7 +518,7 @@ h4 {
 .menu-left > ul > li {
     margin-top: 10px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #b6b6b6;
+    border-bottom: 1px solid var(--color-3);
 }
 
 .picture {
@@ -648,6 +654,10 @@ h4 {
     color: var(--color-2);
 }
 
+.color-3 {
+    color: var(--color-3);
+}
+
 /* Position child elements relative to this element */
 .aspect-ratio-box {
     position: relative;
@@ -697,4 +707,18 @@ h4 {
 .gradient {
     min-height: 75px;
     background-image: linear-gradient(#ebf8f9, #fdffff);
+}
+
+.facts > p:nth-child(even) {
+    padding-bottom: 10px;
+    border-bottom: 1px dotted var(--color-3);
+}
+
+.facts > p:nth-child(1) {
+    margin-top: 0;
+}
+
+.facts > p > span {
+    font-size: inherit;
+    font-weight: bold;
 }

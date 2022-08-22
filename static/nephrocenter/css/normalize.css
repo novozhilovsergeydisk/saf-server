@@ -352,7 +352,7 @@ template {
  * Custom.
  */
 
-ul {
+ul, ol {
     padding: 0px;
 }
 

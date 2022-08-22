@@ -123,6 +123,7 @@
 
     .content-detail-inner > h2 {
         font-size: 18px;
+        margin-top: 0px;
     }
 
     h2 {
@@ -147,7 +148,8 @@
         /*line-height: 12px;*/
     }
 
-    ul.list-style-square > li {
+    ul.list-style-square > li,
+    ol > li {
         font-size: 14px;
         line-height: 18px;
     }
@@ -284,3 +286,6 @@
         margin-left: -6px;
     }
 }
+
+
+@media (min-width: 30em) and (max-width: 50em) { /* … */ }
