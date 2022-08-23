@@ -303,7 +303,7 @@ function telerehabRoutes(router) {
     });
 }
 
-function nephrocenterRoutes(router) {
+function nephrocenterRoutes() {
     route('/pat/prevention');
 
     route('/pat/prevention/kidneys-functions');
