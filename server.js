@@ -309,11 +309,11 @@ function nephrocenterRoutes() {
     route('/pat/prevention/kidneys-functions');
     route('/pat/prevention/symptoms-kidney-disease');
     route('/pat/prevention/diagnosis-kidney-disease', {title: 'Диагностика болезней почек'});
-
     route('/pat/prevention/facts-kidney-disease');
     route('/pat/prevention/prevention-kidney-disease');
-    route('/pat/prevention/kidneys-pregnancy');
-    route('/pat/prevention/patient-library');
+
+    // route('/pat/prevention/kidneys-pregnancy');
+    // route('/pat/prevention/patient-library');
 
     // router.on('GET', '/pat/prevention/kidneys-functions', (req, res) => {
     //     const template = 'nephrocenter/pat/prevention/kidneys-functions/index.html';

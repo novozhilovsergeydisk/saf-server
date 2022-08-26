@@ -325,28 +325,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
+    /*font-size: 42px;*/
     font-size: calc(var(--sizeindex) * 1.7);
     padding: 15px 0 15px 10px;
 }
 
 h2 {
-    font-size: calc(var(--sizeindex) * 1.2);
+    /*font-size: 28px;*/
+    font-size: calc(var(--sizeindex) * 1.1);
     /*padding: 10px 0 10px 2px;*/
 }
 
 h3 {
-    font-size: calc(var(--sizeindex) * 1.2);
+    font-size: calc(var(--sizeindex) * 1.1);
     /*padding: 7px 0 7px 2px;*/
 }
 
 h4 {
-    font-size: calc(var(--sizeindex) * 1.2);
+    font-size: calc(var(--sizeindex) * 1.1);
     /*padding: 3px;*/
 }
 
 h4 {
-    font-size: calc(var(--sizeindex) * 1.33);
-    padding: 3px;
+    font-size: calc(var(--sizeindex) * 1.0);
+    /*padding: 3px;*/
 }
 
 
@@ -518,7 +520,7 @@ h4 {
 }
 
 .content-detail-prevention-row > div > h2 {
-    margin-top: 32px;
+    margin-top: 40px;
 }
 
 #menu-left-mobile {
