@@ -137,7 +137,6 @@ ol > li {
     /*line-height: 1.2;*/
     font-weight: 500;
     color: var(--color-2);
-    margin-left: 45px;
     /*flex-basis: 30%;*/
 }
 
@@ -181,6 +180,74 @@ ol > li {
     padding: 25px;
 }
 
+.banner {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--color-2);
+}
+
+.banner .content {
+
+}
+
+.banner-image {
+    background-image: url('/nephrocenter/images/kidney.png'); /* Путь к фоновому изображению */
+    background-repeat: no-repeat;
+    background-position: top -77px right -320px;
+    min-height: 550px;
+}
+
+.banner-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-content: baseline;
+    flex-basis: 49%;
+}
+
+.banner-text-title {
+    font-family: 'Gotham Pro';
+    /*font-size: calc(var(--sizeindex) * 1.5);*/
+    /*line-height: var(--lineheight-title);*/
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.banner-text-content {
+    /*font-size: 22px;*/
+    /*line-height: var(--lineheight-normal);*/
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -20px;
+}
+
+.banner-text-button {
+    font-family: 'Gotham Pro';
+    width: 198px;
+    height: 48px;
+    background-color: #ffffff;
+    color: var(--color-2);
+    border-radius: 24px;
+    border-color: white;
+    outline: none;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+.banner-text-button:hover {
+    cursor: pointer;
+}
+
+.banner-picture {
+    display: flex;
+    justify-content: end;
+    flex-basis: 51%;
+}
+
+.banner-picture > img {
+    /*max-height: 550px;*/
+}
+
 .navigation {
     display: flex;
 }
@@ -190,7 +257,8 @@ ol > li {
 }
 
 .top {
-    margin-bottom: 110px;
+    /*display: flex;*/
+    /*flex-direction: column;*/
 }
 
 .top-item {
@@ -201,34 +269,10 @@ ol > li {
     flex-basis: 50%;
 }
 
-.top-item > div > h1 {
-    margin-top: 100px;
-}
-
-.top-item > div > h2 {
-    color: var(--color-2);
-    margin-top: 110px;
-}
-
-.top-item > div > img {
-     margin-top: 60px;
- }
-
-.top-item > div > div {
-    margin-top: 30px;
-}
-
-.top-item-div-p {
-    font-size: 125%;
-    line-height: 128%;
-    margin-right: 10%;
-}
-
 .service {
     /*display: flex;*/
     flex-direction: column;
     background-color: var(--bg-light); /*#02B7B2;*/
-    padding-bottom: 60px;
 }
 
 .service-item {
@@ -238,11 +282,6 @@ ol > li {
 .service-item > div {
     flex-basis: 50%;
     /*border: 1px solid #0a58ca;*/
-}
-
-.service-item > h1 {
-    margin-top: 85px;
-    margin-bottom: 75px;
 }
 
 .service-item-list {
@@ -259,13 +298,12 @@ ol > li {
     justify-content: center;
     align-items: center;
     border-radius: 100%;
-    width: 46px;
-    height: 46px;
+    width: 44px;
+    height: 44px;
     background-color: var(--color-2);
     color: white;
     text-align: center;
     margin: 10px;
-    font-size: 24px;
 }
 
 .text-link {
@@ -365,17 +403,14 @@ h4 {
     width: 836px;
     height: 86px;
     background-color: var(--color-2);
-    border-color: white;
+    border-color: var(--color-2);
     border-radius: 43px;
     outline: none;
     /*border: 0px solid #005a90;*/
-    margin-top: 90px;
-    margin-bottom: 10px;
+    margin-top: 88px;
+    margin-bottom: 113px;
     /*margin-top: 51px;*/
     cursor: pointer;
-    font-size: 170%;
-    font-weight: 500;
-    color: white;
 }
 
 .consultation-specialist:hover {
@@ -384,20 +419,11 @@ h4 {
 
 .consultation-specialist:active {
     border: 2px solid #005a90;
-    color: white;
     /*background-color: #005a90;*/
 }
 
 .info-flex {
     display: flex;
-}
-
-.info-flex > div > h1 {
-    padding: 16px 0 15px 0px;
-}
-
-.info-flex > div > h1:nth-child(1) {
-    padding: 90px 0 15px 0px;
 }
 
 .info-flex-alt {
@@ -722,29 +748,8 @@ h4 {
     font-weight: bold;
 }
 
-.service-item:nth-child(3) {
-    margin-top: 100px;
-}
 
-.service-item > div > ul {
-    margin-left: 15px;
-}
 
-.info-flex > div > ul {
-    margin-left: 15px;
-}
-
-.service-item > div > ul > li {
-    list-style-type: square;
-    font-size: 110%;
-    line-height: inherit;
-}
-
-.info-flex > div > ul > li {
-    list-style-type: square;
-    font-size: 110%;
-    line-height: inherit;
-}
 
 
 .burger-relative {

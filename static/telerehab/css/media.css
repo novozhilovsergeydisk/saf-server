@@ -27,8 +27,8 @@
 
 @media (min-width: 1031px) {
     p {
-        font-size: 120%;
-        line-height: 130%;
+        font-size: 135%;
+        line-height: 145%;
     }
 }
 
@@ -73,7 +73,6 @@
 
     .nav {
         display: none;
-        /*margin-left: 0px;*/
     }
 
     .support-flex {
@@ -286,26 +285,6 @@
     }
 }
 
-@media (max-width: 1260px) {
-    .banner-image {
-        background-image: none;
-    }
-
-    .banner .content > h1 {
-        width: 100%;
-        padding-top: 30px !important;
-    }
-
-    .banner .content > p {
-        width: 100%;
-        padding-bottom: 30px;
-    }
-
-    .banner-text-button {
-        margin: 10px 0 30px;
-    }
-}
-
 @media (max-width: 1620px) {
     .logo {
         justify-content: start;
@@ -317,7 +296,6 @@
 
     .nav {
         justify-content: start;
-        margin-left: 0px;
     }
 
     .nav > ul {

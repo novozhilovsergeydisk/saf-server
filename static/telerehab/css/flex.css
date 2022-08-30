@@ -1,0 +1,111 @@
+
+.flex {
+    display: flex;
+}
+
+.flex-container  {
+    display: flex;
+    margin: 15px;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-flow-wrap {
+    flex-flow: row wrap;
+}
+
+.flex-inline {
+    display: inline-flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex-nowrap {
+    flex-wrap: nowrap;
+}
+
+.justify-start {
+    justify-content: flex-start;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.justify-left {
+    justify-content: left;
+}
+
+.justify-right {
+    justify-content: right;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-around {
+    justify-content: space-around;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.align-evenly {
+    align-content: space-evenly;
+}
+
+.align-start {
+    align-items: start;
+}
+
+.align-end {
+    align-items: end;
+}
+
+.flex-basis-10 {
+    flex-basis: 10%;
+}
+
+.flex-basis-20 {
+    flex-basis: 20%;
+}
+
+.flex-basis-25 {
+    flex-basis: 25%;
+}
+
+.flex-basis-50 {
+    flex-basis: 50%;
+}
+
+.flex-basis-75 {
+    flex-basis: 75%;
+}
+
+.flex-basis-80 {
+    flex-basis: 80%;
+}
+
+.flex-basis-90 {
+    flex-basis: 90%;
+}
+
+.flex-basis-100 {
+    flex-basis: 100%;
+}

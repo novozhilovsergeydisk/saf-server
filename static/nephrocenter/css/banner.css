@@ -1,0 +1,137 @@
+.banner {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: end;
+    background-color: var(--color-2);
+    /*height: 100vh;*/
+}
+
+.banner .content {
+    display: flex;
+    flex-direction: column;
+}
+
+.banner .content > h1 {
+    width: 45%;
+    color: white;
+    padding: 65px 0px 10px 0px !important;
+    font-size: calc(var(--sizeindex) * 1.8) !important;
+    /*font-weight: 400 !important;*/
+}
+
+.banner .content > p {
+    width: 45%;
+    color: white;
+    font-size: 145%;
+    line-height: 35px;
+    /*font-size: calc(var(--sizeindex) * 2.2) !important;*/
+}
+
+.banner-image {
+    background-image: url('/nephrocenter/images/kidney.png'); /* Путь к фоновому изображению */
+    background-repeat: no-repeat;
+    background-position: top 0px right 0px;
+
+    width: 100%; /* Ширина изображений */
+    /*height: 100%; !* Высота изображении *!*/
+    object-fit: cover; /* Вписываем фотографию в область */
+
+    /*height: 75vh;*/
+    /*min-height: 250px;*/
+    /*min-width: 60%;*/
+}
+
+.top-image {
+    background-image: url('/nephrocenter/images/ellipse.png'); /* Путь к фоновому изображению */
+    background-repeat: no-repeat;
+    /*background-position: top 0px right 0px;*/
+
+    /*width: 100%; !* Ширина изображений *!*/
+    /*height: 100%; !* Высота изображении *!*/
+    object-fit: fill; /* Вписываем фотографию в область */
+}
+
+.banner-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-content: baseline;
+    flex-basis: 49%;
+}
+
+.banner-text-title {
+    font-family: 'Gotham Pro';
+    /*font-size: calc(var(--sizeindex) * 1.5);*/
+    /*line-height: var(--lineheight-title);*/
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.banner-text-content {
+    /*font-size: 22px;*/
+    /*line-height: var(--lineheight-normal);*/
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -20px;
+}
+
+.banner-text-button {
+    /* font-family: 'Gotham Pro'; */
+    width: 235px;
+    height: 60px;
+    background-color: #ffffff;
+    color: var(--color-2);
+    border-radius: 40px;
+    border-color: white;
+    outline: none;
+    font-weight: 500;
+    margin-top: 60px;
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+.banner-text-button:hover {
+    cursor: pointer;
+}
+
+.banner-picture {
+    display: flex;
+    justify-content: end;
+    flex-basis: 51%;
+}
+
+.banner-picture > img {
+    /*max-height: 550px;*/
+}
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 45px;
+    margin-bottom: 30px;
+}
+
+.navigation > div {
+    display: flex;
+    flex-direction: row;
+    /*justify-content: center;*/
+}
+
+.navigation > div > div {
+    /*border: 1px solid blue;*/
+    background-color: white;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin: 10px;
+    opacity: .4;
+    /*padding: 3px;*/
+    /*justify-content: center;*/
+}
+
+.active-circle {
+    opacity: unset !important;
+    background-color: white !important;
+}
