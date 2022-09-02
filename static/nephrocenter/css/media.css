@@ -32,7 +32,6 @@
     }
 }
 
-
 /* max-width */
 
 @media (max-width: 767px) {
@@ -287,6 +286,50 @@
 }
 
 @media (max-width: 1260px) {
+    .service-item, .top-item {
+        /*border: 2px solid red;*/
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-flex {
+        /*border: 2px solid red;*/
+        display: flex;
+        flex-direction: column;
+    }
+
+    .top-item > div > h2 {
+        margin-top: 30px;
+        font-size: 120%;
+    }
+
+    .top-item > div > img, .service-item > div > img {
+        width: 100%;
+    }
+
+    .banner .content > h1 {
+        font-size: 150% !important;
+    }
+
+    .top-item > div > h1 {
+        font-size: 150% !important;
+    }
+
+    .banner .content > p {
+        font-size: 125% !important;
+        line-height: 125%;
+    }
+
+    .consultation-specialist {
+        font-size: 100%;
+        margin-top: 20px;
+    }
+
+
+
+
+
+
     .banner-image {
         background-image: none;
     }

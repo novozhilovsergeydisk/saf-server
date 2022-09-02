@@ -108,7 +108,7 @@ ol > li {
     align-items: start;
 }
 
-.logo > div > img {
+.logo > div > a > img {
     max-width: 450px;
     /*justify-content: start;*/
     /*align-content: start;*/
