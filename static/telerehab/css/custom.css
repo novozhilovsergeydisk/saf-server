@@ -1,9 +1,98 @@
+.content_ {
+    display: flex;
+
+}
+
+.block-top {
+    /*min-height: 150vh;*/
+    /*min-height: 100%;*/
+}
+
+.block-top > div {
+    color: white;
+    background-image: url("/telerehab/images/main.jpg");
+    background-repeat: no-repeat;
+    /*height: 100%;*/
+    height: 150vh;
+}
+
+.block-top > div > h1 {
+    font-size: 210%;
+    margin-top: 20px;
+    margin-left: 50px;
+    color: white;
+}
+
+.block-top > div > p {
+    margin-top: 0px;
+    margin-left: 60px;
+    width: 60%;
+}
+
+.block-banner > div > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.block-banner > div > h1 {
+    font-size: 200%;
+    margin-top: -20px;
+    text-align: center;
+    color: var(--color-font);
+}
+
+.block-banner .circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    /*margin: 0 auto;*/
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-1);
+}
+
+.block-banner .circle > div {
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    color: white;
+    font-weight: bold;
+    font-size: 200%;
+}
+
+.block-banner-p {
+    color: var(--color-1);
+    font-weight: bold;
+    font-size: 170%;
+}
+
+
+
+
+
+
+
+
+
+
+
 .absolute {
     position:absolute;
 }
 
 .relative {
     position:relative;
+}
+
+.max-w-25 {
+    max-width: 25px;
+}
+
+.max-w-30 {
+    max-width: 30px;
 }
 
 .max-w-50 {

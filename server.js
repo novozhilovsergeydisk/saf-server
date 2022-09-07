@@ -258,7 +258,8 @@ const staticRoutes = [
     '/images/*',
     '/vendors/*',
     '/js-admin/*',
-    '/nephrocenter/*'
+    '/nephrocenter/*',
+    '/telerehab/*'
 ];
 
 function use(url, data = {}) {
