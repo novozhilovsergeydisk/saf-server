@@ -96,7 +96,7 @@ ol > li {
     display: flex;
     justify-content: center;
     margin: 0 auto;
-    width: var(--content);
+    width: 1920px;
 }
 
 .logo {
