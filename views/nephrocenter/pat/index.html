@@ -1,12 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>Почки и их функции</title>
+    <title>Теленефроцентр - это сервис для дистаннционного консультирования и обучения нефрологических пациентов, врачей общей практики и нефрологов</title>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Почки и их функции">
+    <meta name="description" content="Теленефроцентр - это сервис для дистаннционного консультирования и обучения нефрологических пациентов, врачей общей практики и нефрологов">
+    <meta name="keywords" content="болезни почек, хпб, заболевания почек, почки и беременность, почечная недостаточность, диализ, трансплантация почки, телемедицина, школа для пациентов">
 
     <link rel="icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="/nephrocenter/css/normalize.css">
@@ -15,9 +17,10 @@
     <link rel="stylesheet" href="/nephrocenter/css/fonts.css">
     <link rel="stylesheet" href="/nephrocenter/css/custom.css">
     <link rel="stylesheet" href="/nephrocenter/css/banner.css">
+    <link rel="stylesheet" href="/nephrocenter/css/video.css">
     <link rel="stylesheet" href="/nephrocenter/css/media.css">
 
-    <meta name="yandex" content="noindex, nofollow" />
+    <meta name="yandex" content="index, follow" />
 </head>
 <body>
 <div class="wrapper">
@@ -27,7 +30,7 @@
             <div class="content border-brown_">
                 <div id="logo" class="logo border-brown_">
                     <div class="logo-img border-brown_">
-                        <img src="/nephrocenter/images/svg/logo.svg" alt="logo">
+                        <a href="/"><img src="/nephrocenter/images/svg/logo.svg" alt="logo"></a>
                     </div>
 
                     <div id="btn-burger" class="content-logo__burger">
@@ -43,32 +46,54 @@
                         </div>
 
                         <ul class='flex'>
-                            <li><a href="/pat/prevention">Профилактика</a></li>
-                            <li><a href="#">Заболевания</a></li>
-                            <li><a href="#">Диализ</a></li>
-                            <li><a href="#">Трансплантация</a></li>
-                            <li><a href="#">Диета и ЛФК</a></li>
-                            <li><a href="#">Вход для врача</a></li>
-                            <li><a href="#">Личный кабинет</a></li>
+                            <li>
+                                <a class="" href="/info/pat/1">Профилактика</a>
+                            </li>
+                            <li>
+                                <a class="" href="/info/pat">Заболевания</a>
+                            </li>
+                            <li>
+                                <a class="" href="/info/pat">Диализ</a>
+                            </li>
+                            <li>
+                                <a class="" href="/info/pat">Трансплантация</a>
+                            </li>
+                            <li>
+                                <a class="" href="/info/pat">Диета&nbsp;и&nbsp;ЛФК</a>
+                            </li>
+
+                            <li><a href="/cabinet">Вход для врача</a></li>
+                            <li><a href="/usr/login">Личный кабинет</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div id="nav" class="nav flex justify-center">
                     <ul id="nav-ul" class="flex">
-                        <li><a href="/pat/prevention" class="active">Профилактика</a></li>
-                        <li><a href="#">Заболевания</a></li>
-                        <li><a href="#">Диализ</a></li>
-                        <li><a href="#">Трансплантация</a></li>
-                        <li><a href="#">Диета&nbsp;и&nbsp;ЛФК</a></li>
+                        <li>
+                            <a class="" href="/info/pat/1">Профилактика</a>
+                        </li>
+                        <li>
+                            <a class="" href="/info/pat">Заболевания</a>
+                        </li>
+                        <li>
+                            <a class="" href="/info/pat">Диализ</a>
+                        </li>
+                        <li>
+                            <a class="" href="/info/pat">Трансплантация</a>
+                        </li>
+                        <li>
+                            <a class="" href="/info/pat">Диета&nbsp;и&nbsp;ЛФК</a>
+                        </li>
+
                     </ul>
                 </div>
 
                 <div id="nav-out" class="nav">
                     <ul id="nav-ul-out" class="flex justify-center">
-                        <li><a href="#" class="flex"><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry" class="icon-doctorentry"> <span class="menu-out font-size-14">ВХОД<br> ДЛЯ&nbsp;ВРАЧА</span></a></li>
+                        <li><a href="/cabinet" class="flex"><img src="/nephrocenter/images/doctor-entry.png" alt="doctor-entry" class="icon-doctorentry"> <span class="menu-out font-size-14">ВХОД<br> ДЛЯ&nbsp;ВРАЧА</span></a></li>
                         <li>
-                            <a href="#" class="flex"><img src="/nephrocenter/images/exit.png" alt="exit" class="icon-exit">
+                            <a href="/usr/login" class="flex"><img src="/nephrocenter/images/exit.png" alt="exit" class="icon-exit">
                                 <span class="menu-out center w-auto font-size-14">&nbsp;ЛИЧНЫЙ<br>&nbsp;&nbsp;КАБИНЕТ</span>
                             </a>
                         </li>
@@ -77,25 +102,32 @@
             </div>
         </div>
 
-        <div class="banner border-brown__">
-            <div class="banner-image border-green__">
-                <div class="content relative border-blue__">
-                    <h1 class="border-red__">Все, что нужно знать <br>о заболеваниях почек</h1>
 
-                    <p class="border-red__">
-                        Врачи называют болезнь почек «тихим убийцей». Признаки поражения почек отмечаются у каждого десятого взрослого жителя Земли. Но многие, страдающие хронической болезнью почек, длительное время даже не подозревают, чтоони больны.
+        <div class="banner border-brown_">
+            <div id="banner-image" class="banner-image border-green_">
+                <div class="content relative border-blue_">
+                    <h1 id="banner-title" class="border-red_">Все, что нужно знать <br>о заболеваниях почек</h1>
 
+                    <p id="banner-text" class="border-red_">
+                        — возможность получения «второго мнения» в службе нефрологической помощи московской ГКБ N52
+                        <br>— дистанционная связь  с лечащим нефрологом ранее выявление и коррекция осложнений
+                        <br>— удаленная поддержка в адаптации к лечению и диализу
+                        <br>— патронаж пациентов на перитонеальном диализе
+                        <br>— мониторинг реципиентов до и после трансплантации
+                        <br>— образовательные школы по питанию и образу жизни
+                        <br>— онлайн группы пациентской взаимопомощи
                     </p>
 
-                    <button class="banner-text-button">Подробнее</button>
+                    <button id="banner-detail" class="banner-text-button"><a class="font-size-inherit" href="#">Подробнее</a></button>
 
-                    <div class="navigation border-red__ absolute__">
-                        <div class="border-green__">
-                            <div id="btn-banner-1" class="active-circle"></div>
-                            <div id="btn-banner-2"></div>
-                            <div id="btn-banner-3"></div>
-                            <div id="btn-banner-4"></div>
-                            <div id="btn-banner-5"></div>
+                    <div id="banner-navigation" class="navigation border-red_ absolute_">
+                        <div class="border-green_">
+                            <div id="btn-banner-1" data-banner_href="/info/pat/1" class="active-circle"></div>
+                            <div id="btn-banner-2" data-banner_href="/info/pat/2"></div>
+                            <div id="btn-banner-3" data-banner_href="/info/pat/3"></div>
+                            <div id="btn-banner-4" data-banner_href="/info/pat/4"></div>
+                            <div id="btn-banner-5" data-banner_href="/info/pat/5"></div>
+                            <div id="btn-banner-6" data-banner_href="/info/pat/6"></div>
                         </div>
 
                     </div>
@@ -113,7 +145,7 @@
                     <div class=""> </div>
                 </div>
 
-                <div class="top-item top-image__ border-green__">
+                <div class="top-item top-image_ border-green_">
                     <div class="">
                         <img src="/nephrocenter/images/ellipse.png" alt="ellipse" class="">
 
@@ -141,7 +173,7 @@
                 </div>
 
                 <div class="top-item">
-                    <div class="flex flex-col ">
+                    <div class="flex flex-col">
                         <h2 class="title-alt">Что значит находиться<br> на стадии 1 или 2 ХБП?</h2>
 
                         <p class="top-item-div-p">
@@ -154,7 +186,7 @@
                         <h2 class="title-alt">Что значит находиться<br> на стадии 3ХБП?</h2>
 
                         <p class="top-item-div-p">
-                                Это значит, что функция Ваших почек умеренно снижена. Кровь или белок могут находиться в моче. Если Вы находитесь на данной стадии заболевания, Вам необходимо регулярное наблюдение за Вашей почечной функцией (анализ крови и мочи раз в полгода) у специалиста нефролога.
+                            Это значит, что функция Ваших почек умеренно снижена. Кровь или белок могут находиться в моче. Если Вы находитесь на данной стадии заболевания, Вам необходимо регулярное наблюдение за Вашей почечной функцией (анализ крови и мочи раз в полгода) у специалиста нефролога.
                         </p>
                     </div>
                 </div>
@@ -183,7 +215,7 @@
 
         <div class="service">
             <div class="content flex-col">
-                <div class="service-item border-brown__">
+                <div class="service-item border-brown_">
                     <h1 class="title-blk">
                         Как воспользоваться
                         <br>сервисом Теленефроцентр?
@@ -201,6 +233,7 @@
                                 <div class="service-circle">1</div>
                             </div>
 
+
                             <p class="text-18">
                                 Зайдите  на сайт <span class="font-size-inherit text-link">nephro-portal.ru</span>, зарегистрируйтесь и заведите личный кабинет-сюда можно будет загрузить  архив ваших медицинских документов, последнюю выписку, лабораторные исследования, задать интересующий Вас вопрос нефрологу.
 
@@ -213,10 +246,10 @@
                                 <div class="service-circle">2</div>
                             </div>
 
-                                <p class="text-16">
-                                    Заполните опросник о Вашем самочувствии.
+                            <p class="text-16">
+                                Заполните опросник о Вашем самочувствии.
 
-                                </p>
+                            </p>
 
                         </div>
 
@@ -287,7 +320,7 @@
                         </ul>
                     </div>
 
-                    <div class="border-green__ center">
+                    <div class="border-green_ center">
                         <img src="/nephrocenter/images/nephrohelp.png" alt="nephrohelp">
                     </div>
                 </div>
@@ -324,22 +357,22 @@
                     <div>
                         <h1 class="title-blk">Иногородним</h1>
 
-                            <p class="">
-                                Иногородним гражданам для проведения диализа в Москве по полису ОМС нужно выслать в организационно-методический отдел по нефрологии nephro.omo52@yandex.ru копии следующих документов:
+                        <p class="">
+                            Иногородним гражданам для проведения диализа в Москве по полису ОМС нужно выслать в организационно-методический отдел по нефрологии nephro.omo52@yandex.ru копии следующих документов:
 
-                            </p>
+                        </p>
 
-                            <ul class="">
-                                <li>паспорт;</li>
-                                <li>полис ОМС;</li>
-                                <li>выписка из диализного центра, в котором пациент проходит гемодиализ;</li>
-                                <li>направление на имя главного нефролога Москвы О.Н.Котенко форма 057у из поликлиники или медицинского центра, где наблюдается пациент, за подписью руководителя с отметкой «направляется для лечения программным гемодиализом в г.Москве».</li>
-                            </ul>
+                        <ul class="">
+                            <li>паспорт;</li>
+                            <li>полис ОМС;</li>
+                            <li>выписка из диализного центра, в котором пациент проходит гемодиализ;</li>
+                            <li>направление на имя главного нефролога Москвы О.Н.Котенко форма 057у из поликлиники или медицинского центра, где наблюдается пациент, за подписью руководителя с отметкой «направляется для лечения программным гемодиализом в г.Москве».</li>
+                        </ul>
 
-                            <p class="">
-                                Телефон ОМО по нефрологии <b>8 (499) 196-33-01</b>
+                        <p class="">
+                            Телефон ОМО по нефрологии <b>8 (499) 196-33-01</b>
 
-                            </p>
+                        </p>
                     </div>
                 </div>
 
@@ -476,9 +509,9 @@
                         <img src="/nephrocenter/images/svg/telegram.svg" alt="telegram" class="icon-telegram border-green_">
                     </div>
 
-                    <!--<img src="/nephrocenter/images/svg/skype.svg" alt="skype" class="border-green">-->
+                    <!--<img src="/images/svg/skype.svg" alt="skype" class="border-green">-->
 
-                    <!--<img src="/nephrocenter/images/svg/telegram.svg" alt="telegram" class="border-green">-->
+                    <!--<img src="/images/svg/telegram.svg" alt="telegram" class="border-green">-->
 
                 </div>
             </div>
@@ -495,5 +528,3 @@
 </script>
 </body>
 </html>
-
-

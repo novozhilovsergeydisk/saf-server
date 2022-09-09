@@ -21,15 +21,15 @@
 }
 
 .banner .content > p {
-    width: 45%;
+    width: 55%;
     color: white;
     font-size: 145%;
-    line-height: 35px;
+    line-height: 30px;
     /*font-size: calc(var(--sizeindex) * 2.2) !important;*/
 }
 
 .banner-image {
-    background-image: url('/nephrocenter/images/kidney.png'); /* Путь к фоновому изображению */
+    background-image: url('/nephrocenter/images/banner/kidney.png'); /* Путь к фоновому изображению */
     background-repeat: no-repeat;
     background-position: top 0px right 0px;
 

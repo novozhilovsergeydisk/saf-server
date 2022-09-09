@@ -27,7 +27,7 @@
     margin-top: 0px;
     margin-left: 60px;
     width: 60%;
-    line-height: 40px;
+    line-height: 36px;
 }
 
 .block-banner > div > div {
@@ -70,19 +70,167 @@
 }
 
 .circle-arrow-left {
-    margin-left: 20px;
+    margin-left: 30px;
 }
 
 .circle-arrow-right {
-    margin-right: 20px;
+    margin-right: 30px;
 }
 
 .block-banner-p {
     color: var(--color-1);
     font-weight: bold;
     font-size: 170%;
-    line-height: 25px;
+    line-height: 28px;
 }
+
+.header-div {
+    display: flex;
+    justify-content: start;
+}
+
+.header-div-1 {
+    display: flex;
+    flex-basis: 25%;
+}
+
+.header-div-2 {
+    display: flex;
+    flex-basis: 63%;
+}
+
+.header-div-3 {
+    display: flex;
+    justify-content: start;
+    /*flex-basis: 10%;*/
+}
+
+.header-div-3 > div {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.block-center .content {
+    color: white;
+    background-image: url("/telerehab/images/form-gradient.png");
+    background-repeat: no-repeat;
+    min-height: 709px;
+    /*margin-top: -100px;*/
+}
+
+.block-center .content {
+    /*display: flex;*/
+    /*margin-top: 520px;*/
+}
+
+.block-center-content-div-1 {
+    flex-basis: 40%;
+    margin-top: -50px;
+}
+
+.block-center-content-div-2 {
+    flex-basis: 38%;
+    margin-top: 220px;
+}
+
+.block-center-content-div-3 {
+    margin-top: 220px;
+    flex-basis: 32%;
+}
+
+.block-center-content-div-2 > h2 {
+    color: white;
+    font-size: 200%;
+    margin-top: 20px;
+}
+
+.block-center-content-div-2 > p {
+    margin-right: 25px;
+}
+
+.block-center-content-div-3 form {
+    display: flex;
+    flex-direction: column;
+}
+
+.block-center-content-div-3 form > input,
+.block-center-content-div-3 form > button {
+    margin-right: 30px;
+}
+
+.block-center-content-div-3 form > input {
+    margin-top: 12px;
+    height: 50px;
+    font-size: 150%;
+    border: 0;
+    border-radius: 1px;
+}
+
+.form-btn {
+    height: 50px;
+    font-size: 150%;
+    background-color: var(--color-1);
+    width: 70%;
+    color: white;
+    margin: 0 auto;
+    margin-top: 22px;
+    border-radius: 10px;
+    border: 0;
+    font-weight: bold;
+}
+
+.block-our-advantages .content > h2 {
+    text-align: center;
+    color: var(--color-1);
+    font-size: 200%;
+    margin: 20px 0 20px;
+}
+
+.block-our-advantages .content > div {
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.block-our-advantages .content > div > div {
+    color: var(--color-1);
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.block-our-advantages .content > div > p {
+    margin-left: 70px;
+    margin-right: 70px;
+    font-weight: bold;
+}
+
+.block-our-advantages .content > div > p > span {
+    color: var(--color-1);
+    font-size: inherit;
+}
+
+.block-footer {
+    display: flex;
+}
+
+.block-footer .content {
+    align-items: center;
+    justify-content: space-around;
+    background-color: var(--color-1);
+    color: white;
+}
+
+.block-footer .content > div > img {
+    /*max-width: 250px;*/
+    margin: 20px 0 20px;
+
+}
+
+.block-footer .content > div > div {
+    font-size: 160%;
+    font-weight: bold;
+}
+
 
 
 
@@ -118,8 +266,16 @@
     max-width: 100px;
 }
 
+.max-w-150 {
+    max-width: 150px;
+}
+
 .max-w-200 {
     max-width: 200px;
+}
+
+.max-w-250 {
+    max-width: 250px;
 }
 
 .max-w-300 {
@@ -268,4 +424,8 @@
 
 .margin-top--20 {
     margin-top: -20px !important;
+}
+
+.text-right {
+    text-align: right;
 }
