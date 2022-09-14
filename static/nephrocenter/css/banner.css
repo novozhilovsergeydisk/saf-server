@@ -13,7 +13,7 @@
 }
 
 .banner .content > h1 {
-    width: 45%;
+    width: 47%;
     color: white;
     padding: 65px 0px 10px 0px !important;
     font-size: calc(var(--sizeindex) * 1.8) !important;
@@ -28,22 +28,49 @@
     /*font-size: calc(var(--sizeindex) * 2.2) !important;*/
 }
 
+#banner-image {
+    opacity: 1;
+    transition: opacity ease var(--time-05);
+}
+
 .banner-image {
-    background-image: url('/nephrocenter/images/banner/kidney.png'); /* Путь к фоновому изображению */
+    background-image: url('/images/banner/kidney.png'); /* Путь к фоновому изображению */
     background-repeat: no-repeat;
     background-position: top 0px right 0px;
-
-    width: 100%; /* Ширина изображений */
-    /*height: 100%; !* Высота изображении *!*/
+    width: 100%;
     object-fit: cover; /* Вписываем фотографию в область */
+    position: relative;
+}
 
-    /*height: 75vh;*/
-    /*min-height: 250px;*/
-    /*min-width: 60%;*/
+.banner-image .content {
+    height: 90%;
+    left: 0px;
+    /*transition: left ease 1s, opacity ease 0.5s;*/
+}
+
+.banner-image > div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    /*transition: opacity ease 1s;*/
+    /*align-items: center;*/
+}
+
+.background-position-top-140 {
+    background-position: top 140px right 0px !important;
+}
+
+.background-position-right-150 {
+    background-position: top 0px right 150px !important;
+}
+
+.background-position-right-20 {
+    background-position: top 0px right 20% !important;
 }
 
 .top-image {
-    background-image: url('/nephrocenter/images/ellipse.png'); /* Путь к фоновому изображению */
+    background-image: url('/images/ellipse.png'); /* Путь к фоновому изображению */
     background-repeat: no-repeat;
     /*background-position: top 0px right 0px;*/
 
@@ -58,6 +85,13 @@
     justify-content: start;
     align-content: baseline;
     flex-basis: 49%;
+}
+
+#banner-text p {
+    font-size: 140%;
+    line-height: 35px;
+    color: white;
+    width: 50%;
 }
 
 .banner-text-title {
@@ -106,11 +140,18 @@
 }
 
 .navigation {
+    /*border: 1px solid red;*/
+    margin: 0 auto;
+    /*width: var(--content);*/
+
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 45px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+    /*margin-bottom: 30px;*/
+    /*bottom: 0;*/
+    /*background-color: red;*/
+    width: 220px;
 }
 
 .navigation > div {
@@ -127,6 +168,7 @@
     height: 15px;
     margin: 10px;
     opacity: .4;
+    cursor: pointer;
     /*padding: 3px;*/
     /*justify-content: center;*/
 }

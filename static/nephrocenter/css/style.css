@@ -29,6 +29,10 @@
     --lineheight-medium: calc(var(--sizeindex) * 1.2);
     --lineheight-bigger: calc(var(--sizeindex) * 1.3);
     --lineheight-large: calc(var(--sizeindex) * 2.0);
+
+    --time-02: 0.2s;
+    --time-05: 0.5s;
+    --time-1: 1s;
 }
 
 ::placeholder {
@@ -181,13 +185,13 @@ ol > li {
     padding: 25px;
 }
 
-.navigation {
-    display: flex;
-}
+/*.navigation {*/
+/*display: flex;*/
+/*}*/
 
-.navigation > p {
-    color: orange;
-}
+/*.navigation > p {*/
+/*color: orange;*/
+/*}*/
 
 .top {
     margin-bottom: 110px;
