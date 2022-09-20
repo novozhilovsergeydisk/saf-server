@@ -53,11 +53,6 @@
         width: 90%;
     }
 
-    #banner-text p {
-        font-size: 120%;
-        line-height: 30px;
-    }
-
     .block-center .content {
         flex-direction: column;
     }
@@ -87,6 +82,10 @@
 
     #btn-burger {
         justify-content: end;
+    }
+
+    .top-item {
+        /*border: 1px solid red;*/
     }
 
     .nav {
@@ -180,7 +179,9 @@
         width: 200px;
     }
 
-
+    .top-item > div > img {
+        margin-top: 0px;
+    }
 
     .header-logo__menu {
         /*display: block;*/
@@ -325,58 +326,19 @@
         width: 100%;
     }
 
-    .banner .content > h1 {
-        font-size: 150% !important;
-    }
-
     .top-item > div > h1 {
         font-size: 150% !important;
-    }
-
-    .banner .content > p {
-        font-size: 125% !important;
-        line-height: 125%;
+        margin-top: 5px;
     }
 
     .consultation-specialist {
         font-size: 100%;
         margin-top: 20px;
     }
-
-
-
-
-
-
-    /*.banner-image {*/
-    /*background-image: none;*/
-    /*}*/
-
-    .banner .content > h1 {
-        width: 100%;
-        padding-top: 30px !important;
-    }
-
-    .banner .content > p {
-        width: 100%;
-        padding-bottom: 30px;
-    }
-
-    .banner-text-button {
-        margin: 10px 0 30px;
-    }
 }
 
 @media (max-width: 1600px) {
-    .banner-image {
-        background-image: none;
-        /*height: auto;*/
-    }
 
-    .banner .content > h1,
-    #banner-text p {
-        width: 100%;
-    }
 }
 
 @media (max-width: 1620px) {

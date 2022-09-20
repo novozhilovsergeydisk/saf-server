@@ -259,7 +259,8 @@ const staticRoutes = [
     '/vendors/*',
     '/js-admin/*',
     '/nephrocenter/*',
-    '/telerehab/*'
+    '/telerehab/*',
+    '/doc/*'
 ];
 
 function use(url, data = {}) {
@@ -306,8 +307,11 @@ function telerehabRoutes(router) {
 
 function nephrocenterRoutes() {
     route('/pat');
-    route('/pat/prevention');
 
+    route('/pat/diseases');
+    route('/pat/diseases/block1');
+
+    route('/pat/prevention');
     route('/pat/prevention/kidneys-functions');
     route('/pat/prevention/symptoms-kidney-disease');
     route('/pat/prevention/diagnosis-kidney-disease', {title: 'Диагностика болезней почек'});

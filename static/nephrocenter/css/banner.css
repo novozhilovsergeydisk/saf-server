@@ -1,10 +1,61 @@
+#banner-image {
+    opacity: 1;
+    transition: opacity ease var(--time-05);
+}
+
+#banner-content {
+    height: 85%;
+}
+
+#banner-content > h1 {
+    width: 55%;
+    color: white;
+    padding: 65px 0px 10px 0px;
+    font-size: 25px;
+}
+
+#banner-content > div > p {
+    width: 55%;
+    color: white;
+    font-size: 145%;
+    line-height: 30px;
+}
+
+#banner-navigation {
+    height: 15%;
+}
+
+.banner-image-1 {
+    /*background-position: top 0px right 270%;*/
+}
+
+.banner-image-2 {
+    /*background-position: top 0px right 180%;*/
+}
+
+.banner-image-3 {
+    /*background-position: top 0px right 130%;*/
+}
+
+.banner-image-4 {
+    background-position: top 0px right 80% !important;
+}
+
+.banner-image-5 {
+    /*background-position: top 0px right 100%;*/
+    background-position: top 0px right 60% !important;
+}
+
+.banner-image-6 {
+    /*background-position: top 0px right 100%;*/
+}
+
 .banner {
     display: flex;
     flex-direction: row;
     justify-content: right;
     align-items: end;
     background-color: var(--color-2);
-    /*height: 100vh;*/
 }
 
 .banner .content {
@@ -12,40 +63,17 @@
     flex-direction: column;
 }
 
-.banner .content > h1 {
-    width: 47%;
-    color: white;
-    padding: 65px 0px 10px 0px !important;
-    font-size: calc(var(--sizeindex) * 1.8) !important;
-    /*font-weight: 400 !important;*/
-}
-
-.banner .content > p {
-    width: 55%;
-    color: white;
-    font-size: 145%;
-    line-height: 30px;
-    /*font-size: calc(var(--sizeindex) * 2.2) !important;*/
-}
-
-#banner-image {
-    opacity: 1;
-    transition: opacity ease var(--time-05);
-}
-
 .banner-image {
     background-image: url('/images/banner/kidney.png'); /* Путь к фоновому изображению */
     background-repeat: no-repeat;
-    background-position: top 0px right 0px;
+    background-position: top 0px right 0%;
     width: 100%;
     object-fit: cover; /* Вписываем фотографию в область */
     position: relative;
 }
 
 .banner-image .content {
-    height: 90%;
     left: 0px;
-    /*transition: left ease 1s, opacity ease 0.5s;*/
 }
 
 .banner-image > div {
@@ -53,8 +81,6 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
-    /*transition: opacity ease 1s;*/
-    /*align-items: center;*/
 }
 
 .background-position-top-140 {
@@ -72,10 +98,6 @@
 .top-image {
     background-image: url('/images/ellipse.png'); /* Путь к фоновому изображению */
     background-repeat: no-repeat;
-    /*background-position: top 0px right 0px;*/
-
-    /*width: 100%; !* Ширина изображений *!*/
-    /*height: 100%; !* Высота изображении *!*/
     object-fit: fill; /* Вписываем фотографию в область */
 }
 
@@ -87,31 +109,7 @@
     flex-basis: 49%;
 }
 
-#banner-text p {
-    font-size: 140%;
-    line-height: 35px;
-    color: white;
-    width: 50%;
-}
-
-.banner-text-title {
-    font-family: 'Gotham Pro';
-    /*font-size: calc(var(--sizeindex) * 1.5);*/
-    /*line-height: var(--lineheight-title);*/
-    font-weight: 500;
-    color: #ffffff;
-}
-
-.banner-text-content {
-    /*font-size: 22px;*/
-    /*line-height: var(--lineheight-normal);*/
-    font-weight: 400;
-    color: #ffffff;
-    margin-top: -20px;
-}
-
 .banner-text-button {
-    /* font-family: 'Gotham Pro'; */
     width: 235px;
     height: 60px;
     background-color: #ffffff;
@@ -120,7 +118,7 @@
     border-color: white;
     outline: none;
     font-weight: 500;
-    margin-top: 60px;
+    margin-top: 37px;
     font-size: 25px;
     margin-bottom: 15px;
 }
@@ -135,33 +133,21 @@
     flex-basis: 51%;
 }
 
-.banner-picture > img {
-    /*max-height: 550px;*/
-}
-
 .navigation {
-    /*border: 1px solid red;*/
     margin: 0 auto;
-    /*width: var(--content);*/
-
     display: flex;
     flex-direction: row;
     justify-content: center;
     margin-top: 20px;
-    /*margin-bottom: 30px;*/
-    /*bottom: 0;*/
-    /*background-color: red;*/
     width: 220px;
 }
 
 .navigation > div {
     display: flex;
     flex-direction: row;
-    /*justify-content: center;*/
 }
 
 .navigation > div > div {
-    /*border: 1px solid blue;*/
     background-color: white;
     border-radius: 50%;
     width: 15px;
@@ -169,8 +155,6 @@
     margin: 10px;
     opacity: .4;
     cursor: pointer;
-    /*padding: 3px;*/
-    /*justify-content: center;*/
 }
 
 .active-circle {
