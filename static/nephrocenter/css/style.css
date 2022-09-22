@@ -480,8 +480,19 @@ h4 {
     margin-top: 20px;
 }
 
-.content-detail-prevention {
-    /*padding: 6px;*/
+.content-detail-inner {
+    padding: 6px;
+}
+
+.content-detail-inner strong, .content-detail-inner > div > p > span {
+    font-size: inherit;
+}
+
+.content-detail-inner blockquote {
+    font-size: 0.9em;
+    border-left: 4px solid #cccccc;
+    margin-left: 10px;
+    padding-left: 5px;
 }
 
 .content-detail-prevention-row {
