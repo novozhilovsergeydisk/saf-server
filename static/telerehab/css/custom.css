@@ -38,7 +38,8 @@
 
 .block-banner > div > h1 {
     font-size: 200%;
-    margin-top: -135px;
+    margin-top: -165px;
+    margin-bottom: 25px;
     text-align: center;
     color: var(--color-font);
 }
@@ -111,17 +112,28 @@
     margin-right: 10px;
 }
 
+#fa-phone {
+    color: var(--color-1);
+    font-size: 28px;
+    /*margin-left: 10px;*/
+}
+
+#fa-envelope {
+    color: var(--color-1);
+    font-size: 32px;
+    margin: 10px;
+}
+
 .block-center .content {
     color: white;
     background-image: url("/telerehab/images/form-gradient.png");
     background-repeat: no-repeat;
     min-height: 709px;
-    /*margin-top: -100px;*/
+    margin-top: -120px;
 }
 
-.block-center .content {
-    /*display: flex;*/
-    /*margin-top: 520px;*/
+#detail {
+    margin-top: 10px;
 }
 
 .block-center-content-div-1 {
@@ -146,7 +158,7 @@
 }
 
 .block-center-content-div-2 > p {
-    margin-right: 25px;
+    margin-right: 100px;
 }
 
 .block-center-content-div-3 form {
@@ -157,6 +169,14 @@
 .block-center-content-div-3 form > input,
 .block-center-content-div-3 form > button {
     margin-right: 30px;
+}
+
+.block-ask-question {
+    /*margin-bottom: 50px;*/
+}
+
+.block-contract {
+    margin-top: 22px;
 }
 
 .block-center-content-div-3 form > input {
@@ -171,20 +191,21 @@
     height: 50px;
     font-size: 150%;
     background-color: var(--color-1);
-    width: 70%;
+    width: 62%;
     color: white;
     margin: 0 auto;
-    margin-top: 22px;
+    margin-top: 65px;
     border-radius: 10px;
     border: 0;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .block-our-advantages .content > h2 {
     text-align: center;
     color: var(--color-1);
     font-size: 200%;
-    margin: 20px 0 20px;
+    margin: 30px 0 30px;
 }
 
 .block-our-advantages .content > div {
@@ -192,22 +213,50 @@
     margin-bottom: 30px;
 }
 
-.block-our-advantages .content > div > div {
+.content-flex > div {
     color: var(--color-1);
     font-size: 150%;
     font-weight: bold;
 }
 
-.block-our-advantages .content > div > p {
-    margin-left: 70px;
+.certificate-flex {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-top: 30px;
+}
+
+.certificate {
+    display: flex;
+    justify-content: center;
+    /*border: 1px solid red;*/
+    flex-basis: 12%;
+}
+
+.certificate > img {
+    max-width: 87px;
+}
+
+.certificate-text {
+    flex-basis: 87%;
+    padding-left: -100px;
+}
+
+.certificate-text {
+
+}
+
+.certificate-text > p {
+    /*margin-left: 70px;*/
     margin-right: 70px;
     font-weight: bold;
 }
 
-.block-our-advantages .content > div > p > span {
+.certificate-text > p > span {
     color: var(--color-1);
     font-size: inherit;
 }
+
 
 .block-footer {
     display: flex;
@@ -226,9 +275,14 @@
 
 }
 
-.block-footer .content > div > div {
-    font-size: 160%;
-    font-weight: bold;
+.footer-block-left {
+    font-size: 150%;
+    /*font-weight: var(--font-medium);*/
+}
+
+.footer-block-left > span {
+    font-size: 110%;
+    font-weight: var(--font-medium);
 }
 
 
@@ -267,7 +321,7 @@
 }
 
 .max-w-150 {
-    max-width: 150px;
+    max-width: 115px;
 }
 
 .max-w-200 {
@@ -275,7 +329,7 @@
 }
 
 .max-w-250 {
-    max-width: 250px;
+    max-width: 215px;
 }
 
 .max-w-300 {

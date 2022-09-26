@@ -114,6 +114,7 @@ ol > li {
 .logo > div {
     justify-content: start;
     align-items: start;
+    margin-top: -12px;
 }
 
 .logo > div > img {
@@ -321,6 +322,32 @@ ol > li {
     background-color: var(--color-2);
     color: white;
     text-align: center;
+    margin: 10px;
+}
+
+.block-our-advantages-circle {
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    border-radius: 100%;
+    width: 70px;
+    height: 70px;
+    background-color: var(--color-1);
+    /*color: white;*/
+    /*text-align: center;*/
+    margin: 10px;
+}
+
+.block-our-advantages-circle-2 {
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    border-radius: 100%;
+    width: 70px;
+    height: 70px;
+    background-color: var(--color-2);
+    /*color: white;*/
+    /*text-align: center;*/
     margin: 10px;
 }
 
@@ -808,4 +835,17 @@ h4 {
 }
 .burger:hover div {
     transform: scale(0);
+}
+
+input {
+    padding-left: 25px;
+    color: #666666;
+}
+
+input::placeholder {
+    /*font-weight: bold;*/
+    opacity: .7;
+    opacity: .7;
+    color: #666666;
+    font-size: 20px;
 }
