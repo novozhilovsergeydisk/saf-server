@@ -849,3 +849,8 @@ input::placeholder {
     color: #666666;
     font-size: 20px;
 }
+
+.block-text .content {
+    display: flex;
+    justify-content: space-between;
+}
