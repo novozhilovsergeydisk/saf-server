@@ -33,6 +33,14 @@
 }
 
 
+
+@media (max-width: 1750px) {
+    .block-top-organizations {
+        background-position: top 0px right -50%;
+    }
+}
+
+
 /* max-width */
 
 @media (max-width: 767px) {

@@ -77,17 +77,17 @@
             </div>
         </div>
 
-        <div class="block-top">
-            <div class="flex flex-col content border-red_">
+        <div class="block-top border-red_">
+            <div class="flex flex-col content block-top-organizations border-red_">
                 <h1 class="border-brown_">Подключение авторских курсов телереабилитации</h1>
 
                 <p>
-                    Если вы готовы предложить пациентам новый вид (виды) телереабилитации, напишите нам, мы добавим его на TeleRehab, поможем вам подключиться к платформе, а также сформировать и представить пациентам ваши новые авторские реабилитационные курсы.
+                    Если вы готовы предложить пациентам новый вид (виды) телереабилитации, напишите нам, мы добавим его на TELEREHAB, поможем вам подключиться к платформе, а также сформировать и представить пациентам ваши новые авторские реабилитационные курсы.
 
                 </p>
 
                 <p>
-                    Присоединившись к сервису, вы сможете предложить дистанционную реабилитацию пациентам, где бы они не находились (в любой точке страны или земного шара). При этом - как своим пациентам, так и тем, кто обратится к вам через нашу платформу. Условия, требования и форму оплаты пациентами предлагаемой реабилитации определяет сама медорганизация.
+                    Присоединившись к сервису, вы сможете предложить дистанционную реабилитацию пациентам, где бы они не находились (в любой точке страны или земного шара). При этом как своим пациентам, так и тем, кто обратится к вам через нашу платформу. Условия, требования и форму оплаты пациентами предлагаемой реабилитации определяет сама медорганизация.
 
                 </p>
 
@@ -99,13 +99,38 @@
             </div>
         </div>
 
-        <div class="block-text">
+        <div class="block-text border-brown_">
+            <h2>Условия сотрудничества</h2>
             <div class="content border-green_">
-                <div>1</div>
+                <div>
+                    <p>
+                        Оцифровка одного авторского курса
+                        и интеграция его в платформу
+                        занимает от 10 рабочих дней и
+                        стоит <b class="font-size-inherit">130 000</b> рублей.
+                    </p>
+                </div>
 
-                <div>2</div>
+                <div>
+                    <p>
+                        Все курсы являются <b class="font-size-inherit">know-how</b>
+                        предложивших их медицинским
+                        организаций и не могут быть
+                        предоставлены другим
+                        медицинским организациям.
+                    </p>
+                </div>
 
-                <div>3</div>
+                <div>
+                    <p>
+                        Стоимость использования Платформы
+                        в месяц составляет <b class="font-size-inherit">5 000</b> рублей за
+                        каждый аккаунт врача и <b class="font-size-inherit">5 000</b> рублей
+                        за каждый аккаунт инструктора вне
+                        зависимости от количества пациентов,
+                        подключенных к Платформе.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -115,7 +140,7 @@
 
                 </div>
 
-                <div class="block-center-content-div-2 border-brown_">
+                <div class="block-center-content-div-2 relative border-brown_">
                     <h2>
                         Приглашаем к сотрудничеству
                         <br>медицинские организации
@@ -136,41 +161,28 @@
                     </p>
 
                     <div class="block-ask-question border-brown_">
-                        <button class="form-btn">Задать вопрос</button>
+                        <button class="form-btn btn-manipulate absolute">Задать вопрос</button>
                     </div>
                 </div>
 
-                <div class="block-center-content-div-3 border-brown_">
+                <div class="block-center-content-div-3 border-brown_ relative">
                     <form action="">
                         <input type="text" placeholder="Организация">
-                        <input type="text" placeholder="Контактное лицо">
+                        <input type="text" placeholder='Контактное лицо'>
                         <input type="text" placeholder="E-mail">
-                        <input type="text" placeholder="Выбрать действующий вид">
+                        <select name="rehub" id="rehub">
+                            <option value="none">Действующий вид телереабилитации</option>
+                            <option value="1">Первый</option>
+                            <option value="2">Второй</option>
+                        </select>
                         <input type="text" placeholder="Предложить новый (новые) вид (ы)">
 
                     </form>
 
                     <div class="block-contract border-brown_">
-                        <button class="form-btn">Заключить договор</button>
+                        <button id="btn-contract-organization" class="form-btn btn-manipulate absolute">Заключить договор</button>
                     </div>
                 </div>
-
-                <!--<div>-->
-                <!--<div>1</div>-->
-                <!--<div>2</div>-->
-                <!--<div>3</div>-->
-                <!--</div>-->
-                <!--</div>-->
-
-
-
-                <!--<p>-->
-
-                <!--<i class='fas fa-chevron-left'></i>-->
-                <!--<i class='fas fa-chevron-left' style='font-size:24px'></i>-->
-                <!--<i class='fas fa-chevron-left' style='font-size:36px'></i>-->
-                <!--<i class='fas fa-chevron-left' style='font-size:48px;color:red'></i>-->
-                <!--</p>-->
             </div>
         </div>
 
@@ -180,29 +192,29 @@
 
                 <div class="content-flex flex">
                     <div class="block-our-advantages-circle"></div>
-                    <div>
+                    <p>
                         Гибкие настройки и
                         <br>высокое качество
                         <br>конференций
-                    </div>
+                    </p>
                     <div class="block-our-advantages-circle"></div>
-                    <div>
+                    <p>
                         Подключение любых
                         <br>авторских курсов
                         <br>реабилитации
-                    </div>
+                    </p>
                     <div class="block-our-advantages-circle-2"></div>
-                    <div>
+                    <p>
                         Дистанционное
                         <br>подключение в любой
                         <br>точке земного шара
-                    </div>
+                    </p>
                     <div class="block-our-advantages-circle-2"></div>
-                    <div>
+                    <p>
                         Возможность доступа
                         <br>к занятиям с сайта
                         <br>медорганизации
-                    </div>
+                    </p>
                 </div>
 
                 <div class="certificate-flex">
@@ -211,14 +223,9 @@
                     </div>
 
                     <div class="certificate-text border-brown_">
-                        <p>
+                        <p class="border-green_">
                             TELEREHAB зарегистрирован как программа для ЭВМ под названием «TELEREHAB. Маркетплейс программ
                             <br>дистанционной реабилитации», <span class="">Свидетельство № 2022618164 от 05 мая 2022 г.</span>
-                        </p>
-
-                        <p>
-                            TELEREHAB включен в включен в Единый реестр российских программ для электронных
-                            <br>вычислительных машин и баз данных, <span class="">реестровый № 14362.</span>
                         </p>
                     </div>
                 </div>
@@ -231,14 +238,14 @@
             <div class="border-brown_">
                 <div class="footer-block-left">
                     <span>ООО «АйПат»</span>
-                    <br>+7 (499) 519-00-78
-                    <br>support@i-pat.online
+                    <span>+7 (499) 519-00-78</span>
+                    <span>support@i-pat.online</span>
                 </div>
 
             </div>
             <div class="border-brown_"><img src="/telerehab/images/iPAT.png" class="max-w-250" alt="logo"></div>
             <div class="border-brown_"><img src="/telerehab/images/sr_logo_white.png" class="max-w-150" alt="logo"></div>
-            <div class="border-brown_"><img src="/telerehab/images/telepat_logo_white.png" class="max-w-250" alt="logo"></div>
+            <div class="border-brown_"><img src="/telerehab/images/telepat_logo_white.png" class="max-w-220" alt="logo"></div>
         </div>
     </footer>
 </div>

@@ -90,11 +90,11 @@
             </div>
 
             <div class="block-top">
-                <div class="flex flex-col content border-red_">
+                <div class="flex flex-col content block-top-main border-red_">
                     <h1 class="border-brown_">TELEREHAB. Маркетплейс Реабилитационных Курсов</h1>
 
                     <p class="border-brown_">
-                        Телереабилитация - это онлайн занятия с пациентом или группой пациентов, находящихся дома, проводимые инструктором лечебной физкультуры (ЛФК) под руководством врача-реабилитолога.
+                        Телереабилитация – это онлайн занятия с пациентом или группой пациентов, находящихся дома, проводимые инструктором лечебной физкультуры (ЛФК) под руководством врача-реабилитолога.
 
                     </p>
 
@@ -129,7 +129,7 @@
                             </div>
 
                             <p class="block-banner-p">
-                                Переболеви COVID-19
+                                Переболевшим COVID-19
                                 <br>с осложнениями
                             </p>
                         </div>
@@ -174,7 +174,7 @@
 
                         </div>
 
-                        <div class="block-center-content-div-2 border-brown_">
+                        <div class="block-center-content-div-2 border-brown_ relative">
                             <h2>
                                 Приглашаем к сотрудничеству
                                 <br>медицинские организации
@@ -195,22 +195,26 @@
                             </p>
 
                             <div class="block-ask-question border-brown_">
-                                <button class="form-btn">Задать вопрос</button>
+                                <button class="form-btn btn-manipulate absolute">Задать вопрос</button>
                             </div>
                         </div>
 
-                        <div class="block-center-content-div-3 border-brown_">
+                        <div class="block-center-content-div-3 relative border-brown_">
                             <form action="">
                                 <input type="text" placeholder="Организация">
                                 <input type="text" placeholder="Контактное лицо">
                                 <input type="text" placeholder="E-mail">
-                                <input type="text" placeholder="Выбрать действующий вид">
+                                <select name="rehub" id="rehub">
+                                    <option value="none">Действующий вид телереабилитации</option>
+                                    <option value="1">Первый</option>
+                                    <option value="2">Второй</option>
+                                </select>
                                 <input type="text" placeholder="Предложить новый (новые) вид (ы)">
 
                             </form>
 
                             <div class="block-contract border-brown_">
-                                <button class="form-btn">Заключить договор</button>
+                                <button class="form-btn btn-manipulate absolute">Заключить договор</button>
                             </div>
                         </div>
                 </div>
@@ -222,29 +226,29 @@
 
                     <div class="content-flex flex">
                         <div class="block-our-advantages-circle"></div>
-                        <div>
+                        <p>
                             Гибкие настройки и
                             <br>высокое качество
                             <br>конференций
-                        </div>
+                        </p>
                         <div class="block-our-advantages-circle"></div>
-                        <div>
+                        <p>
                             Подключение любых
                             <br>авторских курсов
                             <br>реабилитации
-                        </div>
+                        </p>
                         <div class="block-our-advantages-circle-2"></div>
-                        <div>
+                        <p>
                             Дистанционное
                             <br>подключение в любой
                             <br>точке земного шара
-                        </div>
+                        </p>
                         <div class="block-our-advantages-circle-2"></div>
-                        <div>
+                        <p>
                             Возможность доступа
                             <br>к занятиям с сайта
                             <br>медорганизации
-                        </div>
+                        </p>
                     </div>
 
                     <div class="certificate-flex">
@@ -252,13 +256,13 @@
                             <img src="/telerehab/images/certificate.png" alt="фото">
                         </div>
 
-                        <div class="certificate-text border-brown_">
+                        <div class="certificate-text flex-col border-brown_">
                             <p>
                                 TELEREHAB зарегистрирован как программа для ЭВМ под названием «TELEREHAB. Маркетплейс программ
                                 <br>дистанционной реабилитации», <span class="">Свидетельство № 2022618164 от 05 мая 2022 г.</span>
                             </p>
 
-                            <p>
+                            <p class="margin-top-20">
                                 TELEREHAB включен в включен в Единый реестр российских программ для электронных
                                 <br>вычислительных машин и баз данных, <span class="">реестровый № 14362.</span>
                             </p>
@@ -273,10 +277,9 @@
                 <div class="border-brown_">
                     <div class="footer-block-left">
                         <span>ООО «АйПат»</span>
-                        <br>+7 (499) 519-00-78
-                        <br>support@i-pat.online
+                        <span>+7 (499) 519-00-78</span>
+                        <span>support@i-pat.online</span>
                     </div>
-
                 </div>
                 <div class="border-brown_"><img src="/telerehab/images/iPAT.png" class="max-w-250" alt="logo"></div>
                 <div class="border-brown_"><img src="/telerehab/images/sr_logo_white.png" class="max-w-150" alt="logo"></div>

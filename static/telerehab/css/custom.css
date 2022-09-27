@@ -5,20 +5,27 @@
 
 .block-top {
     display: flex;
-    /*min-height: 150vh;*/
-    /*min-height: 100vh;*/
 }
 
-.block-top > div {
+.block-top-main {
     color: white;
     background-image: url("/telerehab/images/main.jpg");
     background-repeat: no-repeat;
     min-height: 709px;
 }
 
+.block-top-organizations {
+    color: white;
+    background-image: url("/telerehab/images/med-organizations.png");
+    background-repeat: no-repeat;
+    background-position: top 0px right 20%;
+    min-height: 709px;
+    margin-top: -62px;
+}
+
 .block-top > div > h1 {
     font-size: 210%;
-    margin-top: -250px;
+    margin-top: -195px;
     margin-left: 50px;
     color: white;
 }
@@ -27,7 +34,17 @@
     margin-top: 0px;
     margin-left: 60px;
     width: 60%;
-    line-height: 36px;
+    line-height: 34px;
+}
+
+.block-top > div > p:nth-child(2) {
+    margin-top: 20px;
+    /*border: 1px solid red;*/
+}
+
+.block-top > div > p:nth-child(3) {
+    margin-top: 20px;
+    /*border: 1px solid red;*/
 }
 
 .block-banner > div > div {
@@ -115,6 +132,7 @@
 #fa-phone {
     color: var(--color-1);
     font-size: 28px;
+    cursor: pointer;
     /*margin-left: 10px;*/
 }
 
@@ -122,6 +140,7 @@
     color: var(--color-1);
     font-size: 32px;
     margin: 10px;
+    cursor: pointer;
 }
 
 .block-center .content {
@@ -205,25 +224,26 @@
     text-align: center;
     color: var(--color-1);
     font-size: 200%;
-    margin: 30px 0 30px;
+    margin: 60px 55px;
 }
 
 .block-our-advantages .content > div {
     justify-content: space-around;
-    margin-bottom: 30px;
+    margin-bottom: 80px;
 }
 
-.content-flex > div {
+.content-flex > p {
     color: var(--color-1);
     font-size: 150%;
     font-weight: bold;
+    line-height: 30px;
 }
 
 .certificate-flex {
     display: flex;
     align-items: center;
     justify-content: start;
-    margin-top: 30px;
+    margin-top: 32px;
 }
 
 .certificate {
@@ -238,18 +258,18 @@
 }
 
 .certificate-text {
+    display: flex;
     flex-basis: 87%;
     padding-left: -100px;
-}
-
-.certificate-text {
 
 }
 
 .certificate-text > p {
     /*margin-left: 70px;*/
+    margin-top: 0px;
     margin-right: 70px;
     font-weight: bold;
+    /*align-items: center;*/
 }
 
 .certificate-text > p > span {
@@ -276,15 +296,30 @@
 }
 
 .footer-block-left {
+    display: flex;
+    flex-direction: column;
     font-size: 150%;
     /*font-weight: var(--font-medium);*/
 }
 
-.footer-block-left > span {
+.footer-block-left > span:nth-child(1) {
     font-size: 110%;
     font-weight: var(--font-medium);
 }
 
+.footer-block-left > span:nth-child(2) {
+    font-size: 90%;
+    display: inline-block;
+    /*margin-top: 15px;*/
+    /*font-weight: var(--font-medium);*/
+}
+
+.footer-block-left > span:nth-child(3) {
+    font-size: 90%;
+    display: inline-block;
+    margin-top: 0px;
+    /*font-weight: var(--font-medium);*/
+}
 
 
 
@@ -328,8 +363,16 @@
     max-width: 200px;
 }
 
+.max-w-220 {
+    max-width: 220px;
+}
+
 .max-w-250 {
-    max-width: 215px;
+    max-width: 250px;
+}
+
+.max-w-270 {
+    max-width: 270px;
 }
 
 .max-w-300 {
@@ -482,4 +525,5 @@
 
 .text-right {
     text-align: right;
+    cursor: pointer;
 }
