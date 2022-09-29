@@ -303,6 +303,12 @@ function telerehabRoutes(router) {
         const render = tmpl.process({}, template);
         html(res, render);
     });
+
+    router.on('GET', '/telerehab/patients', (req, res) => {
+        const template = 'telerehab/patients/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
 }
 
 function nephrocenterRoutes() {

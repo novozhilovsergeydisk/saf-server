@@ -7,6 +7,13 @@
     --color-font: #0c5d70;
     --color-rgb: 13, 92, 113;
     --color-orange: #eb9316;
+    --color-circle-1: #207989;
+    --color-circle-2: #30899a;
+    --color-circle-3: #53aeb9;
+    --color-circle-4: #74d8cc;
+    /*
+    #207989      #30899a   #53aeb9   #74d8cc
+    */
     --content: 76%;
     --margin-center: 0 auto;
 
@@ -327,10 +334,26 @@ ol > li {
     border-radius: 100%;
     width: 70px;
     height: 70px;
-    background-color: var(--color-1);
+    /*background-color: var(--color-circle-1);*/
     /*color: white;*/
     /*text-align: center;*/
     margin: 10px;
+}
+
+.color-circle-1 {
+    background-color: var(--color-circle-1);
+}
+
+.color-circle-2 {
+    background-color: var(--color-circle-2);
+}
+
+.color-circle-3 {
+    background-color: var(--color-circle-3);
+}
+
+.color-circle-4 {
+    background-color: var(--color-circle-4);
 }
 
 .block-our-advantages-circle-2 {
@@ -340,7 +363,7 @@ ol > li {
     border-radius: 100%;
     width: 70px;
     height: 70px;
-    background-color: var(--color-2);
+    /*background-color: var(--color-circle-2);*/
     /*color: white;*/
     /*text-align: center;*/
     margin: 10px;
@@ -371,8 +394,8 @@ h1 {
 }
 
 h2 {
-    /*font-size: 28px;*/
-    font-size: calc(var(--sizeindex) * 1.1);
+    font-size: 30px;
+    /*font-size: calc(var(--sizeindex) * 1.1);*/
     /*padding: 10px 0 10px 2px;*/
 }
 
@@ -845,24 +868,6 @@ input::placeholder {
     font-size: 20px;
 }
 
-select {
-    padding-left: 25px;
-    color: #666666;
-    font-size: 130%;
-    margin-top: 12px;
-    border: none;
-    height: 50px;
-    margin-right: 30px;
-    /*opacity: .7;*/
-    /*width: 97%;*/
-}
-
-/*select:required:invalid {*/
-    /*color: #666;*/
-/*}*/
-/*option[value=""][disabled] {*/
-    /*display: none;*/
-/*}*/
 option:nth-child(1) {
     color: #000;
 }

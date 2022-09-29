@@ -4,7 +4,7 @@
 }
 
 .block-top {
-    display: flex;
+    /*display: flex;*/
 }
 
 .block-top-main {
@@ -23,9 +23,55 @@
     margin-top: -62px;
 }
 
+.block-top-patients {
+    color: white;
+    background-image: url("/telerehab/images/patient.png");
+    background-repeat: no-repeat;
+    background-position: top 0px right 0%;
+    min-height: 562px;
+    margin-top: -85px;
+}
+
+.block-top-patients > p {
+    max-width: 50%;
+    /*color: red;*/
+}
+
+.block-top-patients > p:nth-child(1) {
+    margin-top: 30px;
+}
+
+.block-top-rehab > p:nth-child(1) {
+    margin-top: 84px;
+}
+
+.block-top-courses {
+    display: flex;
+    align-items: end;
+    color: var(--color-1);
+    background-image: url("/telerehab/images/doctor.png");
+    background-repeat: no-repeat;
+    background-position: top 0px left 0px;
+    background-size: contain;
+    min-height: 562px;
+}
+
+.block-top-rehab {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    margin-top: -82px;
+    color: white;
+    background-image: url("/telerehab/images/doctor-2.png");
+    background-repeat: no-repeat;
+    background-position: top 0px right 0px;
+    min-height: 562px;
+    max-height: 562px;
+}
+
 .block-top > div > h1 {
     font-size: 210%;
-    margin-top: -195px;
+    margin-top: -180px;
     margin-left: 50px;
     color: white;
 }
@@ -39,12 +85,18 @@
 
 .block-top > div > p:nth-child(2) {
     margin-top: 20px;
-    /*border: 1px solid red;*/
 }
 
 .block-top > div > p:nth-child(3) {
     margin-top: 20px;
-    /*border: 1px solid red;*/
+}
+
+.block-top-rehab a {
+    color: white;
+    font-size: inherit;
+    font-style: italic;
+    text-decoration: underline;
+    /*font-weight: bold;*/
 }
 
 .block-banner > div > div {
@@ -71,6 +123,7 @@
     width: 60px;
     height: 60px;
     background-color: var(--color-1);
+    cursor: pointer;
 }
 
 .block-banner .circle > div {
@@ -85,6 +138,21 @@
 .block-banner .circle > div  > i {
     font-size: 32px;
     color: white;
+}
+
+.block-banner-content {
+
+}
+
+.block-banner-content > h2 {
+    text-align: center;
+    color: var(--color-1);
+    margin-top: 60px;
+    margin-bottom: 40px;
+}
+
+.block-banner-content > div {
+    margin-bottom: 60px;
 }
 
 .circle-arrow-left {
@@ -202,9 +270,32 @@
     margin-top: 12px;
     height: 50px;
     font-size: 150%;
-    border: 0;
     border-radius: 1px;
 }
+
+.block-center-content-div-3 form > input, select {
+    border: none;
+    /*border: 2px solid var(--color-1);*/
+}
+
+select {
+    padding-left: 25px;
+    color: #666666;
+    font-size: 130%;
+    margin-top: 12px;
+    /*border: none;*/
+    height: 50px;
+    margin-right: 30px;
+    /*opacity: .7;*/
+    /*width: 97%;*/
+}
+
+/*select:required:invalid {*/
+/*color: #666;*/
+/*}*/
+/*option[value=""][disabled] {*/
+/*display: none;*/
+/*}*/
 
 .form-btn {
     height: 50px;

@@ -488,6 +488,11 @@ h4 {
     font-size: inherit;
 }
 
+.content-detail-row {
+    display: flex;
+    /*flex-wrap: wrap;*/
+}
+
 .content-detail-inner blockquote {
     font-size: 0.9em;
     border-left: 4px solid #cccccc;
@@ -813,3 +818,48 @@ h4 {
 #roles_div p {
     line-height: 75% !important;
 }
+
+.container-image {
+    /*max-width: 1200px;*/
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: start;
+    /* Safari */
+    justify-content: center;
+}
+
+.item-image {
+    display: flex;
+    max-width: 220px;
+    flex-direction: column;
+    justify-content: space-between;
+    /*align-items: start;*/
+    padding: 10px;
+    margin-right: 17px;
+}
+
+.item-image > a > img {
+    width: 100%;
+    height: auto;
+    display: block;
+    padding: 3px;
+    border: 2px solid var(--color-2);
+    /*border-top-left-radius: 50% 50px;*/
+    /*border-bottom-right-radius: 50% 30px;*/
+    border-top: none;
+    border-bottom: none;
+    /*border-radius: 30px/90px;*/
+    border-radius: 20px/70px;
+    /*border-radius: 10px/50px;*/
+}
+
+.item-image > a > p {
+    text-align: center;
+    margin: 20px 10px 10px;
+    color: var(--color-2);
+    font-size: var(--font-size-normal);
+    line-height: 16px;
+}
+
+
