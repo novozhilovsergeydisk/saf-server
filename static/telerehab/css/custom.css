@@ -34,11 +34,23 @@
 
 .block-top-covid {
     color: white;
-    background-image: url("/telerehab/images/covid-rehab-1.png");
+    background-image: url("/telerehab/images/covid-rehab/covid-bg-1.png");
     background-repeat: no-repeat;
     /*background-position: top 0px right 0%;*/
     width: 100%;
-    min-height: 293px;
+    min-height: 562px;
+}
+
+.block-top-covid > h1 {
+    color: white;
+    font-size: 210%;
+    /*margin-top: -180px;*/
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.block-top-covid > p {
+    max-width: 50%;
 }
 
 .block-top-patients > p {
