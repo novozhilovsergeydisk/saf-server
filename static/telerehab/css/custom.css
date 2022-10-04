@@ -32,6 +32,15 @@
     margin-top: -85px;
 }
 
+.block-top-covid {
+    color: white;
+    background-image: url("/telerehab/images/covid-rehab-1.png");
+    background-repeat: no-repeat;
+    /*background-position: top 0px right 0%;*/
+    width: 100%;
+    min-height: 293px;
+}
+
 .block-top-patients > p {
     max-width: 50%;
     /*color: red;*/
@@ -89,6 +98,10 @@
 
 .block-top > div > p:nth-child(3) {
     margin-top: 20px;
+}
+
+.block-top-covid {
+
 }
 
 .block-top-rehab a {
@@ -488,6 +501,14 @@ select {
 
 .max-w-700 {
     max-width: 700px;
+}
+
+.max-w-800 {
+    max-width: 800px;
+}
+
+.max-w-900 {
+    max-width: 900px;
 }
 
 .max-w-950 {

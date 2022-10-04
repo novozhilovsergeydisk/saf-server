@@ -309,6 +309,24 @@ function telerehabRoutes(router) {
         const render = tmpl.process({}, template);
         html(res, render);
     });
+
+    router.on('GET', '/telerehab/covid-rehab', (req, res) => {
+        const template = 'telerehab/covid-rehab/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
+
+    router.on('GET', '/telerehab/kids-rehab', (req, res) => {
+        const template = 'telerehab/kids-rehab/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
+
+    router.on('GET', '/telerehab/onco-rehab', (req, res) => {
+        const template = 'telerehab/onco-rehab/index.html';
+        const render = tmpl.process({}, template);
+        html(res, render);
+    });
 }
 
 function nephrocenterRoutes() {
