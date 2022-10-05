@@ -322,8 +322,8 @@ function telerehabRoutes(router) {
         html(res, render);
     });
 
-    router.on('GET', '/telerehab/onco-rehab', (req, res) => {
-        const template = 'telerehab/onco-rehab/index.html';
+    router.on('GET', '/telerehab/onko-rehab', (req, res) => {
+        const template = 'telerehab/onko-rehab/index.html';
         const render = tmpl.process({}, template);
         html(res, render);
     });

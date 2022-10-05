@@ -95,6 +95,12 @@ ol > li {
     overflow: hidden;
 }
 
+.dotted {
+    border-left: 1px dotted saddlebrown;
+    border-right: 1px dotted saddlebrown;
+    border-bottom: 1px dotted saddlebrown;
+}
+
 .content {
     /*border-left: 1px dotted saddlebrown;*/
     /*border-right: 1px dotted saddlebrown;*/
@@ -102,6 +108,18 @@ ol > li {
 
     display: flex;
     justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1920px;
+}
+
+.content-default {
+    /*border-left: 1px dotted saddlebrown;*/
+    /*border-right: 1px dotted saddlebrown;*/
+    /*border-bottom: 1px dotted saddlebrown;*/
+
+    display: flex;
+    /*justify-content: center;*/
     margin: 0 auto;
     width: 100%;
     max-width: 1920px;

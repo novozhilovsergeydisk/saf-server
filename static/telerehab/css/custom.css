@@ -39,19 +39,263 @@
     /*background-position: top 0px right 0%;*/
     width: 100%;
     min-height: 562px;
+    margin-top: -60px;
 }
 
-.block-top-covid > h1 {
+.block-top-kids {
+    color: white;
+    background-image: url("/telerehab/images/kids-rehab/bg-1.png");
+    background-repeat: no-repeat;
+    /*background-position: top 0px right 0%;*/
+    width: 100%;
+    min-height: 562px;
+    margin-top: -60px;
+}
+
+.block-top-onko {
+    color: white;
+    background-image: url("/telerehab/images/onko-rehab/bg-1.png");
+    background-repeat: no-repeat;
+    /*background-position: top 0px right 0%;*/
+    width: 100%;
+    min-height: 562px;
+    margin-top: -60px;
+}
+
+.info-central {
+    color: white;
+    background-image: url("/telerehab/images/covid-rehab/covid-bg-2.jpg");
+    background-repeat: no-repeat;
+    /*background-position: top 0px right 0%;*/
+    width: 100%;
+    min-height: 562px;
+    margin-top: -60px;
+}
+
+.info-central .content-default > div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 85px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.info-central .content-default > div > h2 {
+    color: white;
+    margin-top: 10px;
+}
+
+.info-central .content-default > div > ul {
+    margin-bottom: 50px;
+}
+
+.info-central .content-default > div > p {
+    margin-bottom: 100px;
+}
+
+.info-central .content-default > div > p > span {
+    display: block;
+    padding-left: 390px
+    /*margin-right: 10px;*/
+    margin-top: -5px;
+}
+
+.blank-kids {
+    min-height: 100px;
+}
+
+
+
+.info-central-kids {
+    color: white;
+    background-image: url("/telerehab/images/kids-rehab/bg-2.png");
+    background-repeat: no-repeat;
+    /*background-position: top 0px right 0%;*/
+    width: 100%;
+    min-height: 562px;
+    margin-top: -60px;
+}
+
+.info-central-kids .content-default > div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 85px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.info-central-kids .content-default > div > h2 {
+    color: white;
+    margin-top: 10px;
+}
+
+.info-central-kids .content-default > div > ul {
+    margin-bottom: 50px;
+    width: 75%;
+}
+
+.info-central-kids .content-default > div > p {
+    margin-bottom: 100px;
+}
+
+.info-central-kids .content-default > div > p > span {
+    display: block;
+    padding-left: 390px
+    /*margin-right: 10px;*/
+    margin-top: -5px;
+}
+
+
+
+.info-start {
+    display: flex;
+}
+
+.info-start .content {
+    flex-direction: column;
+}
+
+.info-start .content > h2 {
+    text-align: center;
+    margin: 40px 0 10px;
+}
+
+.info-start .content > div {
+    display: flex;
+}
+
+.info-start .content > div > div > p {
+    margin-left: 30px;
+}
+
+.info-start .content > p {
+    text-align: center;
+    /*margin: 50px 0 30px;*/
+}
+
+/**/
+
+.info-end .content > h2 {
+    text-align: center;
+    margin: 50px 0 30px;
+}
+
+.info-end .content > div {
+    justify-content: space-around;
+}
+
+.info-end .content > div > div {
+    flex-basis: 33%;
+    align-items: center;
+    padding-left: 70px;
+    margin-bottom: 40px;
+}
+
+.info-end .content > div > div > img {
+    padding: 7px;
+}
+
+.info-end .content > div > div > p {
+    padding: 7px;
+    margin-top: 0px;
+    font-size: 115%;
+    line-height: 125%;
+    font-weight: bold;
+}
+
+.block-top-covid .content > h1 {
     color: white;
     font-size: 210%;
     /*margin-top: -180px;*/
-    margin-left: 50px;
-    margin-top: 50px;
+    margin-left: 35px;
+    margin-bottom: 30px;
+    padding-top: 100px;
 }
 
-.block-top-covid > p {
-    max-width: 50%;
+.block-top-covid .content > div {
+    margin-top: -40px;
 }
+
+.block-top-covid .content > div > p {
+    max-width: 50%;
+    margin-left: 50px;
+}
+
+.block-top-covid > p:nth-child(2) {
+    /*margin-top: -20px;*/
+    /*border: 1px solid red;*/
+}
+
+
+
+.block-top-kids .content > h1 {
+    color: white;
+    font-size: 210%;
+    /*margin-top: -180px;*/
+    margin-left: 35px;
+    margin-bottom: 30px;
+    padding-top: 100px;
+}
+
+.block-top-kids .content > div {
+    margin-top: -40px;
+}
+
+.block-top-kids .content > div > p {
+    max-width: 50%;
+    margin-left: 50px;
+}
+
+.block-top-kids > p:nth-child(2) {
+    /*margin-top: -20px;*/
+    /*border: 1px solid red;*/
+}
+
+
+
+.block-top-onko .content > h1 {
+    color: white;
+    font-size: 210%;
+    /*margin-top: -180px;*/
+    margin-left: 35px;
+    margin-bottom: 30px;
+    padding-top: 100px;
+}
+
+.block-top-onko .content > div {
+    margin-top: -40px;
+}
+
+.block-top-onko .content > div > p {
+    max-width: 50%;
+    margin-left: 50px;
+}
+
+.block-top-onko > p:nth-child(2) {
+    /*margin-top: -20px;*/
+    /*border: 1px solid red;*/
+}
+
+
+
+.btn-save-covid {
+    width: 235px;
+    height: 60px;
+    background-color: #ffffff;
+    color: var(--color-2);
+    border-radius: 40px;
+    /* border-color: white; */
+    outline: none;
+    border: none;
+    font-weight: 500;
+    margin-top: 37px;
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+
+
+/* ******* */
 
 .block-top-patients > p {
     max-width: 50%;
@@ -110,10 +354,6 @@
 
 .block-top > div > p:nth-child(3) {
     margin-top: 20px;
-}
-
-.block-top-covid {
-
 }
 
 .block-top-rehab a {
@@ -336,6 +576,22 @@ select {
     cursor: pointer;
 }
 
+.btn-covid {
+    height: 30px;
+    /*font-size: 100%;*/
+    background-color: var(--color-2);
+    width: 70%;
+    color: var(--color-1);
+    /*margin: 0 auto;*/
+    right: 0px;
+    bottom: -30px;
+    border-radius: 10px;
+    border: none;
+    /*font-weight: bold;*/
+    font-style: italic;
+    cursor: pointer;
+}
+
 .block-our-advantages .content > h2 {
     text-align: center;
     color: var(--color-1);
@@ -467,6 +723,14 @@ select {
     max-width: 50px;
 }
 
+.max-w-75 {
+    max-width: 75px;
+}
+
+.max-h-75 {
+    max-height: 75px;
+}
+
 .max-w-100 {
     max-width: 100px;
 }
@@ -557,6 +821,10 @@ select {
 
 .border-brown {
     border: 1px solid brown;
+}
+
+.border-white {
+    border: 1px solid white;
 }
 
 .center {
