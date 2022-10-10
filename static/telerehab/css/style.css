@@ -59,8 +59,8 @@ a {
 
 p {
     margin-top: 20px;
-    line-height: 22px;
-    /*line-height: calc(var(--sizeindex) * 1.2);*/
+    font-size: 135%;
+    line-height: 145%;
 }
 
 img {
@@ -80,6 +80,9 @@ ul.list-style-square > li {
     list-style-type: square;
     margin-left: 30px;
     line-height: 22px;
+
+    font-size: 135%;
+    line-height: 145%;
 }
 
 ol > li {
