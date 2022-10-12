@@ -925,3 +925,8 @@ option:nth-child(1) {
 .btn-manipulate {
     bottom: 32px;
 }
+
+.container-logo {
+    display: flex;
+    flex-direction: row;
+}

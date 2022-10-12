@@ -493,6 +493,8 @@ h4 {
     /*flex-wrap: wrap;*/
 }
 
+.content-detail-row
+
 .content-detail-inner blockquote {
     font-size: 0.9em;
     border-left: 4px solid #cccccc;
@@ -862,4 +864,11 @@ h4 {
     line-height: 16px;
 }
 
+.video-rutube {
 
+}
+
+.video-rutube img {
+    max-width: 700px;
+    cursor: pointer;
+}
