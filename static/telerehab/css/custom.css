@@ -546,6 +546,16 @@
     background-repeat: no-repeat;
     min-height: 709px;
     margin-top: -120px;
+    /*border: 3px solid red;*/
+    /*z-index: 100;*/
+}
+
+.info-end-content-flex > a, #link {
+    z-index: 0;
+}
+
+.info-end-content-flex > p > a, #link-2 > a {
+    color: black;
 }
 
 #detail {
@@ -1079,7 +1089,6 @@ select {
 .block-footer-content-block-3 {
     margin-top: 20px;
     margin-bottom: 30px;
-    /*border: 1px solid white;*/
 }
 
 .block-footer-content-block-1 > div,
