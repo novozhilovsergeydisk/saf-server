@@ -828,7 +828,15 @@ h4 {
     align-items: start;
     justify-content: start;
     /* Safari */
-    justify-content: center;
+    /*justify-content: center;*/
+}
+
+.container-image {
+    /*max-width: 1200px;*/
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: start;
 }
 
 .item-image {

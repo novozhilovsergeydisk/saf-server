@@ -658,16 +658,18 @@ select {
     height: 30px;
     /*font-size: 100%;*/
     background-color: var(--color-2);
-    width: 70%;
+    width: 150px;
     color: var(--color-1);
     /*margin: 0 auto;*/
     right: 0px;
-    bottom: -30px;
+    bottom: -35px;
     border-radius: 10px;
     border: none;
     /*font-weight: bold;*/
     font-style: italic;
     cursor: pointer;
+    padding-left: 50px;
+    padding-top: 7px;
 }
 
 .block-our-advantages .content > h2 {
@@ -1119,4 +1121,10 @@ select {
 .block-footer-content-block-2 > div > img,
 .block-footer-content-block-3 > div > img {
     /*border: 1px solid red;*/
+}
+
+/**/
+
+.kids-icon-1 {
+    height: 110% !important;
 }

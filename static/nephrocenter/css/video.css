@@ -54,3 +54,17 @@
     border: 2px solid #a5f5f5;
 }
 
+.video-link-youtube {
+    left: 1%;
+    top: -4%;
+    border: 3px solid white;
+    padding: 5px 15px;
+    position: absolute;
+    font-size: inherit;
+    color: white;
+}
+
+.video-link-youtube:hover {
+    color: #a5f5f5;
+    border: 2px solid #a5f5f5;
+}
