@@ -1,443 +1,500 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "templates/admin/base.html" %}
+{% set title = "Клиенты" %}
+{% set description = "Клиенты" %}
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Добавление клиента</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="/vendors/feather/feather.css">
-    <link rel="stylesheet" href="/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="/vendors/typicons/typicons.css">
-    <link rel="stylesheet" href="/vendors/simple-line-icons/css/simple-line-icons.css">
-    <link rel="stylesheet" href="/vendors/css/vendor.bundle.base.css">
-    <!-- End plugins:css -->
-    <!-- Plugin css for this page -->
-    <!--  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">-->
-    <link rel="stylesheet" href="/css/select.dataTables.min.css">
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <link rel="stylesheet" href="/css/vertical-layout-light/style.css">
-    <!-- End inject:css -->
-    <link rel="stylesheet" href="/css/utility.css">
-    <link rel="shortcut icon" href="/images/favicon.png" />
+{% block meta %}
+{{ super() }}
+{% endblock %}
 
-    <style>
-        .border-red {
-            border: 1px solid red;
-        }
-    </style>
-</head>
+{% block css %}
+{{ super() }}
+{% endblock %}
 
-<body>
-<div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
-    <nav style="margin-top: -50px !important;" class="navbar default-layout col-lg-12 col-12 fixed-top d-flex align-items-top flex-row">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-            <div class="me-3">
-                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
-                    <span class="icon-menu"></span>
-                </button>
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block main %}
+
+<style>
+    /**/
+    .form-client-btn-cancel {
+        color: var(--bs-gray);
+        background: transparent;
+    }
+
+    .form-client-btn-cancel:hover, #form-client-btn-cancel:active {
+        color: cadetblue;
+        background: transparent;
+        border: 1px solid cadetblue;
+    }
+
+    .form-client-btn-cancel:focus {
+        color: #288a84;
+        background: transparent;
+    }
+
+    /**/
+
+    .add-client {
+        border: 1px solid #288a84;
+        margin-right: 10px;
+    }
+
+    .add-client:hover {
+        background: #288a84;
+        /*border: 1px solid cadetblue;*/
+    }
+
+    .add-client:hover > i {
+        color: white;
+    }
+
+    .add-client > i {
+        color: #288a84;
+        font-size: xx-large;
+    }
+
+    /**/
+
+    .card {
+        margin-bottom: 10px;
+    }
+
+    /*.none {*/
+    /*    display: none;*/
+    /*    width: 0;*/
+    /*    opacity: 0; !*Элемент полностью прозрачный (невидимый)*!*/
+    /*    ransition: 1s; !*Скорость перехода состояния элемента*!*/
+    /*}*/
+
+    /*.block {*/
+    /*    display: block;*/
+    /*    width: auto;*/
+    /*    ransition: 1s; !*Скорость перехода состояния элемента*!*/
+    /*}*/
+
+    /*.show {*/
+    /*    width: auto;*/
+    /*    opacity: 1; !*Элемент полностью прозрачный (невидимый)*!*/
+    /*    transition: 1s; !*Скорость перехода состояния элемента*!*/
+    /*}*/
+
+    /*.hide {*/
+    /*    width: 0;*/
+    /*    opacity: 0; !*Элемент полностью прозрачный (невидимый)*!*/
+    /*    transition: 1s; !*Скорость перехода состояния элемента*!*/
+    /*}*/
+
+    /*.flex {*/
+    /*    display: flex;*/
+    /*}*/
+</style>
+
+<style>
+    * {box-sizing: border-box}
+    .accordeon__wrapper {
+        max-width: 600px;
+        /*font-family: sans-serif;*/
+    }
+    .accordeon__section {
+        border: 1px solid grey;
+        border-radius: 10px;
+        margin-top: -20px;
+        margin-bottom: 10px;
+    }
+    .accordeon__header {
+        backgroundr: #288a84;
+        padding: 20px;
+        cursor: pointer;
+        user-select: none;
+    }
+    .accordeon__link {
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+    .accordeon__body {
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.5s;
+    }
+    .opened .accordeon__body {
+        /*   max-height: *.clientHeight; */
+    }
+    .accordeon__body * {
+        /*padding: 20px;*/
+        display: block;
+    }
+
+    .accordeon__body b {
+        /*padding: 20px;*/
+        display: inline;
+    }
+
+    /**/
+
+
+
+    #buttons-group {
+        display: flex;
+    }
+
+    #form-client {
+        margin-bottom: 50px;
+    }
+
+    .fa-plus {
+        font-size: x-large;
+        margin-right: 20px;
+    }
+
+    /**/
+
+    .hide, display-none {
+        display: none;
+    }
+
+    .show, display-block {
+        display: block;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="accordeon__wrapper col-lg-6">
+        <div class="accordeon__section">
+            <div class="accordeon__header">
+                <a href="#" class="accordeon__link"><i class="fa-solid fa-plus"></i> Добавить клиента</a>
             </div>
+            <div class="accordeon__body">
+                <div class="card border-red_">
+                    <div class="card-body border-red_">
+                        <h4 class="card-title">Клиенты</h4>
 
-            <div>
-                <a class="navbar-brand brand-logo" href="index.html">
-                    <!--					<h1><span class="smaller">CRM</span></h1>-->
-                    <!--					<img src="images/logo.svg" alt="logo" />-->
-                </a>
-                <a class="navbar-brand brand-logo-mini" href="/">
-                    <img src="/images/logo-mini.svg" alt="logo" />
-                </a>
-            </div>
+                        <p class="card-description">
+                            Форма добавления
+                        </p>
 
-        </div>
+                        <form id="form-client" method="post" enctype="application/x-www-form-urlencoded" class="forms-sample border-red_">
+                            <div class="form-group">
+                                <label for="form-client-fio">Имя *</label>
+                                <input id="form-client-fio" class="form-control" placeholder="ФИО *" autocomplete="name">
 
-        <div class="navbar-menu-wrapper d-flex align-items-top">
-            <ul class="navbar-nav">
-                <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-                    <h1 class="welcome-text">Аккаунт: <span class="text-black fw-bold">Новожилов Сергей</span></h1>
-                    <h3 class="welcome-sub-text">Личный кабинет </h3>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <form class="search-form" action="#">
-                        <i class="icon-search"></i>
-                        <input type="search" class="form-control" placeholder="Поиск здесь" title="Поиск...">
-                    </form>
-                </li>
-                <!--				<li class="nav-item dropdown">-->
-                <!--					<a class="nav-link count-indicator" id="notificationDropdown" href="#" data-bs-toggle="dropdown">-->
-                <!--						<i class="icon-mail icon-lg"></i>-->
-                <!--					</a>-->
-                <!--					<div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="notificationDropdown">-->
-                <!--						<a class="dropdown-item py-3 border-bottom">-->
-                <!--							<p class="mb-0 font-weight-medium float-left">You have 4 new notifications </p>-->
-                <!--							<span class="badge badge-pill badge-primary float-right">View all</span>-->
-                <!--						</a>-->
-                <!--						<a class="dropdown-item preview-item py-3">-->
-                <!--							<div class="preview-thumbnail">-->
-                <!--								<i class="mdi mdi-alert m-auto text-primary"></i>-->
-                <!--							</div>-->
-                <!--							<div class="preview-item-content">-->
-                <!--								<h6 class="preview-subject fw-normal text-dark mb-1">Application Error</h6>-->
-                <!--								<p class="fw-light small-text mb-0"> Just now </p>-->
-                <!--							</div>-->
-                <!--						</a>-->
-                <!--						<a class="dropdown-item preview-item py-3">-->
-                <!--							<div class="preview-thumbnail">-->
-                <!--								<i class="mdi mdi-settings m-auto text-primary"></i>-->
-                <!--							</div>-->
-                <!--							<div class="preview-item-content">-->
-                <!--								<h6 class="preview-subject fw-normal text-dark mb-1">Settings</h6>-->
-                <!--								<p class="fw-light small-text mb-0"> Private message </p>-->
-                <!--							</div>-->
-                <!--						</a>-->
-                <!--						<a class="dropdown-item preview-item py-3">-->
-                <!--							<div class="preview-thumbnail">-->
-                <!--								<i class="mdi mdi-airballoon m-auto text-primary"></i>-->
-                <!--							</div>-->
-                <!--							<div class="preview-item-content">-->
-                <!--								<h6 class="preview-subject fw-normal text-dark mb-1">New user registration</h6>-->
-                <!--								<p class="fw-light small-text mb-0"> 2 days ago </p>-->
-                <!--							</div>-->
-                <!--						</a>-->
-                <!--					</div>-->
-                <!--				</li>-->
-                <li class="nav-item dropdown">
-                    <a class="nav-link count-indicator" id="countDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="icon-bell"></i>
-                        <span class="count"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="countDropdown">
-                        <a class="dropdown-item py-3">
-                            <p class="mb-0 font-weight-medium float-left">У вас 7 почтовых сообщений </p>
-                            <span class="badge badge-pill badge-primary float-right">Посмотреть все</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <!--							<div class="preview-thumbnail">-->
-                            <!--								<img src="images/faces/face10.jpg" alt="image" class="img-sm profile-pic">-->
-                            <!--							</div>-->
-                            <div class="preview-item-content flex-grow py-2">
-                                <p class="preview-subject ellipsis font-weight-medium text-dark">Карина </p>
-                                <p class="fw-light small-text mb-0"> Сообщение...</p>
+                                <span id="form-client-fio-error" class="error"></span>
                             </div>
-                        </a>
-                        <a class="dropdown-item preview-item">
-                            <!--							<div class="preview-thumbnail">-->
-                            <!--								<img src="images/faces/face12.jpg" alt="image" class="img-sm profile-pic">-->
-                            <!--							</div>-->
-                            <div class="preview-item-content flex-grow py-2">
-                                <p class="preview-subject ellipsis font-weight-medium text-dark">Никита </p>
-                                <p class="fw-light small-text mb-0"> Встреча отложена </p>
+
+                            <div class="form-group">
+                                <label for="form-client-phone">Телефон *</label>
+                                <input id="form-client-phone" class="form-control" type="tel" placeholder="Телефон *">
+
+                                <span id="form-client-phone-error" class="error"></span>
                             </div>
-                        </a>
-                        <a class="dropdown-item preview-item">
-                            <!--							<div class="preview-thumbnail">-->
-                            <!--								<img src="images/faces/face1.jpg" alt="image" class="img-sm profile-pic">-->
-                            <!--							</div>-->
-                            <div class="preview-item-content flex-grow py-2">
-                                <p class="preview-subject ellipsis font-weight-medium text-dark">Алла </p>
-                                <p class="fw-light small-text mb-0"> Встреча отменена </p>
+
+                            <div class="form-group">
+                                <label for="form-client-email">e-mail</label>
+                                <input id="form-client-email" class="form-control" type="email" placeholder="e-mail">
+
+                                <span id="form-client-email-error" class="error"></span>
                             </div>
-                        </a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown d-none d-lg-block user-dropdown">
-                    <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img class="img-xs rounded-circle" src="/images/faces/face8.jpg" alt="Profile image"> </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                        <div class="dropdown-header text-center">
-                            <img class="img-md rounded-circle" src="/images/faces/face8.jpg" alt="Profile image">
-                            <p class="mb-1 mt-3 font-weight-semibold">Новожилов Сергей</p>
-                            <p class="fw-light text-muted mb-0">sergionov@mail.ru</p>
-                        </div>
-                        <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> Профиль <span class="badge badge-pill badge-danger">1</span></a>
 
-                        <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Выйти</a>
-                    </div>
-                </li>
-            </ul>
-            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-                <span class="mdi mdi-menu"></span>
-            </button>
+                            <div id="buttons-group" class="form-group">
+                                <button id="form-client-btn-add" type="submit" class="btn btn-success me-2">Добавить</button>
+                                <button id="form-client-btn-cancel" type="submit" class="btn btn-light form-client-btn-cancel">Очистить поля</button>
+                            </div>
 
-        </div>
-    </nav>
+                            <div class="form-group">
+                                <span id="form-client-error" class="red"></span>
+                            </div>
 
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-        <!-- partial:partials/_settings-panel.html -->
+                            <div class="form-group">
+                                <span id="form-client-success" class="green"></span>
+                            </div>
 
-        <!-- partial -->
-        <!-- partial:partials/_sidebar.html -->
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
-            <ul class="nav">
-                <li class="nav-item nav-category">Настройки</li>
+<!--                            <button class="btn btn-outline-success" onclick="showSwal('warning-message-and-cancel')">Click here!</button>-->
 
-                <li class="nav-item">
-                    <a id="clients" class="nav-link" data-bs-toggle="collapse" href="/admin/client/add" aria-expanded="false" aria-controls="form-elements">
-                        <i class="menu-icon mdi mdi-card-text-outline"></i>
-                        <span class="menu-title">Клиенты</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-
-                    <!--<div class="collapse" id="form-elements">-->
-                        <!--<ul class="nav flex-column sub-menu">-->
-                            <!--<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Справочник</a></li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
-                </li>
-
-                <li class="nav-item">
-                    <!--					<a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">-->
-                    <a id="services" class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-                        <!--						<i class="menu-icon mdi mdi-access-point"></i>-->
-                        <i class="menu-icon material-icons">repeat</i> <!-- storage sync -->
-                        <span class="menu-title">Услуги</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-
-<!--                    <div class="collapse" id="charts">-->
-<!--                        <ul class="nav flex-column sub-menu">-->
-<!--                            <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">Справочник</a></li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/departments">
-                        <i class="menu-icon material-icons">view_comfy</i>
-                        <span class="menu-title">Подразделения</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-
-                    <!--					<div class="collapse" id="charts">-->
-                    <!--						<ul class="nav flex-column sub-menu">-->
-                    <!--							<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">Справочник</a></li>-->
-                    <!--						</ul>-->
-                    <!--					</div>-->
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
-                        <i class="menu-icon mdi mdi-floppy"></i>
-                        <span class="menu-title">Записи клиентов</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-
-                    <div class="collapse" id="tables">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Записать</a></li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-                        <!--						<i class="menu-icon mdi mdi-account-badge"></i>-->
-                        <i class="menu-icon material-icons">payment</i>
-                        <span class="menu-title">Оплата услуг</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-
-                    <div class="collapse" id="icons-1">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Оплатить</a></li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-                        <!--						<i class="menu-icon mdi mdi-file-document"></i>-->
-                        <i class="menu-icon material-icons">storage</i>
-                        <span class="menu-title">Оплаченные услуги</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-
-                    <div class="collapse" id="icons-2">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Просмотр</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- partial -->
-        <div class="main-panel">
-            <div class="content-wrapper">
-                <div class="col-lg-6 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Клиенты</h4>
-                            <p class="card-description">
-                                Форма добавления
-                            </p>
-                            <form id="form-client" method="post" enctype="application/x-www-form-urlencoded" class="forms-sample">
-                                <div class="form-group">
-                                    <label for="form-client-fio">ФИО *</label>
-                                    <input id="form-client-fio" class="form-control" placeholder="ФИО *" autocomplete="name">
-
-                                    <span id="form-client-fio-error" class="error display-none__"></span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="form-client-phone">Телефон *</label>
-                                    <input id="form-client-phone" class="form-control" type="tel" placeholder="Телефон *">
-
-                                    <span id="form-client-phone-error" class="error display-none__"></span>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="form-client-email">e-mail</label>
-                                    <input id="form-client-email" class="form-control" type="email" placeholder="e-mail">
-
-                                    <span id="form-client-email-error" class="error display-none__"></span>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <button id="form-client-btn-add" type="submit" class="btn btn-primary me-2">Добавить</button>
-                                    <button id="form-client-btn-cancel" type="submit" class="btn btn-light">Cancel</button>
-                                </div>
-
-                                <div class="form-group">
-                                    <span id="form-client-error" class="red">error</span>
-                                </div>
-
-                                <div class="form-group">
-                                    <span id="form-client-success" class="green"></span>
-                                </div>
-
-                                <!--<div class="form-group">-->
-                                    <!--<label for="exampleInputUsername1">Username</label>-->
-                                    <!--<input type="text" class="form-control" id="exampleInputUsername1" placeholder="Username">-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label for="exampleInputEmail1">Email address</label>-->
-                                    <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label for="exampleInputPassword1">Password</label>-->
-                                    <!--<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<label for="exampleInputConfirmPassword1">Confirm Password</label>-->
-                                    <!--<input type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Password">-->
-                                <!--</div>-->
-                                <!--<div class="form-check form-check-flat form-check-primary">-->
-                                    <!--<label class="form-check-label">-->
-                                        <!--<input type="checkbox" class="form-check-input">-->
-                                        <!--Remember me-->
-                                        <!--<i class="input-helper"></i></label>-->
-                                <!--</div>-->
-                                <!--<button type="submit" class="btn btn-primary me-2">Submit</button>-->
-                                <!--<button class="btn btn-light">Cancel</button>-->
-                            </form>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </div>
 
-            <div class="content-wrapper">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table .table-striped table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>
-                                            #
-                                        </th>
-                                        <th>
-                                            ФИО
-                                        </th>
-                                        <th>
-                                            Телефон
-                                        </th>
-                                        <th>
-                                            email
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for client in data.clients %}
-                                    <tr>
-                                        <td>
-                                            {{ client.id }}
-                                        </td>
-                                        <td>
-                                            {{ client.name }}
-                                        </td>
-                                        <td>
-                                            {{ client.phone }}
-                                        </td>
-                                        <td>
-                                            {{ client.email }}
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <!-- content-wrapper ends -->
-            <!-- partial:partials/_footer.html -->
-            <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Панель уапрвления <!-- <a href="/" target="_blank">Панель уапрвления</a> --></span>
-                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2022. Все права защищены.</span>
-                </div>
-            </footer>
-            <!-- partial -->
         </div>
-        <!-- main-panel ends -->
     </div>
-
-    <!-- page-body-wrapper ends -->
 </div>
-<!-- container-scroller -->
 
-<!-- plugins:js -->
-<script src="/vendors/js/vendor.bundle.base.js"></script>
-<!-- End plugins:js -->
+<!--<div class="content-wrapper">-->
+<!--    <div class="col-lg-6">-->
+<!--        <button id="add-client" class="btn btn-large add-client"><i class="fa-solid fa-plus"></i></button>-->
 
-<!-- Plugin js for this page -->
-<script src="/vendors/chart.js/Chart.min.js"></script>
-<script src="/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-<script src="/vendors/progressbar.js/progressbar.min.js"></script>
-<!-- End plugin js for this page -->
+<!--        <span>Добавить клиента</span>-->
+<!--    </div>-->
 
-<!-- inject:js -->
-<script src="/js-admin/off-canvas.js"></script>
-<script src="/js-admin/hoverable-collapse.js"></script>
-<script src="/js-admin/template.js"></script>
-<script src="/js-admin/settings.js"></script>
-<script src="/js-admin/todolist.js"></script>
-<!-- End inject:js -->
+<!--</div>-->
 
-<!-- Custom js for this page-->
-<script src="/js-admin/jquery.cookie.js" type="text/javascript"></script>
-<script src="/js-admin/dashboard.js"></script>
-<script src="/js-admin/Chart.roundedBarCharts.js"></script>
+<!-- Форма content-wrapper-client -->
 
-<script src="/js-admin/app.js"></script>
-<script src="/js/fetch.js"></script>
+<style>
+    .i-mdi {
+        right: 0;
+        font-size: x-large;
+        cursor: pointer;
+    }
+
+    .relative {
+        position: relative;
+    }
+    .absolute {
+        position: absolute;
+    }
+
+    .swal2-popup {
+        background: #123456;
+    }
+</style>
+
+<!-- for data.list -->
+<div class="content-wrapper">
+    <div class="col-lg-6">
+        {% for item in data.list %}
+        <div class="card border-brown_">
+            <div class="card-body">
+                <p>{{ item.name }}</p>
+
+                <p class="relative">
+                    <i class="fa-solid fa-phone"></i> {{ item.phone }}
+                    <i data-id="{{ item.id }}" class="i-mdi mdi mdi-chat-processing-outline absolute"></i>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="content-wrapper hide">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table .table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                ФИО
+                            </th>
+                            <th>
+                                Телефон
+                            </th>
+                            <th>
+                                email
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for client in data.clients %}
+                        <tr>
+                            <td>
+                                {{ client.id }}
+                            </td>
+                            <td>
+                                {{ client.name }}
+                            </td>
+                            <td>
+                                {{ client.phone }}
+                            </td>
+                            <td>
+                                {{ client.email }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- main-panel -->
+<div class="main-panel hide">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 d-flex justify-content-center border-right">
+                            <div class="card-body">
+                                <div class="wrapper text-center">
+                                    <h4 class="card-title">Alerts Popups</h4>
+                                    <p class="card-description">A basic message</p>
+                                    <button id="show" class="btn btn-outline-success">Click here!</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 d-flex justify-content-center border-right">
+                            <div class="card-body">
+                                <div class="wrapper text-center">
+                                    <h4 class="card-title">Alerts Popups</h4>
+                                    <p class="card-description">A title with a text under</p>
+                                    <button class="btn btn-outline-success" onclick="showSwal('title-and-text')">Click here!</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 d-flex justify-content-center">
+                            <div class="card-body">
+                                <div class="wrapper text-center">
+                                    <h4 class="card-title">Alerts Popups</h4>
+                                    <p class="card-description">A success message!</p>
+                                    <button class="btn btn-outline-success" onclick="showSwal('success-message')">Click here!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 d-flex justify-content-center border-right">
+                            <div class="card-body">
+                                <div class="wrapper text-center">
+                                    <h4 class="card-title">Alerts Popups</h4>
+                                    <p class="card-description">A success message!</p>
+                                    <button class="btn btn-outline-success" onclick="showSwal('custom-html')">Click here!</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 d-flex justify-content-center border-right">
+                            <div class="card-body">
+                                <div class="wrapper text-center">
+                                    <h4 class="card-title">Alerts Popups</h4>
+                                    <p class="card-description">A success message!</p>
+                                    <button class="btn btn-outline-success" onclick="showSwal('warning-message-and-cancel')">Click here!</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 d-flex justify-content-center">
+                            <div class="card-body">
+                                <div class="wrapper text-center">
+                                    <h4 class="card-title">Alerts Popups</h4>
+                                    <p class="card-description">A message with auto close timer</p>
+                                    <button class="btn btn-outline-success" onclick="showSwal('auto-close')">Click here!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h4 class="card-title">Avgrund Popup</h4>
+                                <p class="card-description">Avgrund simple popup</p>
+                                <a href="#" id="show" class="btn btn-outline-danger">Click here!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js_footer %}
+{{ super() }}
+{% endblock %}
+
+{% block js_private %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!--<script src="/js-admin/alerts.js"></script>-->
 <script src="/js/client/common.js"></script>
-<!-- End custom js for this page-->
-</body>
 
-</html>
+<script>
+    const accordeon__sections = document.querySelectorAll('div.accordeon__section');
 
+    console.log({ accordeon__sections })
+
+    accordeon__sections.forEach((accSection) => {
+        const accHeader = accSection.querySelector('.accordeon__header');
+        const accBody = accSection.querySelector('.accordeon__body');
+        const accContent = accSection.querySelector('.accordeon__body > *');
+
+        console.log('accordeon__section')
+
+        accHeader.addEventListener('click', () => {
+            accSection.classList.toggle("opened");
+
+            if ( accSection.classList.contains("opened") ) {
+                accBody.style.maxHeight = `${accContent.clientHeight}px`;
+            } else {
+                accBody.style.maxHeight = "0px";
+            }
+        })
+    });
+
+    /**/
+
+    // const showClientInfo = document.getElementById('show-client-info');
+    //
+    // showClientInfo.addEventListener('click', e => {
+    //     console.log({ showClientInfo })
+    // });
+
+    /**/
+
+    //Swal.fire("Good job!", "You clicked the button!", "success");
+
+    const blockOverflow = document.getElementById("block-overflow");
+
+    const btnShow = document.getElementById("show");
+    const btnCloseOverflow = document.getElementById("btn-close-overflow");
+
+    btnCloseOverflow.addEventListener('click', (e) => {
+        blockOverflow.style.height = '0px';
+        blockOverflow.style.padding = '0';
+
+        console.log({ btnCloseOverflow });
+    });
+
+    btnShow.addEventListener('click', (e) => {
+        blockOverflow.style.height = '98%';
+        blockOverflow.style.padding = '2em';
+
+        console.log({ btnShow });
+
+        // Swal.fire("Good job!", "You clicked the button!", "success");
+
+        // Swal.fire({
+        //     title: 'Custom animation with Animate.css',
+        //     html: '',
+        //     showClass: {
+        //         popup: 'animate__animated animate__fadeInDown'
+        //     },
+        //     hideClass: {
+        //         popup: 'animate__animated animate__fadeOutUp'
+        //     }
+        // })
+    });
+
+    document.addEventListener('click', (e) => {
+        // console.log(e.target.dataset.id);
+
+        if (e.target.dataset.id !== undefined) {
+            const id = e.target.dataset.id;
+            // const el = document.getElementById(id);
+            // console.log({ el });
+
+            blockOverflow.style.height = '98%';
+            blockOverflow.style.padding = '2em';
+        }
+    });
+
+    // console.log('test');
+</script>
+{% endblock %}

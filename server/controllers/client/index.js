@@ -1,14 +1,5 @@
 'use strict';
 
-// const nunjucks = require('nunjucks');
-// const userService = require('../service/user-service.js');
-// const adminService = require('../../services/admin-service/index.js');
-// const {log} = require('../../helpers.js');
-// const dto = require('../../lib/DTO/index.js');
-// const {tmpl} = require('../../lib/Renderer/index.js');
-
-// nunjucks.configure(VIEWS_PATH, { autoescape: true });
-
 const {MIME_TYPES} = require('../../../constants.js');
 const { Pool } = require('pg');
 const Ajv = require("ajv").default;
@@ -80,6 +71,7 @@ async function query (sql, params = []) {
     }
 }
 
+
 // clientsController
 class clientController {
     async clientAdd(req, res, data) {
@@ -99,9 +91,9 @@ class clientController {
             ],
             errorMessage: {
                 properties: {
-                    fio: 'Минимум 2 символа',
-                    phone: 'Минимум 8 символов',
-                    email: 'Минимум 6 символов',
+                    fio: 'Заполните поле <b>Имя</b>, минимум 2 символа.',
+                    phone: 'Заполните поле - <b>Телефон</b>, минимум 8 символов.',
+                    email: 'Заполните поле - <b>email</b>, минимум 6 символов.',
                 },
             },
         }
@@ -109,36 +101,28 @@ class clientController {
         try {
             const validate = ajv.compile(schema);
             const validation = validate(data);
-            console.log({ validation })
 
             if (validation) {
-                // const response = { status: 'success', data };
                 const table = 'clients';
                 const schema = process.env.PGSCHEMA;
                 const sequence = 'clients_id_seq';
                 const id = `nextval('${schema}.${sequence}')`;
                 const sql = `INSERT INTO ${schema}.${table} VALUES(${id}, $1, $2, $3) RETURNING *`;
-
                 const result = await query(sql, [data.fio, data.phone, data.email]);
 
                 if (result.status === 'failed') {
-                    const response = { status: 'failed', error: { message: 'Ошибка при записи в базу данных' } };
+                    const response = { status: 'failed', error: { message: '<b>Ошибка при записи</b>. Возможно такие данные уже внесены.' } };
                     json(res, { response });
                 } else {
-                    const __result__ = result.data;
-                    const response = { status: 'success', data: { message: 'Информация успешно занесена в базу данных', __result__ } };
+                    const info = result.data;
+                    const response = { status: 'success', data: { message: 'Информация успешно занесена в базу данных.', info } };
                     json(res, { response });
                 }
-
-                // console.log([data.fio, data.phone, data.email])
-                // console.log(data.phone)
-                // console.log(data.email)
-                // console.log({ result })
-
-
             } else {
-                const response = { status: 'failed', error: { message: 'Ошибка при валидации данных' } };
+                const errorMessage = validate.errors[0].message;
+                const response = { status: 'failed', error: { message: errorMessage } };
                 json(res, { response });
+                // console.log({ errorMessage });
             }
         } catch (err) {
             console.log({ err })
@@ -146,7 +130,6 @@ class clientController {
             json(res, { response });
         }
     }
-
 }
 
 const __client__ = new clientController();

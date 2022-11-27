@@ -30,24 +30,6 @@ const dataPreparation = ((ids, mimeType = 'application/json')  => {
 });
 
 async function fetchAsync(url = '', data = [], params = {method: null, mode: null, cache: null, credentials: null, mimeType: null, redirect: null, isPreparation: false}) {
-
-    // if (url === '') {
-    //     const error = 'Пустой url';
-    //     console.log({ error });
-    //     return {error: error};
-    // }
-    // const isArray = Array.isArray(data);
-    // if (!isArray) {
-    //     const error = 'Неверные данные';
-    //     console.log({ error });
-    //     return {error: error};
-    // }
-    // if (data.length === 0) {
-    //     const error = 'Пустой массив с данными';
-    //     console.log({ error });
-    //     return {error: error};
-    // }
-
     const { method, mode, cache, credentials, mimeType, isPreparation } = params;
     const mime = mimeType || 'application/json'; // 'application/x-www-form-urlencoded; charset=UTF-8';
 
@@ -71,7 +53,7 @@ async function fetchAsync(url = '', data = [], params = {method: null, mode: nul
         // console.log({ mime });
         // console.log({ 'JSON.stringify(data)': JSON.stringify(data) });
 
-        const response = await fetch(url, {
+        const response = await fetch(url,{
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -101,18 +83,6 @@ async function fetchAsync(url = '', data = [], params = {method: null, mode: nul
 
 }
 
-// console.log('fetch.js');
-//
-// fetchAsync('client/add', {}, {mode: 'strict'});
-// fetchAsync('client/add', [], {mode: 'strict'});
-// fetchAsync('client/add', ['foo', 'bar'], {noPreparation: false});
-
-// const result = fetchAsync('/admin/client/add', {foo: 'bar'});
-//
-// result.then(data => console.log({ data })).catch(err => console.log({ err }));
-
-// console.log({ result });
-
 // fetchAsync('client/add', ['foo', 'bar'], {mode: 'strict', mimeType: 'application/json'});
 
 // Example
@@ -140,3 +110,68 @@ async function fetchAsync(url = '', data = [], params = {method: null, mode: nul
 //         })
 //         .catch(err => log({ err }))
 // })
+
+async function __fetchAsync__(url = '', data = [], mimeType = 'application/x-www-form-urlencoded') {
+    let body = null;
+
+    if (mimeType === 'application/x-www-form-urlencoded') {
+        body = data;
+    }
+
+    if (mimeType === 'application/json') {
+        body = JSON.stringify(data);
+    }
+
+    const response = await fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': mimeType
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: body
+    });
+
+    return await response;
+}
+
+function resolve(response, cb) {
+    response.then((response) => response.body)
+        .then((rb) => {
+            const reader = rb.getReader();
+
+            return new ReadableStream({
+                start(controller) {
+                    // The following function handles each data chunk
+                    function push() {
+                        // "done" is a Boolean and value a "Uint8Array"
+                        reader.read().then(({ done, value }) => {
+                            // If there is no more data to read
+                            if (done) {
+                                // console.log('done', done);
+                                controller.close();
+                                return;
+                            }
+                            // Get the data and send it to the browser via the controller
+                            controller.enqueue(value);
+                            // Check chunks by logging to the console
+                            // console.log(done, value);
+                            push();
+                        });
+                    }
+
+                    push();
+                },
+            });
+        })
+        .then((stream) =>
+            // Respond with our stream
+            new Response(stream, { headers: { 'Content-Type': 'text/html' } }).text()
+        )
+        .then((result) => {
+            cb(result)
+        });
+}

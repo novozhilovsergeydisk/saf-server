@@ -71,73 +71,66 @@ async function query (sql, params = []) {
     }
 }
 
-// clientsController
+// ******* servicesController ******* //
 class servicesController {
     async serviceAdd(req, res, data) {
-        console.log({ data })
-        // const schema = {
-        //     type: 'object',
-        //     required: ['fio', 'phone', 'email'],
-        //     allOf: [
-        //         {
-        //             properties: {
-        //                 fio: { type: "string", minLength: 2 },
-        //                 phone: { type: "string", minLength: 8 },
-        //                 email: { type: "string", minLength: 6 },
-        //             },
-        //             additionalProperties: false,
-        //         },
-        //     ],
-        //     errorMessage: {
-        //         properties: {
-        //             fio: 'Минимум 2 символа',
-        //             phone: 'Минимум 8 символов',
-        //             email: 'Минимум 6 символов',
-        //         },
-        //     },
-        // }
-        //
-        // try {
-        //     const validate = ajv.compile(schema);
-        //     const validation = validate(data);
-        //     console.log({ validation })
-        //
-        //     if (validation) {
-        //         // const response = { status: 'success', data };
-        //         const table = 'clients';
-        //         const schema = process.env.PGSCHEMA;
-        //         const sequence = 'clients_id_seq';
-        //         const id = `nextval('${schema}.${sequence}')`;
-        //         const sql = `INSERT INTO ${schema}.${table} VALUES(${id}, $1, $2, $3) RETURNING *`;
-        //
-        //         const result = await query(sql, [data.fio, data.phone, data.email]);
-        //
-        //         if (result.status === 'failed') {
-        //             const response = { status: 'failed', error: { message: 'Ошибка при записи в базу данных' } };
-        //             json(res, { response });
-        //         } else {
-        //             const __result__ = result.data;
-        //             const response = { status: 'success', data: { message: 'Информация успешно занесена в базу данных', __result__ } };
-        //             json(res, { response });
-        //         }
-        //
-        //         // console.log([data.fio, data.phone, data.email])
-        //         // console.log(data.phone)
-        //         // console.log(data.email)
-        //         // console.log({ result })
-        //
-        //
-        //     } else {
-        //         const response = { status: 'failed', error: { message: 'Ошибка при валидации данных' } };
-        //         json(res, { response });
-        //     }
-        // } catch (err) {
-        //     console.log({ err })
-        //     const response = { status: 'failed', error: { message: 'Ошибка при обработке данных' } };
-        //     json(res, { response });
-        // }
-    }
+        // console.log({ data })
 
+        const schema = {
+            type: 'object',
+            required: ['formServicesName', 'formServicesPriceFrom', 'formServicesPriceTo'],
+            allOf: [
+                {
+                    properties: {
+                        formServicesName: { type: "string", minLength: 3 },
+                        formServicesPriceFrom: { type: 'string', minLength: 2},
+                        formServicesPriceTo: { type: 'string', minLength: 2}
+                    },
+                    additionalProperties: false,
+                },
+            ],
+            errorMessage: {
+                properties: {
+                    formServicesName: 'Заполните поле <b>Название</b>, минимум 3 символа.',
+                    formServicesPriceFrom: 'Заполните поле - <b>Цена от</b>.',
+                    formServicesPriceTo: 'Заполните поле - <b>Цена до</b>.',
+                },
+            }
+        }
+
+        try {
+            const validate = ajv.compile(schema);
+            const validation = validate(data);
+
+            if (validation) {
+                const table = 'services';
+                const schema = process.env.PGSCHEMA;
+                const sequence = 'services_id_seq';
+                const id = `nextval('${schema}.${sequence}')`;
+                const sql = `INSERT INTO ${schema}.${table} VALUES(${id}, $1, $2, $3, now(), now()) RETURNING *`;
+                const dataArray = [data.formServicesName, data.formServicesPriceFrom, data.formServicesPriceTo];
+                const result = await query(sql, dataArray);
+
+                if (result.status === 'failed') {
+                    const response = { status: 'failed', error: { message: '<b>Ошибка при записи</b>. Возможно такие данные уже внесены.' } };
+                    json(res, { response });
+                } else {
+                    const info = result.data;
+                    const response = { status: 'success', data: { message: 'Информация успешно занесена в базу данных.', info } };
+                    json(res, { response });
+                }
+            } else {
+                const errorMessage = validate.errors[0].message;
+                const response = { status: 'failed', error: { message: errorMessage } };
+                json(res, { response });
+                // console.log({ errorMessage });
+            }
+        } catch (err) {
+            console.log({ err })
+            const response = { status: 'failed', error: { message: 'Ошибка при обработке данных.' } };
+            json(res, { response });
+        }
+    }
 }
 
 const __services__ = new servicesController();

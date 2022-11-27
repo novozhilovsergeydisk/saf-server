@@ -25,6 +25,8 @@ const testData = {stack: 'overflow'};
 const dotenv = require('dotenv');
 dotenv.config();
 
+const http_address = process.env.HTTP_ADDRESS;
+
 // console.log(process.env);
 
 /*
@@ -75,34 +77,66 @@ const {handler} = require('./src/handler.js');
 
 // Controllers
 const client = require('./server/controllers/client/index.js');
+const services = require('./server/controllers/services/index.js');
 
 const { Pool } = require('pg');
 const Ajv = require('ajv').default
 const ajv = new Ajv({ allErrors: true })
 require('ajv-errors')(ajv /*, {singleError: true} */)
 
-// functions
+// Functions
+
+const stub = (async (req, res, data) => {
+    console.log({ data })
+
+    const response = { status: 'success', data: data, error: null };
+
+    json(res, { response });
+});
+
+const search = (async (req, res, data) => {
+    console.log({ data })
+    let response;
+
+    const search = data.search.toLowerCase();
+    const model = data.model;
+
+    if (model && search) {
+        const sql = `SELECT * FROM crm.${model} WHERE LOWER(name) LIKE '%${search}%'`;
+        console.log({ sql })
+        const result = await app.query(sql);
+        const list = result.data;
+        response = { status: 'success', data: list, error: null };
+        console.log({ list })
+    } else {
+        response = { status: 'success', data: [], error: null };
+    }
+
+    json(res, { response });
+});
 
 function __resolve__(req, res, fn) {
     let bodyArr = [], parsingData = null;
+
     req.on('data', chunk => {
         bodyArr.push(chunk)
     })
     return req.on('end', async () => {
-        // log({ bodyArr })
         const body = Buffer.concat(bodyArr).toString()
         try {
             parsingData = JSON.parse(body);
         } catch (err) {
             parsingData = { status: 'failed', error: { message: 'Ошибка при обработке данных', detail: err } };
         }
-        // log({ body })
-        // log({ parsingData })
 
-        // log({ parsingData })
+        const type_fn = typeof fn;
+        // console.log({ type_fn })
 
-        fn(req, res, parsingData);
-        // fn(res, bodyArr)
+        if (type_fn !== 'undefined') {
+            fn(req, res, parsingData);
+        } else {
+            log({ parsingData })
+        }
     })
 }
 
@@ -171,7 +205,9 @@ async function query (sql, params = null) {
     }
 }
 
-// handlers
+// \Functions
+
+// Handlers
 
 function HandlerPost() {
     if (!(this instanceof HandlerPost)) {
@@ -260,7 +296,9 @@ const staticRoutes = [
     '/js-admin/*',
     '/nephrocenter/*',
     '/telerehab/*',
-    '/doc/*'
+    '/doc/*',
+    '/assets/*',
+    '/star-admin-pro/*'
 ];
 
 function use(url, data = {}) {
@@ -528,7 +566,49 @@ function patientRoutes(router) {
 }
 
 function crmRoutes(router) {
-    // GET
+    // GET routes
+
+    router.on('GET', '/admin-pro', async (req, res) => {
+        const index = 'star-admin-pro/index.html';
+        const data = { data: { http_address: http_address } };
+        const render = tmpl.process(data, index);
+        html(res, render);
+    });
+
+    router.on('GET', '/admin/records', async (req, res) => {
+        let result, sql;
+
+        sql = `SELECT * FROM crm.clients`;
+        result = await query(sql);
+        const clients = result.data;
+
+        sql = `SELECT * FROM crm.services`;
+        result = await query(sql);
+        const services = result.data;
+
+        sql = `SELECT * FROM crm.records`;
+        result = await query(sql);
+        const records = result.data;
+
+        log({ clients });
+        log({ services });
+        log({ records });
+
+        const index = 'admin/records/index.html';
+        const data = { data: { http_address: http_address, clients: clients, services: services, records: records, model: 'records' } };
+
+        // log({ 'http_address': http_address });
+
+        const render = tmpl.process(data, index);
+
+        html(res, render);
+    });
+
+    router.on('GET', '/admin/departments', async (req, res) => {
+        const index = 'admin/departments/index.html';
+        const render = tmpl.process({ data: { h1: 'Nunjucks' } }, index);
+        html(res, render);
+    });
 
     router.on('GET', '/admin', async (req, res) => {
         let result, sql;
@@ -573,17 +653,19 @@ function crmRoutes(router) {
     router.on('GET', '/admin/clients', async (req, res) => {
         let result, sql;
 
-        sql = `SELECT * FROM crm.clients`;
+        sql = `SELECT * FROM crm.clients WHERE active = true ORDER BY ID DESC LIMIT 10`;
         result = await query(sql);
         const clients = result.data;
 
-        log({ clients });
+        // log({ clients });
 
-        const http_address = process.env.HTTP_ADDRESS;
+        // const http_address = process.env.HTTP_ADDRESS;
         const index = 'admin/clients/index.html';
-        const data = { data: { http_address: http_address, clients: clients } };
+        const list = clients;
+        log({ list });
+        const data = { data: { http_address: http_address, clients: clients, list: list, model: 'clients', templateTheme: templateTheme } };
 
-        log({ 'http_address': http_address });
+        log({ 'data': data });
 
         const render = tmpl.process(data, index);
 
@@ -599,9 +681,9 @@ function crmRoutes(router) {
 
         log({ services });
 
-        const http_address = process.env.HTTP_ADDRESS;
+        // const http_address = process.env.HTTP_ADDRESS;
         const index = 'admin/services/index.html';
-        const data = { data: { http_address: http_address, services: services } };
+        const data = { data: { http_address: http_address, services: services, model: 'services' } };
 
         log({ 'http_address': http_address });
 
@@ -610,11 +692,27 @@ function crmRoutes(router) {
         html(res, render);
     });
 
-    // POST
+    // POST routes
 
-    router.on('POST', '/admin/services/add', (req, res) => {
-        log('crm/services/insert')
-        handler.store(req, res, handler.serviceInsert)
+    router.on('POST', '/admin/search', (req, res) => {
+        log('/admin/search');
+
+        const result = __resolve__(req, res, search);
+
+        // console.log({ result })
+
+        // const response = { status: 'success', data: null, error: null };
+        // json(res, { response });
+
+        // handler.store(req, res, handler.serviceInsert);
+    })
+
+    router.on('POST', '/admin/service/add', (req, res) => {
+        log('/admin/service/add');
+
+        const result = __resolve__(req, res, services.serviceAdd);
+
+        // handler.store(req, res, handler.serviceInsert);
     })
 
     router.on('POST', '/admin/client/add', (req, res) => {
@@ -642,7 +740,8 @@ handler.post(router);
 const server = http.createServer((req, res) => {
     router.lookup(req, res);
 });
-const port = process.env.HTTP_PORT;
+const port = process.env.HTTP_PORT || 3000;
+const templateTheme = process.env.TEMPLATE_THEME || 'dark';
 server.listen(port, err => {
     if (err) throw err;
     console.log(`Server listening on: http://localhost: ${port}`);

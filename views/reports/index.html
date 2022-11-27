@@ -1,78 +1,252 @@
-{% extends "templates/base.html" %}
-{% set title = "Отчеты transplant.net" %}
-{% set h1 = "transplant.net" %}
+{% extends "templates/admin/base.html" %}
+{% set title = "Клиенты" %}
+
+{% block meta %}
+{{ super() }}
+{% endblock %}
 
 {% block css %}
 {{ super() }}
-<style>
-    .flex {
-        display: flex;
-    }
-
-    .box-item {
-        padding: 7px;
-
-        /*display: inline-block;*/
-        /*flex: 1 1 100px;*/
-
-        /*background: tomato;*/
-        /*max-width: 200px;*/
-        /*height: 150px;*/
-
-        /*margin: 10px;*/
-        /*line-height: 150px;*/
-        /*font-weight: bold;*/
-        /*font-size: 3rem;*/
-        /*text-align: center;*/
-    }
-
-    .content {
-        display: flex;
-        padding: 10px;
-    }
-
-    .block {
-        padding: 17px;
-        /*background: #e9e9e9;*/
-    }
-
-
-    .block p {
-        font-size: 14px;
-        padding: 3px;
-        color: #212529;
-    }
-
-    .box {
-        display: flex;
-        flex-wrap: wrap;
-        /*justify-content: space-around;*/
-        padding: 0;
-        margin: 0;
-    }
-
-    .bold {
-        font-weight: bold;
-    }
-
-    .border-top {
-        border-top: 1px solid #c2c2c2;
-    }
-
-    .smaller {
-        font-size: smaller;
-    }
-</style>
 {% endblock %}
 
-{% block content %}
-<div id="content" class="content">
-    <h3>Отчеты по transplant.net</h3>
-    <p>{{ data }}</p>
+{% block header %}
+{{ super() }}
+{% endblock %}
 
-    <div id="report-one"></div>
+{% block main %}
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+    <!-- partial:partials/_settings-panel.html -->
 
-    <div id="report-two"></div>
+    <!-- partial -->
+    <!-- partial:partials/_sidebar.html -->
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+            <li class="nav-item nav-category">Настройки</li>
+
+            <li class="nav-item">
+                <a id="clients" class="nav-link" data-bs-toggle="collapse" href="/admin/client/add" aria-expanded="false" aria-controls="form-elements">
+                    <i class="menu-icon mdi mdi-card-text-outline"></i>
+                    <span class="menu-title">Клиенты</span>
+                    <i class="menu-arrow"></i>
+                </a>
+
+                <!--<div class="collapse" id="form-elements">-->
+                <!--<ul class="nav flex-column sub-menu">-->
+                <!--<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Справочник</a></li>-->
+                <!--</ul>-->
+                <!--</div>-->
+            </li>
+
+            <li class="nav-item">
+                <!--					<a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">-->
+                <a id="services" class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+                    <!--						<i class="menu-icon mdi mdi-access-point"></i>-->
+                    <i class="menu-icon material-icons">repeat</i> <!-- storage sync -->
+                    <span class="menu-title">Услуги</span>
+                    <i class="menu-arrow"></i>
+                </a>
+
+                <!--                    <div class="collapse" id="charts">-->
+                <!--                        <ul class="nav flex-column sub-menu">-->
+                <!--                            <li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">Справочник</a></li>-->
+                <!--                        </ul>-->
+                <!--                    </div>-->
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/departments">
+                    <i class="menu-icon material-icons">view_comfy</i>
+                    <span class="menu-title">Подразделения</span>
+                    <i class="menu-arrow"></i>
+                </a>
+
+                <!--					<div class="collapse" id="charts">-->
+                <!--						<ul class="nav flex-column sub-menu">-->
+                <!--							<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">Справочник</a></li>-->
+                <!--						</ul>-->
+                <!--					</div>-->
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
+                    <i class="menu-icon mdi mdi-floppy"></i>
+                    <span class="menu-title">Записи клиентов</span>
+                    <i class="menu-arrow"></i>
+                </a>
+
+                <div class="collapse" id="tables">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">Записать</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
+                    <!--						<i class="menu-icon mdi mdi-account-badge"></i>-->
+                    <i class="menu-icon material-icons">payment</i>
+                    <span class="menu-title">Оплата услуг</span>
+                    <i class="menu-arrow"></i>
+                </a>
+
+                <div class="collapse" id="icons-1">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Оплатить</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
+                    <!--						<i class="menu-icon mdi mdi-file-document"></i>-->
+                    <i class="menu-icon material-icons">storage</i>
+                    <span class="menu-title">Оплаченные услуги</span>
+                    <i class="menu-arrow"></i>
+                </a>
+
+                <div class="collapse" id="icons-2">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">Просмотр</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- partial -->
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Клиенты</h4>
+                        <p class="card-description">
+                            Форма добавления
+                        </p>
+                        <form id="form-client" method="post" enctype="application/x-www-form-urlencoded" class="forms-sample">
+                            <div class="form-group">
+                                <label for="form-client-fio">ФИО *</label>
+                                <input id="form-client-fio" class="form-control" placeholder="ФИО *" autocomplete="name">
+
+                                <span id="form-client-fio-error" class="error display-none__"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="form-client-phone">Телефон *</label>
+                                <input id="form-client-phone" class="form-control" type="tel" placeholder="Телефон *">
+
+                                <span id="form-client-phone-error" class="error display-none__"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="form-client-email">e-mail</label>
+                                <input id="form-client-email" class="form-control" type="email" placeholder="e-mail">
+
+                                <span id="form-client-email-error" class="error display-none__"></span>
+                            </div>
+
+
+                            <div class="form-group">
+                                <button id="form-client-btn-add" type="submit" class="btn btn-primary me-2">Добавить</button>
+                                <button id="form-client-btn-cancel" type="submit" class="btn btn-light">Cancel</button>
+                            </div>
+
+                            <div class="form-group">
+                                <span id="form-client-error" class="red">error</span>
+                            </div>
+
+                            <div class="form-group">
+                                <span id="form-client-success" class="green"></span>
+                            </div>
+
+                            <!--<div class="form-group">-->
+                            <!--<label for="exampleInputUsername1">Username</label>-->
+                            <!--<input type="text" class="form-control" id="exampleInputUsername1" placeholder="Username">-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label for="exampleInputEmail1">Email address</label>-->
+                            <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label for="exampleInputPassword1">Password</label>-->
+                            <!--<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                            <!--<label for="exampleInputConfirmPassword1">Confirm Password</label>-->
+                            <!--<input type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Password">-->
+                            <!--</div>-->
+                            <!--<div class="form-check form-check-flat form-check-primary">-->
+                            <!--<label class="form-check-label">-->
+                            <!--<input type="checkbox" class="form-check-input">-->
+                            <!--Remember me-->
+                            <!--<i class="input-helper"></i></label>-->
+                            <!--</div>-->
+                            <!--<button type="submit" class="btn btn-primary me-2">Submit</button>-->
+                            <!--<button class="btn btn-light">Cancel</button>-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table .table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        ФИО
+                                    </th>
+                                    <th>
+                                        Телефон
+                                    </th>
+                                    <th>
+                                        email
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for client in data.clients %}
+                                <tr>
+                                    <td>
+                                        {{ client.id }}
+                                    </td>
+                                    <td>
+                                        {{ client.name }}
+                                    </td>
+                                    <td>
+                                        {{ client.phone }}
+                                    </td>
+                                    <td>
+                                        {{ client.email }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Панель уапрвления <!-- <a href="/" target="_blank">Панель уапрвления</a> --></span>
+                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2022. Все права защищены.</span>
+            </div>
+        </footer>
+        <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
 </div>
-
 {% endblock %}

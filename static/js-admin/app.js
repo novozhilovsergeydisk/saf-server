@@ -7,7 +7,7 @@ const registerServiceWorker = async () => {
                     scope: '/js-admin/',
                 }
             );
-            
+
             if (registration.installing) {
                 console.log('Service worker installing');
             } else if (registration.waiting) {
@@ -29,6 +29,6 @@ const registerServiceWorker = async () => {
 
 registerServiceWorker();
 
-console.log('app.js');
+console.log('app.js - здесь код воркера');
 
 
