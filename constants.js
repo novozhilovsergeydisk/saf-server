@@ -8,26 +8,26 @@ const views_path = process.env.VIEWS_PATH;
 // console.log({ 'views_path': views_path })
 
 const MIME_TYPES = {
-    html:      'text/html',
-    plain:     'text/plain',
-    js:        'application/javascript',
-    json:      'application/json',
-    pdf:       'application/pdf',
-    xml:       'application/xml',
-    msexcel:   'application/vnd.ms-excel',
-    css:       'text/css',
-    png:       'image/png',
-    jpeg:      'image/jpeg',
-    jpg:       'image/jpeg',
-    ico:       'image/x-icon',
-    svg:       'image/svg+xml',
-    webp:      'image/webp',
-    woff:      'application/x-font-woff',
-    woff2:     'application/x-font-woff2',
-    ttf:       'application/x-font-ttf',
-    otf:       'application/x-font-otf',
-    mp3:       'audio/mpeg',
-    mp4:       'video/mp4'
+    html: 'text/html',
+    plain: 'text/plain',
+    js: 'application/javascript',
+    json: 'application/json',
+    pdf: 'application/pdf',
+    xml: 'application/xml',
+    msexcel: 'application/vnd.ms-excel',
+    css: 'text/css',
+    png: 'image/png',
+    jpeg: 'image/jpeg',
+    jpg: 'image/jpeg',
+    ico: 'image/x-icon',
+    svg: 'image/svg+xml',
+    webp: 'image/webp',
+    woff: 'application/x-font-woff',
+    woff2: 'application/x-font-woff2',
+    ttf: 'application/x-font-ttf',
+    otf: 'application/x-font-otf',
+    mp3: 'audio/mpeg',
+    mp4: 'video/mp4'
 };
 const ALLOWED_METHODS = ['GET', 'POST', 'PUT'];
 

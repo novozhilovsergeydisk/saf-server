@@ -147,9 +147,15 @@ function json(res, data, status) {
 };
 
 function html(res, data, status) {
+    console.log({ data })
     res.setHeader('Content-Type', MIME_TYPES.html);
     res.statusCode = status || 200;
-    res.end(data.toString());
+    if (data == undefined) {
+        res.end('Данные не определены')
+    } else {
+        res.end(data.toString());
+    }
+
 };
 
 function textPlain(res, data, status) {
